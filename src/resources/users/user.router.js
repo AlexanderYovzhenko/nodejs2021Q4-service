@@ -1,4 +1,4 @@
-const { getUserAll, getUserId, addUser, updateUser, deleteUser } = require('./user.service');
+const { getUsersAll, getUserId, addUser, updateUser, deleteUser } = require('./user.service');
 
 const user = {
   type: 'object',
@@ -18,7 +18,7 @@ const getUsersOpts = {
       }
     }
   },
-  handler: getUserAll
+  handler: getUsersAll
 };
 
 const getUserOpts = {
