@@ -46,7 +46,7 @@ const addTaskOpts = {
 const deleteTaskOpts = {
   schema: {
     response: {
-      200: {
+      204: {
         type: 'object',
         properties: {
           message: { type: 'string' },

@@ -52,7 +52,7 @@ const addBoardOpts = {
 const deleteBoardOpts = {
   schema: {
     response: {
-      200: {
+      204: {
         type: 'object',
         properties: {
           message: { type: 'string' },
