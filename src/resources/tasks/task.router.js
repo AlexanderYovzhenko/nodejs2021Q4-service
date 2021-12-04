@@ -7,9 +7,9 @@ const task = {
     title: { type: 'string' }, 
     order: { type: 'number' },
     description: { type: 'string' },
-    userId: {}, 
-    boardId: {},
-    columnId: {}
+    userId: { type: ['string', 'null'] }, 
+    boardId: { type: ['string', 'null'] },
+    columnId: { type: ['string', 'null'] }
   }
 };
 
