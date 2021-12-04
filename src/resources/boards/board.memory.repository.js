@@ -2,7 +2,7 @@ let dbBoards = [];
 
 const getBoardsAll = async () => dbBoards;
 
-const getBoardId = async (boardId) => dbBoards.find(board => board.id === boardId) || undefined;
+const getBoardId = async (boardId) => dbBoards.find(board => board.id === boardId) || null;
 
 const addBoard = async (board) => dbBoards.push(board);
 
