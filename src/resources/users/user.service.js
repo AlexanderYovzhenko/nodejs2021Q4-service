@@ -1,6 +1,6 @@
 const { v4: uuid } = require('uuid')
 const usersRepo = require('./user.memory.repository');
-const { updateUserId } = require('../tasks/task.memory.repository');
+const { updateUserId } = require('../tasks/task.service');
 
 const getUsersAll = async (request, reply) => {
   const users = await usersRepo.getUsersAll();
@@ -18,7 +18,7 @@ const addUser = async (request, reply) => {
     id: uuid(),
     ...request.body
   };
-  usersRepo.addUser(user);
+  await usersRepo.addUser(user);
   reply.code(201).send(user);
 };
 
@@ -28,13 +28,13 @@ const updateUser = async (request, reply) => {
     id: userId,
     ...request.body
   };
-  usersRepo.updateUser(userId, updUser); 
+  await usersRepo.updateUser(userId, updUser); 
   reply.code(200).send(updUser);
 };
 
 const deleteUser = async (request, reply) => {
   const { userId } = request.params;
-  usersRepo.deleteUser(userId);
+  await usersRepo.deleteUser(userId);
   await updateUserId(userId);
   reply.code(204);
 };

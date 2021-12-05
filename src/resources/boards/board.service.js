@@ -1,6 +1,6 @@
 const { v4: uuid } = require('uuid')
 const boardsRepo = require('./board.memory.repository');
-const { deleteTaskFromBoard } = require('../tasks/task.memory.repository');
+const { deleteTaskFromBoard } = require('../tasks/task.service');
 
 const getBoardsAll = async (request, reply) => {
   const board = await boardsRepo.getBoardsAll();
@@ -25,7 +25,7 @@ const addBoard = async (request, reply) => {
     id: uuid(),
     ...request.body
   };
-  boardsRepo.addBoard(board);
+  await boardsRepo.addBoard(board);
   reply.code(201).send(board);
 };
 
@@ -35,7 +35,7 @@ const updateBoard = async (request, reply) => {
     id: boardId,
     ...request.body
   };
-  boardsRepo.updateBoard(boardId, updBoard);
+  await boardsRepo.updateBoard(boardId, updBoard);
   reply.code(200).send(updBoard);
 };
 

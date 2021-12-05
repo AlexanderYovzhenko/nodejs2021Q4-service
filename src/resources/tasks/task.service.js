@@ -24,7 +24,7 @@ const addTask = async (request, reply) => {
     id: uuid(),
     ...request.body
   };
-  tasksRepo.addTask(task);
+  await tasksRepo.addTask(task);
   reply.code(201).send(task);
 };
 
@@ -34,18 +34,26 @@ const updateTask = async (request, reply) => {
     id: taskId,
     ...request.body
   };
-  tasksRepo.updateTask(taskId, updTask);
+  await tasksRepo.updateTask(taskId, updTask);
   reply.code(200).send(updTask);
 };
 
 const deleteTask = async (request, reply) => {
   const { taskId } = request.params;
   if(tasksRepo.getTaskId(taskId)) {
-    tasksRepo.deleteTask(taskId);
+    await tasksRepo.deleteTask(taskId);
     reply.code(204);
   } else {
     reply.code(404);
   }
 };
 
-module.exports = { getTasksAll, getTaskId, addTask, deleteTask, updateTask };
+const deleteTaskFromBoard = async (boardId) => {
+  await tasksRepo.deleteTaskFromBoard(boardId);
+};
+
+const updateUserId = async (userId) => {
+  await tasksRepo.updateUserId(userId);
+};
+
+module.exports = { getTasksAll, getTaskId, addTask, deleteTask, updateTask, deleteTaskFromBoard, updateUserId };
