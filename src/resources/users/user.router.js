@@ -2,6 +2,7 @@ const { getUsersAll, getUserId, addUser, updateUser, deleteUser } = require('./u
 
 const user = {
   type: 'object',
+  required: ['name', 'login', 'password'],
   properties: {
     id: { type: 'string' },
     name: { type: 'string' },
@@ -32,15 +33,7 @@ const getUserOpts = {
 
 const addUserOpts = {
   schema: {
-    body: {
-      type: 'object',
-      // required: ['name', 'login', 'password'],
-      properties: {
-        name: { type: 'string' },
-        login: { type: 'string' },
-        password: { type: 'string' },
-      },
-    },
+    body: user,
     response: {
       201: user 
     }
@@ -64,6 +57,7 @@ const deleteUserOpts = {
 
 const updateUserOpts = {
   schema: {
+    body: user,
     response: {
       200: user,
     },

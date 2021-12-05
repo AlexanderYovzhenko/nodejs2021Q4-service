@@ -2,6 +2,7 @@ const { getTasksAll, getTaskId, addTask, deleteTask, updateTask } = require('./t
 
 const task = {
   type: 'object',
+  required: ['title', 'order', 'description', 'userId', 'boardId'],
   properties: {
     id: { type: 'string' },
     title: { type: 'string' }, 
@@ -35,7 +36,8 @@ const getTaskOpts = {
 };
 
 const addTaskOpts = {
-  schema: {
+  schema: { 
+    body: task,
     response: {
       201: task 
     }
@@ -59,6 +61,7 @@ const deleteTaskOpts = {
 
 const updateTaskOpts = {
   schema: {
+    body: task,
     response: {
       200: task,
     },
