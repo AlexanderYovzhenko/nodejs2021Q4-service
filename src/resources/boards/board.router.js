@@ -2,7 +2,7 @@ const { getBoardsAll, getBoardId, addBoard, deleteBoard, updateBoard } = require
 
 const board = {
   type: 'object',
-  // required: ['title', 'columns'],
+  required: ['title', 'columns'],
   properties: {
     id: { type: 'string' },
     title: { type: 'string' },
@@ -10,7 +10,7 @@ const board = {
       type: 'array',
       items: {
         type: 'object',
-        // required: ['title', 'order'],
+        required: ['title', 'order'],
         properties: {
           columnId: { type: 'string' },
           title: { type: 'string' },
@@ -44,6 +44,7 @@ const getBoardOpts = {
 
 const addBoardOpts = {
   schema: {
+    body: board,
     response: {
       201: board 
     }
@@ -67,6 +68,7 @@ const deleteBoardOpts = {
 
 const updateBoardOpts = {
   schema: {
+    body: board,
     response: {
       200: board,
     },
