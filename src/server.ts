@@ -7,7 +7,7 @@ const startServer = async () => {
     await server.listen(PORT, () =>
       console.info(`App is running on http://localhost:${PORT}`)
     );
-  } catch (err) {
+  } catch (err: unknown) {
     server.log.error(err);
     process.exit(1);
   }
