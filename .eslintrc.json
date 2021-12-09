@@ -1,35 +1,160 @@
+// {
+//   "root": true,
+//   "env": {
+//     "es2020": true,
+//     "jasmine": true,
+//     "jest": true,
+//     "node": true
+//   },
+//   "parserOptions": {
+//     "sourceType": "module",
+//     "ecmaVersion": 2021,
+//     "ecmaFeatures": {
+//       "impliedStrict": true
+//     }
+//   },
+//   "settings": {
+//     "noInlineConfig": true
+//   },
+//   "extends": [
+//     "eslint:recommended",
+//     "plugin:node/recommended",
+//     "airbnb-base",
+//     "prettier"
+//   ],
+//   "rules": {
+//     "@typescript-eslint/no-explicit-any": "off",
+//     "import/extensions": "off",
+//     "linebreak-style": "off",
+//     "node/no-unsupported-features/es-syntax": "off",
+//     "no-underscore-dangle": "off",
+//     "import/prefer-default-export": "off",
+//     "no-param-reassign": [2, { 
+//       "props": false
+//     }]
+//   }
+// }
+
+
+
+
+
+
+
+// {
+//   overrides: [
+//     {
+//       files: ['*.ts', '*.tsx'],
+//       rules: {
+//         'constructor-super': 'off', // ts(2335) & ts(2377)
+//         'getter-return': 'off', // ts(2378)
+//         'no-const-assign': 'off', // ts(2588)
+//         'no-dupe-args': 'off', // ts(2300)
+//         'no-dupe-class-members': 'off', // ts(2393) & ts(2300)
+//         'no-dupe-keys': 'off', // ts(1117)
+//         'no-func-assign': 'off', // ts(2539)
+//         'no-import-assign': 'off', // ts(2539) & ts(2540)
+//         'no-new-symbol': 'off', // ts(2588)
+//         'no-obj-calls': 'off', // ts(2349)
+//         'no-redeclare': 'off', // ts(2451)
+//         'no-setter-return': 'off', // ts(2408)
+//         'no-this-before-super': 'off', // ts(2376)
+//         'no-undef': 'off', // ts(2304)
+//         'no-unreachable': 'off', // ts(7027)
+//         'no-unsafe-negation': 'off', // ts(2365) & ts(2360) & ts(2358)
+//         'no-var': 'error', // ts transpiles let/const to var, so no need for vars any more
+//         'prefer-const': 'error', // ts provides better types with const
+//         'prefer-rest-params': 'error', // ts provides better types with rest args over arguments
+//         'prefer-spread': 'error', // ts transpiles spread to apply, so no need for manual apply
+//         'valid-typeof': 'off', // ts(2367)
+//       },
+//     },
+//   ],
+// }
+
 {
-  "root": true,
-  "env": {
-    "es2020": true,
-    "jasmine": true,
-    "jest": true,
-    "node": true
-  },
+  "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "sourceType": "module",
-    "ecmaVersion": 2021,
-    "ecmaFeatures": {
-      "impliedStrict": true
-    }
+      "ecmaVersion": 2020
   },
-  "settings": {
-    "noInlineConfig": true
+  "env": {
+      "node": true
   },
   "extends": [
-    "eslint:recommended",
-    "plugin:node/recommended",
-    "airbnb-base",
-    "prettier"
+      "eslint:recommended",
+      "plugin:@typescript-eslint/recommended",
+      "plugin:prettier/recommended"
   ],
   "rules": {
-    "import/extensions": "off",
-    "linebreak-style": "off",
-    "node/no-unsupported-features/es-syntax": "off",
-    "no-underscore-dangle": "off",
-    "import/prefer-default-export": "off",
-    "no-param-reassign": [2, { 
-      "props": false
-    }]
+    "complexity": [ "warn", 10 ],
+    "prefer-const": "error",
+    "@typescript-eslint/no-explicit-any": "error",
+    "@typescript-eslint/no-var-requires": "off",
+    "@typescript-eslint/no-unused-vars": "error",
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "padding-line-between-statements": [
+      "error",
+      { "blankLine": "always", "prev": "*", "next": "if" },
+      { "blankLine": "always", "prev": "*", "next": "block-like" },
+      { "blankLine": "always", "prev": "*", "next": "block" },
+      { "blankLine": "always", "prev": "*", "next": "return" }
+    ]
   }
 }
+
+// {
+//   "root": true,
+//   "env": {
+//     "es2020": true,
+//     "jasmine": true,
+//     "jest": true,
+//     "node": true,
+//   },
+//   "parser": "@typescript-eslint/parser",
+//   "parserOptions": {
+//     "project": "./tsconfig.json,"
+//     "tsconfigRootDir": "__dirname",
+//     "sourceType": "module",
+//     "ecmaVersion": 2021,
+//     "createDefaultProgram": true,
+//     "ecmaFeatures": {
+//       "impliedStrict": true,
+//     },
+//   },
+//   "settings": {
+//     "noInlineConfig": true,
+//   },
+//   "plugins": ['@typescript-eslint', 'eslint-plugin-tsdoc'],
+//   "extends": [
+//     'eslint:recommended',
+//     'plugin:@typescript-eslint/recommended',
+//     'plugin:node/recommended',
+//     'airbnb-base',
+//     'prettier',
+//   ],
+//   rules: {
+//     'import/extensions': 'off',
+//     'linebreak-style': 'off',
+//     'node/no-unsupported-features/es-syntax': 'off',
+//     'no-underscore-dangle': 'off',
+//     'import/prefer-default-export': 'off',
+//     'tsdoc/syntax': 'error',
+//     '@typescript-eslint/no-explicit-any': 'off',
+//   },
+// };
+
+
+
+// {
+//   "root": true,
+//   "parser": "@typescript-eslint/parser",
+//   "plugins": [
+//     "@typescript-eslint"
+//   ],
+//   "extends": [
+//     "eslint:recommended",
+//     "plugin:@typescript-eslint/eslint-recommended",
+//     "plugin:@typescript-eslint/recommended"
+//   ]
+// }
