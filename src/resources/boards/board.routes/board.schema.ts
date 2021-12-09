@@ -30,7 +30,7 @@ const getBoardsOpts = {
       },
     },
   },
-  handler: boardHandlerRouters.getBoardsAll,
+  handler: boardHandlerRouters.getBoardsAllRouter,
 };
 
 const getBoardOpts = {
@@ -39,7 +39,7 @@ const getBoardOpts = {
       200: board,
     },
   },
-  handler: boardHandlerRouters.getBoardId,
+  handler: boardHandlerRouters.getBoardIdRouter,
 };
 
 const addBoardOpts = {
@@ -49,7 +49,7 @@ const addBoardOpts = {
       201: board,
     },
   },
-  handler: boardHandlerRouters.addBoard,
+  handler: boardHandlerRouters.addBoardRouter,
 };
 
 const deleteBoardOpts = {
@@ -63,7 +63,7 @@ const deleteBoardOpts = {
       },
     },
   },
-  handler: boardHandlerRouters.deleteBoard,
+  handler: boardHandlerRouters.deleteBoardRouter,
 };
 
 const updateBoardOpts = {
@@ -73,7 +73,7 @@ const updateBoardOpts = {
       200: board,
     },
   },
-  handler: boardHandlerRouters.updateBoard,
+  handler: boardHandlerRouters.updateBoardRouter,
 };
 
 module.exports = {

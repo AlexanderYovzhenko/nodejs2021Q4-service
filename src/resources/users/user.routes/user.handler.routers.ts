@@ -1,62 +1,60 @@
-const { FastifyRequest, FastifyReply } = require('fastify');
-import { v4 as uuid } from 'uuid';
+const {
+  FastifyRequest: FastifyRequestUser,
+  FastifyReply: FastifyReplyUser,
+} = require('fastify');
 const userService = require('../user.service');
+const statusCodeUser = require('../../../common/status.code');
+const User = require('../user.model');
 
-const getUsersAll = async (
-  _: typeof FastifyRequest,
-  reply: typeof FastifyReply
+const getUsersAllRouter = async (
+  _: typeof FastifyRequestUser,
+  reply: typeof FastifyReplyUser
 ) => {
   const users: object = await userService.getUsersAllService();
-  reply.code(200).send(users);
+  reply.code(statusCodeUser.OK).send(users);
 };
 
-const getUserId = async (
-  request: typeof FastifyRequest,
-  reply: typeof FastifyReply
+const getUserIdRouter = async (
+  request: typeof FastifyRequestUser,
+  reply: typeof FastifyReplyUser
 ) => {
   const { userId } = request.params;
   const user: object = await userService.getUserIdService(userId);
-  reply.code(200).send(user);
+  reply.code(statusCodeUser.OK).send(user);
 };
 
-const addUser = async (
-  request: typeof FastifyRequest,
-  reply: typeof FastifyReply
+const addUserRouter = async (
+  request: typeof FastifyRequestUser,
+  reply: typeof FastifyReplyUser
 ) => {
-  const user: object = {
-    id: uuid(),
-    ...request.body,
-  };
+  const user: object = new User(request.body);
   await userService.addUserService(user);
-  reply.code(201).send(user);
+  reply.code(statusCodeUser.CREATED).send(user);
 };
 
-const updateUser = async (
-  request: typeof FastifyRequest,
-  reply: typeof FastifyReply
+const updateUserRouter = async (
+  request: typeof FastifyRequestUser,
+  reply: typeof FastifyReplyUser
 ) => {
   const { userId } = request.params;
-  const updUser: object = {
-    id: userId,
-    ...request.body,
-  };
+  const updUser: object = new User(request.body, userId);
   await userService.updateUserService(userId, updUser);
-  reply.code(200).send(updUser);
+  reply.code(statusCodeUser.OK).send(updUser);
 };
 
-const deleteUser = async (
-  request: typeof FastifyRequest,
-  reply: typeof FastifyReply
+const deleteUserRouter = async (
+  request: typeof FastifyRequestUser,
+  reply: typeof FastifyReplyUser
 ) => {
   const { userId } = request.params;
   await userService.deleteUserService(userId);
-  reply.code(204);
+  reply.code(statusCodeUser.NO_CONTENT);
 };
 
 module.exports = {
-  getUsersAll,
-  getUserId,
-  addUser,
-  updateUser,
-  deleteUser,
+  getUsersAllRouter,
+  getUserIdRouter,
+  addUserRouter,
+  updateUserRouter,
+  deleteUserRouter,
 };

@@ -19,7 +19,7 @@ const getUsersOpts = {
       },
     },
   },
-  handler: userHandlerRouters.getUsersAll,
+  handler: userHandlerRouters.getUsersAllRouter,
 };
 
 const getUserOpts = {
@@ -28,7 +28,7 @@ const getUserOpts = {
       200: user,
     },
   },
-  handler: userHandlerRouters.getUserId,
+  handler: userHandlerRouters.getUserIdRouter,
 };
 
 const addUserOpts = {
@@ -38,7 +38,7 @@ const addUserOpts = {
       201: user,
     },
   },
-  handler: userHandlerRouters.addUser,
+  handler: userHandlerRouters.addUserRouter,
 };
 
 const deleteUserOpts = {
@@ -52,7 +52,7 @@ const deleteUserOpts = {
       },
     },
   },
-  handler: userHandlerRouters.deleteUser,
+  handler: userHandlerRouters.deleteUserRouter,
 };
 
 const updateUserOpts = {
@@ -62,7 +62,7 @@ const updateUserOpts = {
       200: user,
     },
   },
-  handler: userHandlerRouters.updateUser,
+  handler: userHandlerRouters.updateUserRouter,
 };
 
 module.exports = {

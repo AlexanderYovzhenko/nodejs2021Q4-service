@@ -23,7 +23,7 @@ const getTasksOpts = {
       },
     },
   },
-  handler: taskHandlerRouters.getTasksAll,
+  handler: taskHandlerRouters.getTasksAllRouter,
 };
 
 const getTaskOpts = {
@@ -32,7 +32,7 @@ const getTaskOpts = {
       200: task,
     },
   },
-  handler: taskHandlerRouters.getTaskId,
+  handler: taskHandlerRouters.getTaskIdRouter,
 };
 
 const addTaskOpts = {
@@ -42,7 +42,7 @@ const addTaskOpts = {
       201: task,
     },
   },
-  handler: taskHandlerRouters.addTask,
+  handler: taskHandlerRouters.addTaskRouter,
 };
 
 const deleteTaskOpts = {
@@ -56,7 +56,7 @@ const deleteTaskOpts = {
       },
     },
   },
-  handler: taskHandlerRouters.deleteTask,
+  handler: taskHandlerRouters.deleteTaskRouter,
 };
 
 const updateTaskOpts = {
@@ -66,7 +66,7 @@ const updateTaskOpts = {
       200: task,
     },
   },
-  handler: taskHandlerRouters.updateTask,
+  handler: taskHandlerRouters.updateTaskRouter,
 };
 
 module.exports = {

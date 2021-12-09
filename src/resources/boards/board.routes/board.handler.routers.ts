@@ -1,75 +1,74 @@
-const { FastifyRequest, FastifyReply } = require('fastify');
+const {
+  FastifyRequest: FastifyRequestBoard,
+  FastifyReply: FastifyReplyBoard,
+} = require('fastify');
 import { v4 as uuid } from 'uuid';
 const boardService = require('../board.service');
+const statusCodeBoard = require('../../../common/status.code');
+const Board = require('../board.model');
 
-const getBoardsAll = async (
-  _: typeof FastifyRequest,
-  reply: typeof FastifyReply
+const getBoardsAllRouter = async (
+  _: typeof FastifyRequestBoard,
+  reply: typeof FastifyReplyBoard
 ) => {
   const board = await boardService.getBoardsAllService();
-  reply.code(200).send(board);
+  reply.code(statusCodeBoard.OK).send(board);
 };
 
-const getBoardId = async (
-  request: typeof FastifyRequest,
-  reply: typeof FastifyReply
+const getBoardIdRouter = async (
+  request: typeof FastifyRequestBoard,
+  reply: typeof FastifyReplyBoard
 ) => {
   const { boardId } = request.params;
 
   if (await boardService.getBoardIdService(boardId)) {
     const board = await boardService.getBoardIdService(boardId);
-    reply.code(200).send(board);
+    reply.code(statusCodeBoard.OK).send(board);
   } else {
-    reply.code(404).send('Not found');
+    reply.code(statusCodeBoard.NOT_FOUND).send('Not found');
   }
 };
 
-const addBoard = async (
-  request: typeof FastifyRequest,
-  reply: typeof FastifyReply
+const addBoardRouter = async (
+  request: typeof FastifyRequestBoard,
+  reply: typeof FastifyReplyBoard
 ) => {
   request.body.columns.forEach((column: { columnId: string }) => {
     column.columnId = uuid();
   });
-  const board = {
-    id: uuid(),
-    ...request.body,
-  };
+  const board: object = new Board(request.body);
   await boardService.addBoardService(board);
-  reply.code(201).send(board);
+  reply.code(statusCodeBoard.CREATED).send(board);
 };
 
-const updateBoard = async (
-  request: typeof FastifyRequest,
-  reply: typeof FastifyReply
+const updateBoardRouter = async (
+  request: typeof FastifyRequestBoard,
+  reply: typeof FastifyReplyBoard
 ) => {
   const { boardId } = request.params;
-  const updBoard = {
-    id: boardId,
-    ...request.body,
-  };
+  const updBoard = new Board(request.body, boardId);
   await boardService.updateBoardService(boardId, updBoard);
-  reply.code(200).send(updBoard);
+  reply.code(statusCodeBoard.OK).send(updBoard);
 };
 
-const deleteBoard = async (
-  request: typeof FastifyRequest,
-  reply: typeof FastifyReply
+const deleteBoardRouter = async (
+  request: typeof FastifyRequestBoard,
+  reply: typeof FastifyReplyBoard
 ) => {
   const { boardId } = request.params;
 
   if (await boardService.getBoardIdService(boardId)) {
     await boardService.deleteBoardService(boardId);
-    reply.code(204).send();
+    reply.code(statusCodeBoard.NO_CONTENT).send();
   } else {
-    reply.code(404).send('Not found');
+    reply.code(statusCodeBoard.NOT_FOUND).send('Not found');
   }
 };
 
 module.exports = {
-  getBoardsAll,
-  getBoardId,
-  addBoard,
-  deleteBoard,
-  updateBoard,
+  getBoardsAllRouter,
+  getBoardIdRouter,
+  addBoardRouter,
+  deleteBoardRouter,
+  updateBoardRouter,
 };
