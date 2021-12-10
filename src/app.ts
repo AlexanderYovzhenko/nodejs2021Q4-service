@@ -20,12 +20,3 @@ app.register(boardRouter);
 app.register(taskRouter);
 
 module.exports = app;
-
-// /**
-//  * Fetch user by id
-//  *
-//  * @param userId - user id
-//  * @returns User instance
-//  *
-//  * @throws {@link NotFound} if user was not found
-//  */
