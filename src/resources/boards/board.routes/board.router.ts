@@ -1,6 +1,12 @@
 import { FastifyPluginAsync } from 'fastify';
+
 const boardSchema = require('./board.schema');
 
+/**
+ * Listens to boards routes
+ * @param app -first argument app(fastify instance)
+ * @returns void
+ */
 const boardRoutes: FastifyPluginAsync = async (app) => {
   await app.get('/boards', boardSchema.getBoardsOpts);
 

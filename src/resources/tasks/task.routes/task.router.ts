@@ -1,6 +1,12 @@
 import { FastifyPluginAsync } from 'fastify';
+
 const taskSchema = require('./task.schema');
 
+/**
+ * Listens to tasks routes
+ * @param app -first argument app(fastify instance)
+ * @returns void
+ */
 const taskRoutes: FastifyPluginAsync = async (app) => {
   await app.get('/boards/:boardId/tasks', taskSchema.getTasksOpts);
 

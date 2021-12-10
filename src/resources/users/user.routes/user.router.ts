@@ -1,7 +1,13 @@
 import { FastifyPluginAsync } from 'fastify';
+
 const { FastifyReply } = require('fastify');
 const userSchema = require('./user.schema');
 
+/**
+ * Listens to users routes
+ * @param app -first argument app(fastify instance)
+ * @returns void
+ */
 const userRoutes: FastifyPluginAsync = async (app): Promise<void> => {
   await app.get('/', async (reply: typeof FastifyReply) =>
     reply.send({ Message: 'Service: is running!' })

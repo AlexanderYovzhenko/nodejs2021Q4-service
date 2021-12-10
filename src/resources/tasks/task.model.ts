@@ -1,5 +1,13 @@
 import { v4 as uuid } from 'uuid';
 
+/**
+ * Add in object task new field id equal uuid.
+ * If not hand over id argument then field id equal uuid.
+ * Otherwise field id qual argument id.
+ * @param task -first argument object task
+ * @param id -second argument id task
+ * @returns void
+ */
 class Task {
   id: string;
   title: string;

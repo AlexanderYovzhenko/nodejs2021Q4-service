@@ -1,12 +1,20 @@
+import { v4 as uuid } from 'uuid';
+
 const {
   FastifyRequest: FastifyRequestBoard,
   FastifyReply: FastifyReplyBoard,
 } = require('fastify');
-import { v4 as uuid } from 'uuid';
 const boardService = require('../board.service');
 const statusCodeBoard = require('../../../common/status.code');
 const Board = require('../board.model');
 
+/**
+ * Get array boards from function getBoardsAllService.
+ * Install in reply status code (ok) and send in reply array boards
+ * @param _ -first argument request
+ * @param reply -second argument reply
+ * @returns void
+ */
 const getBoardsAllRouter = async (
   _: typeof FastifyRequestBoard,
   reply: typeof FastifyReplyBoard
@@ -15,6 +23,17 @@ const getBoardsAllRouter = async (
   reply.code(statusCodeBoard.OK).send(board);
 };
 
+/**
+ * Get boardId from request.params.
+ * If object board found then:
+ * Get object board from function getBoardIdService(boardId).
+ * Install in reply status code (ok) and send in reply object board.
+ * If object board not found then:
+ * Install in reply status code (not_found) and send in reply message'Not found'.
+ * @param request -first argument request
+ * @param reply -second argument reply
+ * @returns void
+ */
 const getBoardIdRouter = async (
   request: typeof FastifyRequestBoard,
   reply: typeof FastifyReplyBoard
@@ -29,6 +48,15 @@ const getBoardIdRouter = async (
   }
 };
 
+/**
+ * Add in objects column new field columnId equal uuid.
+ * Get (object board) instance class Board(request.body)(add field boardID equal uuid).
+ * Called function addBoardService(add new board).
+ * Install in reply status code (created) and send in reply object new board
+ * @param request -first argument request
+ * @param reply -second argument reply
+ * @returns void
+ */
 const addBoardRouter = async (
   request: typeof FastifyRequestBoard,
   reply: typeof FastifyReplyBoard
@@ -41,6 +69,15 @@ const addBoardRouter = async (
   reply.code(statusCodeBoard.CREATED).send(board);
 };
 
+/**
+ * Get boardId from request.params.
+ * Get (object update board) instance class board(request.body, boardID).
+ * Called function updateBoardService(update object board).
+ * Install in reply status code (ok) and send in reply object update board
+ * @param request -first argument request
+ * @param reply -second argument reply
+ * @returns void
+ */
 const updateBoardRouter = async (
   request: typeof FastifyRequestBoard,
   reply: typeof FastifyReplyBoard
@@ -51,6 +88,17 @@ const updateBoardRouter = async (
   reply.code(statusCodeBoard.OK).send(updBoard);
 };
 
+/**
+ * Get boardId from request.params.
+ * If object board found then:
+ * Called function deleteBoardService(delete object board).
+ * Install in reply status code (no_content).
+ * If object board not found then:
+ * Install in reply status code (not_found) and send in reply message 'Not found'
+ * @param request -first argument request
+ * @param reply -second argument reply
+ * @returns void
+ */
 const deleteBoardRouter = async (
   request: typeof FastifyRequestBoard,
   reply: typeof FastifyReplyBoard
