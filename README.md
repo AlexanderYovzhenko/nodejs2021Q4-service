@@ -8,7 +8,13 @@
 ## Downloading
 
 ```
-git clone {repository URL}
+git clone https://github.com/GoldenManBel/nodejs2021Q4-service.git
+```
+
+## Switch branch
+
+```
+git checkout typescript-basics
 ```
 
 ## Installing NPM modules
