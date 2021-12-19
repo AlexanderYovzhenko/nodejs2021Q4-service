@@ -27,7 +27,6 @@
     "plugin:@typescript-eslint/recommended",
     "plugin:prettier/recommended",
     "plugin:node/recommended",
-    // "airbnb-base",
     "prettier"
   ],
   "rules": {
@@ -43,17 +42,12 @@
     "prefer-rest-params": "error", 
     "prefer-spread": "error", 
     "valid-typeof": "off",
-//===================
     "import/extensions": "off",
     "linebreak-style": "off",
     "node/no-unsupported-features/es-syntax": "off",
     "no-underscore-dangle": "off",
     "import/prefer-default-export": "off",
     "tsdoc/syntax": "error",
- //===================   
-    // "no-param-reassign": [2, { 
-    //     "props": false
-    // }],
     "padding-line-between-statements": [
       "error",
       { "blankLine": "always", "prev": "*", "next": "if" },
