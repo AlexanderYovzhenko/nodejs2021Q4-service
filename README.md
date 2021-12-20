@@ -14,7 +14,7 @@ git clone https://github.com/GoldenManBel/nodejs2021Q4-service.git
 ## Switch branch
 
 ```
-git checkout typescript-basics
+git checkout logging-errorHandling
 ```
 
 ## Installing NPM modules
