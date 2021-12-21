@@ -1,7 +1,6 @@
 import { FastifyPluginAsync } from 'fastify';
-
-const { FastifyReply } = require('fastify');
-const userSchema = require('./user.schema');
+// import { FastifyReply } from 'fastify';
+import userSchema from './user.schema';
 
 /**
  * Listens to users routes
@@ -9,19 +8,19 @@ const userSchema = require('./user.schema');
  * @returns void
  */
 const userRoutes: FastifyPluginAsync = async (app): Promise<void> => {
-  await app.get('/', async (reply: typeof FastifyReply) =>
-    reply.send({ Message: 'Service: is running!' })
-  );
+  // app.get('/', async (reply: FastifyReply) =>
+  //   reply.send({ Message: 'Service: is running!' })
+  // );
 
-  await app.get('/users', userSchema.getUsersOpts);
+  app.get('/users', userSchema.getUsersOpts);
 
-  await app.get('/users/:userId', userSchema.getUserOpts);
+  app.get('/users/:userId', userSchema.getUserOpts);
 
-  await app.post('/users', userSchema.addUserOpts);
+  app.post('/users', userSchema.addUserOpts);
 
-  await app.put('/users/:userId', userSchema.updateUserOpts);
+  app.put('/users/:userId', userSchema.updateUserOpts);
 
-  await app.delete('/users/:userId', userSchema.deleteUserOpts);
+  app.delete('/users/:userId', userSchema.deleteUserOpts);
 };
 
-module.exports = userRoutes;
+export default userRoutes;

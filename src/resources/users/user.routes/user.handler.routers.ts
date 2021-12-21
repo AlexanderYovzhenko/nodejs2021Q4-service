@@ -1,10 +1,15 @@
-const {
-  FastifyRequest: FastifyRequestUser,
-  FastifyReply: FastifyReplyUser,
-} = require('fastify');
-const userService = require('../user.service');
-const statusCodeUser = require('../../../common/status.code');
-const User = require('../user.model');
+import { FastifyRequest, FastifyReply } from 'fastify';
+import userService from '../user.service';
+import statusCodeUser from '../../../common/status.code';
+import User from '../user.model';
+import { IUser } from '../../../common/type';
+
+type FastifyRequestUser = FastifyRequest<{
+  Body: IUser;
+  Params: {
+    userId: string;
+  };
+}>;
 
 /**
  * Get array users from function getUsersAllService.
@@ -13,10 +18,7 @@ const User = require('../user.model');
  * @param reply -second argument reply
  * @returns void
  */
-const getUsersAllRouter = async (
-  _: typeof FastifyRequestUser,
-  reply: typeof FastifyReplyUser
-) => {
+const getUsersAllRouter = async (_: FastifyRequest, reply: FastifyReply) => {
   const users: object = await userService.getUsersAllService();
   reply.code(statusCodeUser.OK).send(users);
 };
@@ -30,11 +32,11 @@ const getUsersAllRouter = async (
  * @returns void
  */
 const getUserIdRouter = async (
-  request: typeof FastifyRequestUser,
-  reply: typeof FastifyReplyUser
+  request: FastifyRequestUser,
+  reply: FastifyReply
 ) => {
   const { userId } = request.params;
-  const user: object = await userService.getUserIdService(userId);
+  const user = await userService.getUserIdService(userId);
   reply.code(statusCodeUser.OK).send(user);
 };
 
@@ -47,10 +49,10 @@ const getUserIdRouter = async (
  * @returns void
  */
 const addUserRouter = async (
-  request: typeof FastifyRequestUser,
-  reply: typeof FastifyReplyUser
+  request: FastifyRequestUser,
+  reply: FastifyReply
 ) => {
-  const user: object = new User(request.body);
+  const user: IUser = new User(request.body);
   await userService.addUserService(user);
   reply.code(statusCodeUser.CREATED).send(user);
 };
@@ -65,11 +67,11 @@ const addUserRouter = async (
  * @returns void
  */
 const updateUserRouter = async (
-  request: typeof FastifyRequestUser,
-  reply: typeof FastifyReplyUser
+  request: FastifyRequestUser,
+  reply: FastifyReply
 ) => {
   const { userId } = request.params;
-  const updUser: object = new User(request.body, userId);
+  const updUser: IUser = new User(request.body, userId);
   await userService.updateUserService(userId, updUser);
   reply.code(statusCodeUser.OK).send(updUser);
 };
@@ -83,15 +85,15 @@ const updateUserRouter = async (
  * @returns void
  */
 const deleteUserRouter = async (
-  request: typeof FastifyRequestUser,
-  reply: typeof FastifyReplyUser
+  request: FastifyRequestUser,
+  reply: FastifyReply
 ) => {
   const { userId } = request.params;
   await userService.deleteUserService(userId);
   reply.code(statusCodeUser.NO_CONTENT);
 };
 
-module.exports = {
+export default {
   getUsersAllRouter,
   getUserIdRouter,
   addUserRouter,
