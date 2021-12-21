@@ -1,4 +1,4 @@
-const taskHandlerRouters = require('./task.handler.routers');
+import taskHandlerRouters from './task.handler.routers';
 
 const task = {
   type: 'object',
@@ -69,7 +69,7 @@ const updateTaskOpts = {
   handler: taskHandlerRouters.updateTaskRouter,
 };
 
-module.exports = {
+export default {
   getTasksOpts,
   getTaskOpts,
   addTaskOpts,

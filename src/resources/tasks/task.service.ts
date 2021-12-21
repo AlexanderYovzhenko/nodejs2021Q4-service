@@ -1,4 +1,5 @@
-const tasksRepo = require('./task.memory.repository');
+import { ITask } from '../../common/type';
+import tasksRepo from './task.memory.repository';
 
 /**
  * Intermediate function
@@ -14,7 +15,7 @@ const getTasksAllService = async (): Promise<object> =>
  * @param taskID -first argument ID task
  * @returns the result work function getTaskId, (object task)
  */
-const getTaskIdService = async (taskId: string): Promise<object> =>
+const getTaskIdService = async (taskId: string): Promise<object | undefined> =>
   await tasksRepo.getTaskId(taskId);
 
 /**
@@ -23,7 +24,7 @@ const getTaskIdService = async (taskId: string): Promise<object> =>
  * @param task -first argument new task
  * @returns void
  */
-const addTaskService = async (task: object) => {
+const addTaskService = async (task: ITask) => {
   await tasksRepo.addTask(task);
 };
 
@@ -34,7 +35,7 @@ const addTaskService = async (task: object) => {
  * @param updTask -second argument object update task(updTask)
  * @returns void
  */
-const updateTaskService = async (taskId: string, updTask: object) => {
+const updateTaskService = async (taskId: string, updTask: ITask) => {
   await tasksRepo.updateTask(taskId, updTask);
 };
 
@@ -68,7 +69,7 @@ const updateUserIdService = async (userId: string) => {
   await tasksRepo.updateUserId(userId);
 };
 
-module.exports = {
+export default {
   getTasksAllService,
   getTaskIdService,
   addTaskService,

@@ -1,10 +1,16 @@
-const {
-  FastifyRequest: FastifyRequestTask,
-  FastifyReply: FastifyReplyTask,
-} = require('fastify');
-const taskService = require('../task.service');
-const statusCodeTask = require('../../../common/status.code');
-const Task = require('../task.model');
+import { FastifyRequest, FastifyReply } from 'fastify';
+import taskService from '../task.service';
+import statusCodeTask from '../../../common/status.code';
+import Task from '../task.model';
+import { ITask } from '../../../common/type';
+
+type FastifyRequestTask = FastifyRequest<{
+  Body: ITask;
+  Params: {
+    taskId: string;
+    boardId: string;
+  };
+}>;
 
 /**
  * Get array tasks from function getTasksAllService.
@@ -13,10 +19,7 @@ const Task = require('../task.model');
  * @param reply -second argument reply
  * @returns void
  */
-const getTasksAllRouter = async (
-  _: typeof FastifyRequestTask,
-  reply: typeof FastifyReplyTask
-) => {
+const getTasksAllRouter = async (_: FastifyRequest, reply: FastifyReply) => {
   const tasks = await taskService.getTasksAllService();
   reply.code(statusCodeTask.OK).send(tasks);
 };
@@ -33,8 +36,8 @@ const getTasksAllRouter = async (
  * @returns void
  */
 const getTaskIdRouter = async (
-  request: typeof FastifyRequestTask,
-  reply: typeof FastifyReplyTask
+  request: FastifyRequestTask,
+  reply: FastifyReply
 ) => {
   const { taskId } = request.params;
 
@@ -57,12 +60,12 @@ const getTaskIdRouter = async (
  * @returns void
  */
 const addTaskRouter = async (
-  request: typeof FastifyRequestTask,
-  reply: typeof FastifyReplyTask
+  request: FastifyRequestTask,
+  reply: FastifyReply
 ) => {
   const { boardId } = request.params;
   request.body.boardId = boardId;
-  const task: object = new Task(request.body);
+  const task: ITask = new Task(request.body);
   await taskService.addTaskService(task);
   reply.code(statusCodeTask.CREATED).send(task);
 };
@@ -77,11 +80,11 @@ const addTaskRouter = async (
  * @returns void
  */
 const updateTaskRouter = async (
-  request: typeof FastifyRequestTask,
-  reply: typeof FastifyReplyTask
+  request: FastifyRequestTask,
+  reply: FastifyReply
 ) => {
   const { taskId } = request.params;
-  const updTask: object = new Task(request.body, taskId);
+  const updTask: ITask = new Task(request.body, taskId);
   await taskService.updateTaskService(taskId, updTask);
   reply.code(statusCodeTask.OK).send(updTask);
 };
@@ -98,12 +101,12 @@ const updateTaskRouter = async (
  * @returns void
  */
 const deleteTaskRouter = async (
-  request: typeof FastifyRequestTask,
-  reply: typeof FastifyReplyTask
+  request: FastifyRequestTask,
+  reply: FastifyReply
 ) => {
   const { taskId } = request.params;
 
-  if (taskService.getTaskIdService(taskId)) {
+  if (await taskService.getTaskIdService(taskId)) {
     await taskService.deleteTaskService(taskId);
     reply.code(statusCodeTask.NO_CONTENT);
   } else {
@@ -111,7 +114,7 @@ const deleteTaskRouter = async (
   }
 };
 
-module.exports = {
+export default {
   getTasksAllRouter,
   getTaskIdRouter,
   addTaskRouter,
