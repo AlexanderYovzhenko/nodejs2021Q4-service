@@ -1,12 +1,4 @@
-interface IBoard {
-  id: string;
-  title: string;
-  columns: {
-    columnId: string;
-    title: string;
-    order: number;
-  };
-}
+import { IBoard } from '../../common/type';
 
 let dbBoards: IBoard[] = [];
 
@@ -21,8 +13,8 @@ const getBoardsAll = async (): Promise<IBoard[]> => dbBoards;
  * @param boardID -first argument ID board
  * @returns object board with ID board or null
  */
-const getBoardId = async (boardId: string): Promise<IBoard | null> =>
-  dbBoards.find((board) => board.id === boardId) || null;
+const getBoardId = async (boardId: string): Promise<IBoard | undefined> =>
+  dbBoards.find((board) => board.id === boardId);
 
 /**
  * Add new object board in array boards(dbBoards)
@@ -55,7 +47,7 @@ const deleteBoard = async (boardId: string): Promise<void> => {
   dbBoards = dbBoards.filter((board): boolean => board.id !== boardId);
 };
 
-module.exports = {
+export default {
   getBoardsAll,
   getBoardId,
   addBoard,

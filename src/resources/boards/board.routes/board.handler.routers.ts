@@ -1,12 +1,16 @@
 import { v4 as uuid } from 'uuid';
+import { FastifyRequest, FastifyReply } from 'fastify';
+import boardService from '../board.service';
+import statusCodeBoard from '../../../common/status.code';
+import Board from '../board.model';
+import { IBoard } from '../../../common/type';
 
-const {
-  FastifyRequest: FastifyRequestBoard,
-  FastifyReply: FastifyReplyBoard,
-} = require('fastify');
-const boardService = require('../board.service');
-const statusCodeBoard = require('../../../common/status.code');
-const Board = require('../board.model');
+type FastifyRequestBoard = FastifyRequest<{
+  Body: IBoard;
+  Params: {
+    boardId: string;
+  };
+}>;
 
 /**
  * Get array boards from function getBoardsAllService.
@@ -15,10 +19,7 @@ const Board = require('../board.model');
  * @param reply -second argument reply
  * @returns void
  */
-const getBoardsAllRouter = async (
-  _: typeof FastifyRequestBoard,
-  reply: typeof FastifyReplyBoard
-) => {
+const getBoardsAllRouter = async (_: FastifyRequest, reply: FastifyReply) => {
   const board = await boardService.getBoardsAllService();
   reply.code(statusCodeBoard.OK).send(board);
 };
@@ -35,8 +36,8 @@ const getBoardsAllRouter = async (
  * @returns void
  */
 const getBoardIdRouter = async (
-  request: typeof FastifyRequestBoard,
-  reply: typeof FastifyReplyBoard
+  request: FastifyRequestBoard,
+  reply: FastifyReply
 ) => {
   const { boardId } = request.params;
 
@@ -58,13 +59,14 @@ const getBoardIdRouter = async (
  * @returns void
  */
 const addBoardRouter = async (
-  request: typeof FastifyRequestBoard,
-  reply: typeof FastifyReplyBoard
+  request: FastifyRequestBoard,
+  reply: FastifyReply
 ) => {
-  request.body.columns.forEach((column: { columnId: string }) => {
+  const columnsArray = request.body.columns;
+  columnsArray.forEach((column: { columnId: string }) => {
     column.columnId = uuid();
   });
-  const board: object = new Board(request.body);
+  const board: IBoard = new Board(request.body);
   await boardService.addBoardService(board);
   reply.code(statusCodeBoard.CREATED).send(board);
 };
@@ -79,11 +81,11 @@ const addBoardRouter = async (
  * @returns void
  */
 const updateBoardRouter = async (
-  request: typeof FastifyRequestBoard,
-  reply: typeof FastifyReplyBoard
+  request: FastifyRequestBoard,
+  reply: FastifyReply
 ) => {
   const { boardId } = request.params;
-  const updBoard = new Board(request.body, boardId);
+  const updBoard: IBoard = new Board(request.body, boardId);
   await boardService.updateBoardService(boardId, updBoard);
   reply.code(statusCodeBoard.OK).send(updBoard);
 };
@@ -100,8 +102,8 @@ const updateBoardRouter = async (
  * @returns void
  */
 const deleteBoardRouter = async (
-  request: typeof FastifyRequestBoard,
-  reply: typeof FastifyReplyBoard
+  request: FastifyRequestBoard,
+  reply: FastifyReply
 ) => {
   const { boardId } = request.params;
 
@@ -113,7 +115,7 @@ const deleteBoardRouter = async (
   }
 };
 
-module.exports = {
+export default {
   getBoardsAllRouter,
   getBoardIdRouter,
   addBoardRouter,

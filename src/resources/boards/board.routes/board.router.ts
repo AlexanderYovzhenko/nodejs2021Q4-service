@@ -1,6 +1,5 @@
 import { FastifyPluginAsync } from 'fastify';
-
-const boardSchema = require('./board.schema');
+import boardSchema from './board.schema';
 
 /**
  * Listens to boards routes
@@ -8,15 +7,15 @@ const boardSchema = require('./board.schema');
  * @returns void
  */
 const boardRoutes: FastifyPluginAsync = async (app) => {
-  await app.get('/boards', boardSchema.getBoardsOpts);
+  app.get('/boards', boardSchema.getBoardsOpts);
 
-  await app.get('/boards/:boardId', boardSchema.getBoardOpts);
+  app.get('/boards/:boardId', boardSchema.getBoardOpts);
 
-  await app.post('/boards', boardSchema.addBoardOpts);
+  app.post('/boards', boardSchema.addBoardOpts);
 
-  await app.put('/boards/:boardId', boardSchema.updateBoardOpts);
+  app.put('/boards/:boardId', boardSchema.updateBoardOpts);
 
-  await app.delete('/boards/:boardId', boardSchema.deleteBoardOpts);
+  app.delete('/boards/:boardId', boardSchema.deleteBoardOpts);
 };
 
-module.exports = boardRoutes;
+export default boardRoutes;

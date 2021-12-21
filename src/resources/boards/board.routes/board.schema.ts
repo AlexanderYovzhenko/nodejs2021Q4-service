@@ -1,4 +1,4 @@
-const boardHandlerRouters = require('./board.handler.routers');
+import boardHandlerRouters from './board.handler.routers';
 
 const board = {
   type: 'object',
@@ -76,7 +76,7 @@ const updateBoardOpts = {
   handler: boardHandlerRouters.updateBoardRouter,
 };
 
-module.exports = {
+export default {
   getBoardsOpts,
   getBoardOpts,
   addBoardOpts,

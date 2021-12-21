@@ -1,4 +1,5 @@
 import { v4 as uuid } from 'uuid';
+import { IColumns } from '../../common/type';
 
 /**
  * Add in object board new field id equal uuid.
@@ -11,12 +12,12 @@ import { v4 as uuid } from 'uuid';
 class Board {
   id: string;
   title: string;
-  columns: object;
+  columns: IColumns;
 
   constructor(
     board: {
       title: string;
-      columns: object;
+      columns: IColumns;
     },
     id: string = uuid()
   ) {
@@ -26,4 +27,4 @@ class Board {
   }
 }
 
-module.exports = Board;
+export default Board;
