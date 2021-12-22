@@ -1,5 +1,5 @@
-const { PORT } = require('./common/config');
-const server = require('./app');
+import { PORT } from './common/config';
+import server from './app';
 
 /**
  * Run the server!

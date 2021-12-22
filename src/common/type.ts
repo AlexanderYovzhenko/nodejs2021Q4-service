@@ -5,14 +5,16 @@ interface IUser {
   password: string;
 }
 
+interface IColumn {
+  columnId: string;
+  title: string;
+  order: number;
+}
+
 interface IBoard {
   id: string;
   title: string;
-  columns: {
-    columnId: string;
-    title: string;
-    order: number;
-  };
+  columns: [IColumn];
 }
 
 interface ITask {
@@ -25,10 +27,4 @@ interface ITask {
   columnId: string | null;
 }
 
-interface IColumns {
-  columnId: string;
-  title: string;
-  order: number;
-}
-
-export { IUser, ITask, IBoard, IColumns };
+export { IUser, ITask, IBoard, IColumn };
