@@ -1,22 +1,32 @@
-const { FastifyInstance } = require('fastify');
-const app: typeof FastifyInstance = require('fastify')({ logger: false });
-const fastifySwagger = require('fastify-swagger');
-const path = require('path');
-const userRouter = require('./resources/users/user.routes/user.router');
-const boardRouter = require('./resources/boards/board.routes/board.router');
-const taskRouter = require('./resources/tasks/task.routes/task.router');
+import Fastify, { FastifyInstance, FastifyRegisterOptions } from 'fastify';
+import fastifySwagger, { SwaggerOptions } from 'fastify-swagger';
+import path, { dirname } from 'path';
+import { fileURLToPath } from 'url';
 
-app.register(fastifySwagger, {
+import userRouter from './resources/users/user.routes/user.router';
+import boardRouter from './resources/boards/board.routes/board.router';
+import taskRouter from './resources/tasks/task.routes/task.router';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+const app: FastifyInstance = Fastify({
+  logger: false,
+});
+
+const opts: FastifyRegisterOptions<SwaggerOptions> | undefined = {
   exposeRoute: true,
   routePrefix: '/doc',
   mode: 'static',
   specification: {
     path: path.join(__dirname, '../doc/api.yaml'),
+    baseDir: '',
   },
-});
+};
+
+app.register(fastifySwagger, opts);
 
 app.register(userRouter);
 app.register(boardRouter);
 app.register(taskRouter);
 
-module.exports = app;
+export default app;
