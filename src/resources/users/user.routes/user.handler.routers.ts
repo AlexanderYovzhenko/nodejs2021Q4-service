@@ -1,8 +1,9 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 import userService from '../user.service';
-import statusCodeUser from '../../../common/status.code';
+import statusCode from '../../../common/status.code';
 import User from '../user.model';
 import { IUser } from '../../../common/type';
+import { logger, logCollect } from '../../../common/logger';
 
 type FastifyRequestUser = FastifyRequest<{
   Body: IUser;
@@ -19,8 +20,9 @@ type FastifyRequestUser = FastifyRequest<{
  * @returns void
  */
 const getUsersAllRouter = async (_: FastifyRequest, reply: FastifyReply) => {
+  logger.info(logCollect(_, reply));
   const users: object = await userService.getUsersAllService();
-  reply.code(statusCodeUser.OK).send(users);
+  reply.code(statusCode.OK).send(users);
 };
 
 /**
@@ -35,9 +37,10 @@ const getUserIdRouter = async (
   request: FastifyRequestUser,
   reply: FastifyReply
 ) => {
+  logger.info(logCollect(request, reply));
   const { userId } = request.params;
   const user = await userService.getUserIdService(userId);
-  reply.code(statusCodeUser.OK).send(user);
+  reply.code(statusCode.OK).send(user);
 };
 
 /**
@@ -52,9 +55,10 @@ const addUserRouter = async (
   request: FastifyRequestUser,
   reply: FastifyReply
 ) => {
+  logger.info(logCollect(request, reply));
   const user: IUser = new User(request.body);
   await userService.addUserService(user);
-  reply.code(statusCodeUser.CREATED).send(user);
+  reply.code(statusCode.CREATED).send(user);
 };
 
 /**
@@ -70,10 +74,11 @@ const updateUserRouter = async (
   request: FastifyRequestUser,
   reply: FastifyReply
 ) => {
+  logger.info(logCollect(request, reply));
   const { userId } = request.params;
   const updUser: IUser = new User(request.body, userId);
   await userService.updateUserService(userId, updUser);
-  reply.code(statusCodeUser.OK).send(updUser);
+  reply.code(statusCode.OK).send(updUser);
 };
 
 /**
@@ -88,9 +93,10 @@ const deleteUserRouter = async (
   request: FastifyRequestUser,
   reply: FastifyReply
 ) => {
+  logger.info(logCollect(request, reply));
   const { userId } = request.params;
   await userService.deleteUserService(userId);
-  reply.code(statusCodeUser.NO_CONTENT);
+  reply.code(statusCode.NO_CONTENT);
 };
 
 export default {

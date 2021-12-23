@@ -1,9 +1,10 @@
 import { v4 as uuid } from 'uuid';
 import { FastifyRequest, FastifyReply } from 'fastify';
 import boardService from '../board.service';
-import statusCodeBoard from '../../../common/status.code';
+import statusCode from '../../../common/status.code';
 import Board from '../board.model';
 import { IBoard } from '../../../common/type';
+import { logger, logCollect } from '../../../common/logger';
 
 type FastifyRequestBoard = FastifyRequest<{
   Body: IBoard;
@@ -21,7 +22,8 @@ type FastifyRequestBoard = FastifyRequest<{
  */
 const getBoardsAllRouter = async (_: FastifyRequest, reply: FastifyReply) => {
   const board = await boardService.getBoardsAllService();
-  reply.code(statusCodeBoard.OK).send(board);
+  reply.code(statusCode.OK).send(board);
+  logger.info(logCollect(_, reply));
 };
 
 /**
@@ -43,9 +45,11 @@ const getBoardIdRouter = async (
 
   if (await boardService.getBoardIdService(boardId)) {
     const board = await boardService.getBoardIdService(boardId);
-    reply.code(statusCodeBoard.OK).send(board);
+    reply.code(statusCode.OK).send(board);
+    logger.info(logCollect(request, reply));
   } else {
-    reply.code(statusCodeBoard.NOT_FOUND).send('Not found');
+    reply.code(statusCode.NOT_FOUND).send('Not found');
+    logger.error(logCollect(request, reply));
   }
 };
 
@@ -68,7 +72,8 @@ const addBoardRouter = async (
   });
   const board: IBoard = new Board(request.body);
   await boardService.addBoardService(board);
-  reply.code(statusCodeBoard.CREATED).send(board);
+  reply.code(statusCode.CREATED).send(board);
+  logger.info(logCollect(request, reply));
 };
 
 /**
@@ -87,7 +92,8 @@ const updateBoardRouter = async (
   const { boardId } = request.params;
   const updBoard: IBoard = new Board(request.body, boardId);
   await boardService.updateBoardService(boardId, updBoard);
-  reply.code(statusCodeBoard.OK).send(updBoard);
+  reply.code(statusCode.OK).send(updBoard);
+  logger.info(logCollect(request, reply));
 };
 
 /**
@@ -109,9 +115,11 @@ const deleteBoardRouter = async (
 
   if (await boardService.getBoardIdService(boardId)) {
     await boardService.deleteBoardService(boardId);
-    reply.code(statusCodeBoard.NO_CONTENT).send();
+    reply.code(statusCode.NO_CONTENT).send();
+    logger.info(logCollect(request, reply));
   } else {
-    reply.code(statusCodeBoard.NOT_FOUND).send('Not found');
+    reply.code(statusCode.NOT_FOUND).send('Not found');
+    logger.error(logCollect(request, reply));
   }
 };
 

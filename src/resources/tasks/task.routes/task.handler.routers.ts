@@ -1,8 +1,9 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 import taskService from '../task.service';
-import statusCodeTask from '../../../common/status.code';
+import statusCode from '../../../common/status.code';
 import Task from '../task.model';
 import { ITask } from '../../../common/type';
+import { logger, logCollect } from '../../../common/logger';
 
 type FastifyRequestTask = FastifyRequest<{
   Body: ITask;
@@ -21,7 +22,8 @@ type FastifyRequestTask = FastifyRequest<{
  */
 const getTasksAllRouter = async (_: FastifyRequest, reply: FastifyReply) => {
   const tasks = await taskService.getTasksAllService();
-  reply.code(statusCodeTask.OK).send(tasks);
+  reply.code(statusCode.OK).send(tasks);
+  logger.info(logCollect(_, reply));
 };
 
 /**
@@ -43,9 +45,11 @@ const getTaskIdRouter = async (
 
   if (await taskService.getTaskIdService(taskId)) {
     const task = await taskService.getTaskIdService(taskId);
-    reply.code(statusCodeTask.OK).send(task);
+    reply.code(statusCode.OK).send(task);
+    logger.info(logCollect(request, reply));
   } else {
-    reply.code(statusCodeTask.NOT_FOUND).send('Not found');
+    reply.code(statusCode.NOT_FOUND).send('Not found');
+    logger.error(logCollect(request, reply));
   }
 };
 
@@ -67,7 +71,8 @@ const addTaskRouter = async (
   request.body.boardId = boardId;
   const task: ITask = new Task(request.body);
   await taskService.addTaskService(task);
-  reply.code(statusCodeTask.CREATED).send(task);
+  reply.code(statusCode.CREATED).send(task);
+  logger.info(logCollect(request, reply));
 };
 
 /**
@@ -86,7 +91,8 @@ const updateTaskRouter = async (
   const { taskId } = request.params;
   const updTask: ITask = new Task(request.body, taskId);
   await taskService.updateTaskService(taskId, updTask);
-  reply.code(statusCodeTask.OK).send(updTask);
+  reply.code(statusCode.OK).send(updTask);
+  logger.info(logCollect(request, reply));
 };
 
 /**
@@ -108,9 +114,11 @@ const deleteTaskRouter = async (
 
   if (await taskService.getTaskIdService(taskId)) {
     await taskService.deleteTaskService(taskId);
-    reply.code(statusCodeTask.NO_CONTENT);
+    reply.code(statusCode.NO_CONTENT);
+    logger.info(logCollect(request, reply));
   } else {
-    reply.code(statusCodeTask.NOT_FOUND).send('Not found');
+    reply.code(statusCode.NOT_FOUND).send('Not found');
+    logger.error(logCollect(request, reply));
   }
 };
 

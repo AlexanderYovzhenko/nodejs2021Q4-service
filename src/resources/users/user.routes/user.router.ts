@@ -1,6 +1,6 @@
-import { FastifyPluginAsync } from 'fastify';
-// import { FastifyReply } from 'fastify';
+import { FastifyPluginAsync, FastifyRequest, FastifyReply } from 'fastify';
 import userSchema from './user.schema';
+import { logger, logCollect } from '../../../common/logger';
 
 /**
  * Listens to users routes
@@ -8,9 +8,10 @@ import userSchema from './user.schema';
  * @returns void
  */
 const userRoutes: FastifyPluginAsync = async (app): Promise<void> => {
-  // app.get('/', async (reply: FastifyReply) =>
-  //   reply.send({ Message: 'Service: is running!' })
-  // );
+  app.get('/', async (_: FastifyRequest, reply: FastifyReply) => {
+    logger.info(logCollect(_, reply));
+    reply.send({ Message: 'Service: is running!' });
+  });
 
   app.get('/users', userSchema.getUsersOpts);
 

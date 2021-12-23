@@ -1,5 +1,6 @@
 import { PORT } from './common/config';
 import server from './app';
+import { logger } from './common/logger';
 
 /**
  * Run the server!
@@ -10,7 +11,7 @@ import server from './app';
 const startServer = async () => {
   try {
     await server.listen(PORT, () =>
-      console.info(`App is running on http://localhost:${PORT}`)
+      logger.info(`App is running on http://localhost:${PORT}`)
     );
   } catch (err: unknown) {
     server.log.error(err);
