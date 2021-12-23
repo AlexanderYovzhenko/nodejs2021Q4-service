@@ -12,6 +12,7 @@
     "build": "tsc --project tsconfig.json",
     "startBuild": "nodemon build/server.js",
     "start": "tsc --project tsconfig.json && nodemon --experimental-specifier-resolution=node build/server.js",
+    "startTs": "ts-node-dev --experimental-specifier-resolution=node src/server",
     "lint": "eslint --ext .js,.ts --fix src/",
     "test": "cross-env DEBUG=rs:* jest --testMatch \"<rootDir>/test/e2e/test/*.test.js\" --noStackTrace --runInBand",
     "test:auth": "cross-env DEBUG=rs:* TEST_MODE=auth jest --noStackTrace"
@@ -78,6 +79,7 @@
     "prettier": "2.4.1",
     "supertest": "6.1.6",
     "ts-node-dev": "^1.1.8",
-    "typescript": "^4.5.2"
+    "typescript": "^4.5.2",
+    "winston": "^3.3.3"
   }
 }
