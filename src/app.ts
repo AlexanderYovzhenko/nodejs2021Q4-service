@@ -13,7 +13,7 @@ const app: FastifyInstance = Fastify({
   logger: false,
 });
 
-const opts: FastifyRegisterOptions<SwaggerOptions> | undefined = {
+const optsSwagger: FastifyRegisterOptions<SwaggerOptions> | undefined = {
   exposeRoute: true,
   routePrefix: '/doc',
   mode: 'static',
@@ -23,7 +23,7 @@ const opts: FastifyRegisterOptions<SwaggerOptions> | undefined = {
   },
 };
 
-app.register(fastifySwagger, opts);
+app.register(fastifySwagger, optsSwagger);
 
 app.register(userRouter);
 app.register(boardRouter);
