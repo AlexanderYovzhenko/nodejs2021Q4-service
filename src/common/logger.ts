@@ -27,7 +27,9 @@ const logger = winston.createLogger({
       level: 'error',
     }),
     new winston.transports.File({ filename: 'src/logging/all.log' }),
-    new winston.transports.Console({}),
+    new winston.transports.Console({
+      format: winston.format.cli(),
+    }),
   ],
 });
 
