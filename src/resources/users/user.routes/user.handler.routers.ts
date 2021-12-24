@@ -38,9 +38,15 @@ const getUserIdRouter = async (
   reply: FastifyReply
 ) => {
   const { userId } = request.params;
-  const user = await userService.getUserIdService(userId);
-  reply.code(statusCode.OK).send(user);
-  logger.info(logCollect(request, reply));
+
+  if (await userService.getUserIdService(userId)) {
+    const user = await userService.getUserIdService(userId);
+    reply.code(statusCode.OK).send(user);
+    logger.info(logCollect(request, reply));
+  } else {
+    reply.code(statusCode.NOT_FOUND).send('Not found user');
+    logger.error(logCollect(request, reply));
+  }
 };
 
 /**
@@ -75,10 +81,16 @@ const updateUserRouter = async (
   reply: FastifyReply
 ) => {
   const { userId } = request.params;
-  const updUser: IUser = new User(request.body, userId);
-  await userService.updateUserService(userId, updUser);
-  reply.code(statusCode.OK).send(updUser);
-  logger.info(logCollect(request, reply));
+
+  if (await userService.getUserIdService(userId)) {
+    const updUser: IUser = new User(request.body, userId);
+    await userService.updateUserService(userId, updUser);
+    reply.code(statusCode.OK).send(updUser);
+    logger.info(logCollect(request, reply));
+  } else {
+    reply.code(statusCode.NOT_FOUND).send('Not found user');
+    logger.error(logCollect(request, reply));
+  }
 };
 
 /**
@@ -94,9 +106,15 @@ const deleteUserRouter = async (
   reply: FastifyReply
 ) => {
   const { userId } = request.params;
-  await userService.deleteUserService(userId);
-  reply.code(statusCode.NO_CONTENT);
-  logger.info(logCollect(request, reply));
+
+  if (await userService.getUserIdService(userId)) {
+    await userService.deleteUserService(userId);
+    reply.code(statusCode.NO_CONTENT);
+    logger.info(logCollect(request, reply));
+  } else {
+    reply.code(statusCode.NOT_FOUND).send('Not found user');
+    logger.error(logCollect(request, reply));
+  }
 };
 
 export default {

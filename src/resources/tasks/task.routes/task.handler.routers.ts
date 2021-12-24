@@ -48,7 +48,7 @@ const getTaskIdRouter = async (
     reply.code(statusCode.OK).send(task);
     logger.info(logCollect(request, reply));
   } else {
-    reply.code(statusCode.NOT_FOUND).send('Not found');
+    reply.code(statusCode.NOT_FOUND).send('Not found task');
     logger.error(logCollect(request, reply));
   }
 };
@@ -89,10 +89,16 @@ const updateTaskRouter = async (
   reply: FastifyReply
 ) => {
   const { taskId } = request.params;
-  const updTask: ITask = new Task(request.body, taskId);
-  await taskService.updateTaskService(taskId, updTask);
-  reply.code(statusCode.OK).send(updTask);
-  logger.info(logCollect(request, reply));
+
+  if (await taskService.getTaskIdService(taskId)) {
+    const updTask: ITask = new Task(request.body, taskId);
+    await taskService.updateTaskService(taskId, updTask);
+    reply.code(statusCode.OK).send(updTask);
+    logger.info(logCollect(request, reply));
+  } else {
+    reply.code(statusCode.NOT_FOUND).send('Not found task');
+    logger.error(logCollect(request, reply));
+  }
 };
 
 /**
@@ -117,7 +123,7 @@ const deleteTaskRouter = async (
     reply.code(statusCode.NO_CONTENT);
     logger.info(logCollect(request, reply));
   } else {
-    reply.code(statusCode.NOT_FOUND).send('Not found');
+    reply.code(statusCode.NOT_FOUND).send('Not found task');
     logger.error(logCollect(request, reply));
   }
 };

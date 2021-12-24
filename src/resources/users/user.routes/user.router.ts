@@ -1,6 +1,7 @@
 import { FastifyPluginAsync, FastifyRequest, FastifyReply } from 'fastify';
 import userSchema from './user.schema';
 import { logger, logCollect } from '../../../common/logger';
+import statusCode from '../../../common/status.code';
 
 /**
  * Listens to users routes
@@ -8,6 +9,11 @@ import { logger, logCollect } from '../../../common/logger';
  * @returns void
  */
 const userRoutes: FastifyPluginAsync = async (app): Promise<void> => {
+  app.get('/*', (_: FastifyRequest, reply: FastifyReply) => {
+    reply.status(statusCode.NOT_FOUND).send('not true URL');
+    logger.warn(logCollect(_, reply));
+  });
+
   app.get('/', async (_: FastifyRequest, reply: FastifyReply) => {
     reply.send({ Message: 'Service: is running!' });
     logger.info(logCollect(_, reply));

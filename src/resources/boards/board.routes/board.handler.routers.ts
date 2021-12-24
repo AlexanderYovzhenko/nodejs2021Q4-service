@@ -48,7 +48,7 @@ const getBoardIdRouter = async (
     reply.code(statusCode.OK).send(board);
     logger.info(logCollect(request, reply));
   } else {
-    reply.code(statusCode.NOT_FOUND).send('Not found');
+    reply.code(statusCode.NOT_FOUND).send('Not found board');
     logger.error(logCollect(request, reply));
   }
 };
@@ -90,10 +90,16 @@ const updateBoardRouter = async (
   reply: FastifyReply
 ) => {
   const { boardId } = request.params;
-  const updBoard: IBoard = new Board(request.body, boardId);
-  await boardService.updateBoardService(boardId, updBoard);
-  reply.code(statusCode.OK).send(updBoard);
-  logger.info(logCollect(request, reply));
+
+  if (await boardService.getBoardIdService(boardId)) {
+    const updBoard: IBoard = new Board(request.body, boardId);
+    await boardService.updateBoardService(boardId, updBoard);
+    reply.code(statusCode.OK).send(updBoard);
+    logger.info(logCollect(request, reply));
+  } else {
+    reply.code(statusCode.NOT_FOUND).send('Not found board');
+    logger.error(logCollect(request, reply));
+  }
 };
 
 /**
@@ -118,7 +124,7 @@ const deleteBoardRouter = async (
     reply.code(statusCode.NO_CONTENT).send();
     logger.info(logCollect(request, reply));
   } else {
-    reply.code(statusCode.NOT_FOUND).send('Not found');
+    reply.code(statusCode.NOT_FOUND).send('Not found board');
     logger.error(logCollect(request, reply));
   }
 };

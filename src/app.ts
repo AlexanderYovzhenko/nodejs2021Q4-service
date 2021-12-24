@@ -6,15 +6,15 @@ import { fileURLToPath } from 'url';
 import userRouter from './resources/users/user.routes/user.router';
 import boardRouter from './resources/boards/board.routes/board.router';
 import taskRouter from './resources/tasks/task.routes/task.router';
-import errorHandler from './errors_handler/errors.handler';
-
-// import { logger } from './common/logger';
+import errorsHandler from './errors/errors.handler';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export const app: FastifyInstance = Fastify({
   logger: false,
 });
+
+errorsHandler();
 
 const optsSwagger: FastifyRegisterOptions<SwaggerOptions> | undefined = {
   exposeRoute: true,
@@ -31,5 +31,3 @@ app.register(fastifySwagger, optsSwagger);
 app.register(userRouter);
 app.register(boardRouter);
 app.register(taskRouter);
-
-errorHandler();
