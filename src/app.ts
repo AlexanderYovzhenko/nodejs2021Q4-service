@@ -6,10 +6,13 @@ import { fileURLToPath } from 'url';
 import userRouter from './resources/users/user.routes/user.router';
 import boardRouter from './resources/boards/board.routes/board.router';
 import taskRouter from './resources/tasks/task.routes/task.router';
+import errorHandler from './errors_handler/errors.handler';
+
+// import { logger } from './common/logger';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-const app: FastifyInstance = Fastify({
+export const app: FastifyInstance = Fastify({
   logger: false,
 });
 
@@ -29,4 +32,4 @@ app.register(userRouter);
 app.register(boardRouter);
 app.register(taskRouter);
 
-export default app;
+errorHandler();

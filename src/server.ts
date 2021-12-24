@@ -1,5 +1,5 @@
 import { PORT } from './common/config';
-import server from './app';
+import { app as server } from './app';
 import { logger } from './common/logger';
 
 /**

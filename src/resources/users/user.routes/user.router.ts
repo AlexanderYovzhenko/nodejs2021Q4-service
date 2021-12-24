@@ -9,8 +9,8 @@ import { logger, logCollect } from '../../../common/logger';
  */
 const userRoutes: FastifyPluginAsync = async (app): Promise<void> => {
   app.get('/', async (_: FastifyRequest, reply: FastifyReply) => {
-    logger.info(logCollect(_, reply));
     reply.send({ Message: 'Service: is running!' });
+    logger.info(logCollect(_, reply));
   });
 
   app.get('/users', userSchema.getUsersOpts);

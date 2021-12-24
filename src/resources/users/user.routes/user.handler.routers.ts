@@ -20,9 +20,9 @@ type FastifyRequestUser = FastifyRequest<{
  * @returns void
  */
 const getUsersAllRouter = async (_: FastifyRequest, reply: FastifyReply) => {
-  logger.info(logCollect(_, reply));
-  const users: object = await userService.getUsersAllService();
+  const users = await userService.getUsersAllService();
   reply.code(statusCode.OK).send(users);
+  logger.info(logCollect(_, reply));
 };
 
 /**
@@ -37,10 +37,10 @@ const getUserIdRouter = async (
   request: FastifyRequestUser,
   reply: FastifyReply
 ) => {
-  logger.info(logCollect(request, reply));
   const { userId } = request.params;
   const user = await userService.getUserIdService(userId);
   reply.code(statusCode.OK).send(user);
+  logger.info(logCollect(request, reply));
 };
 
 /**
@@ -55,10 +55,10 @@ const addUserRouter = async (
   request: FastifyRequestUser,
   reply: FastifyReply
 ) => {
-  logger.info(logCollect(request, reply));
   const user: IUser = new User(request.body);
   await userService.addUserService(user);
   reply.code(statusCode.CREATED).send(user);
+  logger.info(logCollect(request, reply));
 };
 
 /**
@@ -74,11 +74,11 @@ const updateUserRouter = async (
   request: FastifyRequestUser,
   reply: FastifyReply
 ) => {
-  logger.info(logCollect(request, reply));
   const { userId } = request.params;
   const updUser: IUser = new User(request.body, userId);
   await userService.updateUserService(userId, updUser);
   reply.code(statusCode.OK).send(updUser);
+  logger.info(logCollect(request, reply));
 };
 
 /**
@@ -93,10 +93,10 @@ const deleteUserRouter = async (
   request: FastifyRequestUser,
   reply: FastifyReply
 ) => {
-  logger.info(logCollect(request, reply));
   const { userId } = request.params;
   await userService.deleteUserService(userId);
   reply.code(statusCode.NO_CONTENT);
+  logger.info(logCollect(request, reply));
 };
 
 export default {
