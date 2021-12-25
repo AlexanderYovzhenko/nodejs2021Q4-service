@@ -10,7 +10,7 @@ import { logger } from './common/logger';
  */
 const startServer = async () => {
   try {
-    await server.listen(PORT, () =>
+    server.listen(PORT, () =>
       logger.info(`App is running on http://localhost:${PORT}`)
     );
   } catch (err: unknown) {
