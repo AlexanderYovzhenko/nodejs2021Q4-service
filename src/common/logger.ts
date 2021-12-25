@@ -23,10 +23,10 @@ const logger = winston.createLogger({
   defaultMeta: { service: 'REST-service' },
   transports: [
     new winston.transports.File({
-      filename: 'src/logging/errors.log',
+      filename: 'src/logs/errors.log',
       level: 'error',
     }),
-    new winston.transports.File({ filename: 'src/logging/all.log' }),
+    new winston.transports.File({ filename: 'src/logs/all.log' }),
     new winston.transports.Console({
       format: winston.format.cli(),
     }),

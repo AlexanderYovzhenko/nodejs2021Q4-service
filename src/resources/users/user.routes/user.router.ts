@@ -10,7 +10,7 @@ import statusCode from '../../../common/status.code';
  */
 const userRoutes: FastifyPluginAsync = async (app): Promise<void> => {
   app.get('/*', (_: FastifyRequest, reply: FastifyReply) => {
-    reply.status(statusCode.NOT_FOUND).send('not true URL');
+    reply.status(statusCode.NOT_FOUND).send('Not Found URL');
     logger.warn(logCollect(_, reply));
   });
 

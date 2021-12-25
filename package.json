@@ -10,9 +10,8 @@
   "main": "build/server.js",
   "scripts": {
     "build": "tsc --project tsconfig.json",
-    "startBuild": "nodemon build/server.js",
+    "startBuild": "nodemon --experimental-specifier-resolution=node build/server.js",
     "start": "tsc --project tsconfig.json && nodemon --experimental-specifier-resolution=node build/server.js",
-    "startTs": "ts-node-dev --experimental-specifier-resolution=node src/server",
     "lint": "eslint --ext .js,.ts --fix src/",
     "test": "cross-env DEBUG=rs:* jest --testMatch \"<rootDir>/test/e2e/test/*.test.js\" --noStackTrace --runInBand",
     "test:auth": "cross-env DEBUG=rs:* TEST_MODE=auth jest --noStackTrace"
