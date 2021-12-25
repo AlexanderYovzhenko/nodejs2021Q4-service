@@ -5,6 +5,7 @@ import statusCode from '../../../common/status.code';
 import Board from '../board.model';
 import { IBoard } from '../../../common/type';
 import { logger, logCollect } from '../../../common/logger';
+import { NotFoundError } from '../../../errors/custom.errors';
 
 type FastifyRequestBoard = FastifyRequest<{
   Body: IBoard;
@@ -48,8 +49,7 @@ const getBoardIdRouter = async (
     reply.code(statusCode.OK).send(board);
     logger.info(logCollect(request, reply));
   } else {
-    reply.code(statusCode.NOT_FOUND).send('Not found board');
-    logger.error(logCollect(request, reply));
+    throw new NotFoundError('Not found board');
   }
 };
 
@@ -97,8 +97,7 @@ const updateBoardRouter = async (
     reply.code(statusCode.OK).send(updBoard);
     logger.info(logCollect(request, reply));
   } else {
-    reply.code(statusCode.NOT_FOUND).send('Not found board');
-    logger.error(logCollect(request, reply));
+    throw new NotFoundError('Not found board');
   }
 };
 
@@ -124,8 +123,7 @@ const deleteBoardRouter = async (
     reply.code(statusCode.NO_CONTENT).send();
     logger.info(logCollect(request, reply));
   } else {
-    reply.code(statusCode.NOT_FOUND).send('Not found board');
-    logger.error(logCollect(request, reply));
+    throw new NotFoundError('Not found board');
   }
 };
 

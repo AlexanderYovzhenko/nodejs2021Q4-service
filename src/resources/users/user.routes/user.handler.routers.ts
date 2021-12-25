@@ -4,6 +4,7 @@ import statusCode from '../../../common/status.code';
 import User from '../user.model';
 import { IUser } from '../../../common/type';
 import { logger, logCollect } from '../../../common/logger';
+import { NotFoundError } from '../../../errors/custom.errors';
 
 type FastifyRequestUser = FastifyRequest<{
   Body: IUser;
@@ -44,8 +45,7 @@ const getUserIdRouter = async (
     reply.code(statusCode.OK).send(user);
     logger.info(logCollect(request, reply));
   } else {
-    reply.code(statusCode.NOT_FOUND).send('Not found user');
-    logger.error(logCollect(request, reply));
+    throw new NotFoundError('Not found user');
   }
 };
 
@@ -88,8 +88,7 @@ const updateUserRouter = async (
     reply.code(statusCode.OK).send(updUser);
     logger.info(logCollect(request, reply));
   } else {
-    reply.code(statusCode.NOT_FOUND).send('Not found user');
-    logger.error(logCollect(request, reply));
+    throw new NotFoundError('Not found user');
   }
 };
 
@@ -112,8 +111,7 @@ const deleteUserRouter = async (
     reply.code(statusCode.NO_CONTENT);
     logger.info(logCollect(request, reply));
   } else {
-    reply.code(statusCode.NOT_FOUND).send('Not found user');
-    logger.error(logCollect(request, reply));
+    throw new NotFoundError('Not found user');
   }
 };
 

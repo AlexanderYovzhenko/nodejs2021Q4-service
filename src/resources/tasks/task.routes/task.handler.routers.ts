@@ -4,6 +4,7 @@ import statusCode from '../../../common/status.code';
 import Task from '../task.model';
 import { ITask } from '../../../common/type';
 import { logger, logCollect } from '../../../common/logger';
+import { NotFoundError } from '../../../errors/custom.errors';
 
 type FastifyRequestTask = FastifyRequest<{
   Body: ITask;
@@ -48,8 +49,7 @@ const getTaskIdRouter = async (
     reply.code(statusCode.OK).send(task);
     logger.info(logCollect(request, reply));
   } else {
-    reply.code(statusCode.NOT_FOUND).send('Not found task');
-    logger.error(logCollect(request, reply));
+    throw new NotFoundError('Not found task');
   }
 };
 
@@ -96,8 +96,7 @@ const updateTaskRouter = async (
     reply.code(statusCode.OK).send(updTask);
     logger.info(logCollect(request, reply));
   } else {
-    reply.code(statusCode.NOT_FOUND).send('Not found task');
-    logger.error(logCollect(request, reply));
+    throw new NotFoundError('Not found task');
   }
 };
 
@@ -123,8 +122,7 @@ const deleteTaskRouter = async (
     reply.code(statusCode.NO_CONTENT);
     logger.info(logCollect(request, reply));
   } else {
-    reply.code(statusCode.NOT_FOUND).send('Not found task');
-    logger.error(logCollect(request, reply));
+    throw new NotFoundError('Not found task');
   }
 };
 
