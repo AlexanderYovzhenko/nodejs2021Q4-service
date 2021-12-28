@@ -1,6 +1,6 @@
 import { PORT } from './common/config';
 import { app as server } from './app';
-import { logger } from './common/logger';
+import { logger } from './logging/logger';
 
 /**
  * Run the server!
@@ -14,8 +14,8 @@ const startServer = async () => {
       logger.info(`App is running on http://localhost:${PORT}`)
     );
   } catch (err: unknown) {
-    server.log.error(err);
     logger.error(err);
+    server.log.error(err);
     process.exit(1);
   }
 };

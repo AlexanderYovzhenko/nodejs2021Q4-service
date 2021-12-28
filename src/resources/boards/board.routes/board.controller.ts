@@ -4,7 +4,7 @@ import boardService from '../board.service';
 import statusCode from '../../../common/status.code';
 import Board from '../board.model';
 import { IBoard } from '../../../common/type';
-import { logger, logCollect } from '../../../common/logger';
+import { logger, getLogObject } from '../../../logging/logger';
 import { NotFoundError } from '../../../errors/custom.errors';
 
 type FastifyRequestBoard = FastifyRequest<{
@@ -24,7 +24,7 @@ type FastifyRequestBoard = FastifyRequest<{
 const getBoardsAllRouter = async (_: FastifyRequest, reply: FastifyReply) => {
   const board = await boardService.getBoardsAllService();
   reply.code(statusCode.OK).send(board);
-  logger.info(logCollect(_, reply));
+  logger.info(getLogObject(_, reply));
 };
 
 /**
@@ -47,7 +47,7 @@ const getBoardIdRouter = async (
   if (await boardService.getBoardIdService(boardId)) {
     const board = await boardService.getBoardIdService(boardId);
     reply.code(statusCode.OK).send(board);
-    logger.info(logCollect(request, reply));
+    logger.info(getLogObject(request, reply));
   } else {
     throw new NotFoundError('Not found board');
   }
@@ -73,7 +73,7 @@ const addBoardRouter = async (
   const board: IBoard = new Board(request.body);
   await boardService.addBoardService(board);
   reply.code(statusCode.CREATED).send(board);
-  logger.info(logCollect(request, reply));
+  logger.info(getLogObject(request, reply));
 };
 
 /**
@@ -95,7 +95,7 @@ const updateBoardRouter = async (
     const updBoard: IBoard = new Board(request.body, boardId);
     await boardService.updateBoardService(boardId, updBoard);
     reply.code(statusCode.OK).send(updBoard);
-    logger.info(logCollect(request, reply));
+    logger.info(getLogObject(request, reply));
   } else {
     throw new NotFoundError('Not found board');
   }
@@ -121,7 +121,7 @@ const deleteBoardRouter = async (
   if (await boardService.getBoardIdService(boardId)) {
     await boardService.deleteBoardService(boardId);
     reply.code(statusCode.NO_CONTENT).send();
-    logger.info(logCollect(request, reply));
+    logger.info(getLogObject(request, reply));
   } else {
     throw new NotFoundError('Not found board');
   }

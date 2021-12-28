@@ -1,4 +1,4 @@
-import userHandlerRouters from './user.handler.routers';
+import userHandlerRouters from './user.controller';
 
 const user = {
   type: 'object',
