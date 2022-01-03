@@ -5,13 +5,14 @@
     "type": "git",
     "url": ""
   },
-  "type": "module",
+  "type": "commonjs",
   "description": "REST service starter for RS School",
   "main": "build/server.js",
   "scripts": {
+    "start": "nodemon",
+    "start:js": "tsc --project tsconfig.json && nodemon --experimental-specifier-resolution=node build/server.js",
     "build": "tsc --project tsconfig.json",
-    "startBuild": "nodemon --experimental-specifier-resolution=node build/server.js",
-    "start": "tsc --project tsconfig.json && nodemon --experimental-specifier-resolution=node build/server.js",
+    "start:build": "nodemon --experimental-specifier-resolution=node build/server.js",
     "lint": "eslint --ext .js,.ts --fix src/",
     "test": "cross-env DEBUG=rs:* jest --testMatch \"<rootDir>/test/e2e/test/*.test.js\" --noStackTrace --runInBand",
     "test:auth": "cross-env DEBUG=rs:* TEST_MODE=auth jest --noStackTrace"
@@ -77,8 +78,11 @@
     "nodemon": "2.0.15",
     "prettier": "2.4.1",
     "supertest": "6.1.6",
+    "ts-node": "^10.4.0",
     "ts-node-dev": "^1.1.8",
     "typescript": "^4.5.2",
-    "winston": "^3.3.3"
+    "winston": "^3.3.3",
+    "winston-slack-webhook-transport": "^2.1.0",
+    "winstond": "^0.0.2"
   }
 }
