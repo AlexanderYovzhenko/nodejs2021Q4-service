@@ -1,0 +1,48 @@
+version: '3'
+services:
+  db:
+    image: 'postgres:${POSTGRES_VERSION}'
+    container_name: postgres
+    build: ./database/.
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 5
+        window: 120s
+    networks:
+      - my_net
+    ports:
+      - ${PORT_DB}:${PORT_DB}
+    volumes:
+      - pg_data:/var/lib/postgresql/data/
+      - ./pg_data:/var/lib/postgresql/data/
+  app:
+    image: goldenmanbel:docker-basics
+    container_name: docker-basics
+    build: .
+    networks:
+      - my_net    
+    ports:
+      - ${PORT}:${PORT}
+    volumes:
+      - logs:/usr/src/app/logs
+      - ./logs:/usr/src/app/logs
+      - ./:/usr/src/app 
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 5
+        window: 120s  
+    links:
+      - db
+volumes:
+  pg_data:
+  logs:
+networks:
+  my_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.220.0/24

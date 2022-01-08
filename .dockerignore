@@ -1,0 +1,11 @@
+node_modules
+build
+.idea
+.vscode
+.gitignore
+.github
+pg_data
+database
+logs
+.eslintrc.json
+.eslintignore
