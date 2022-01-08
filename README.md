@@ -1,4 +1,4 @@
-# RS School REST service(Logging & Error Handling)
+# RS School REST service(docker-basics)
 
 ## Prerequisites
 
@@ -21,6 +21,12 @@ git checkout logging-errorHandling
 
 ```
 npm install
+```
+
+## Running application in docker
+
+```
+docker-compose up --build
 ```
 
 ## Running application
