@@ -14,7 +14,7 @@ git clone https://github.com/GoldenManBel/nodejs2021Q4-service.git
 ## Switch branch
 
 ```
-git checkout logging-errorHandling
+git checkout docker-basics
 ```
 
 ## Installing NPM modules
@@ -30,10 +30,15 @@ docker-compose up --build
 ```
 
 ## To check to cross-check items, you can use the commands:
-```docker images``` 
+
+```docker images```
+
 ```docker network ls ``` 
+
 ```docker network inspect [OPTIONS] NETWORK [NETWORK ...]``` 
+
 ```docker network inspect nodejs2021q4-service_my_net``` 
+
 You can also uncomment the error in the app.ts file
 
 ## Running application
