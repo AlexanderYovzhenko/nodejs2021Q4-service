@@ -1,1 +1,7 @@
 test/
+node_modules
+build
+logs
+.idea
+.vscode
+pg_data

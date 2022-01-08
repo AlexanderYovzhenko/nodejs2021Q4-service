@@ -3,3 +3,4 @@ build
 logs
 .idea
 .vscode
+pg_data

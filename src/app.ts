@@ -29,6 +29,6 @@ app.register(userRouter);
 app.register(boardRouter);
 app.register(taskRouter);
 
-// throw Error('Oops!');
+// throw new Error('Oops!');
 
 // Promise.reject(Error('Oops!'));
