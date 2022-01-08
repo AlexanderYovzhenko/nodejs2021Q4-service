@@ -4,3 +4,4 @@ logs
 .idea
 .vscode
 pg_data
+test.http
