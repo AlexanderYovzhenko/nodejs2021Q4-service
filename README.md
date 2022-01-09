@@ -39,6 +39,8 @@ docker-compose up --build
 
 ```docker network inspect nodejs2021q4-service_my_net``` 
 
+```docker volume ls ```
+
 You can also uncomment the error in the app.ts file
 
 ## Running application
