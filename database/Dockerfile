@@ -1,1 +1,2 @@
-FROM postgres:11.4-alpine
+ARG POSTGRES_VERSION
+FROM postgres:${POSTGRES_VERSION}

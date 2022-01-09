@@ -1,4 +1,5 @@
-FROM node:lts-alpine3.15
+ARG NODE_VERSION
+FROM node:${NODE_VERSION}
 WORKDIR /usr/src/app
 COPY package*.json ./
 ARG NODE_ENV

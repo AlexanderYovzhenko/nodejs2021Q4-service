@@ -3,7 +3,10 @@ services:
   db:
     image: 'postgres:${POSTGRES_VERSION}'
     container_name: postgres
-    build: ./database/.
+    build: 
+      context: ./database/.
+      args:
+        - POSTGRES_VERSION=${POSTGRES_VERSION}
     deploy:
       restart_policy:
         condition: on-failure
@@ -17,17 +20,19 @@ services:
       - ${PORT_DB}:${PORT_DB}
     environment:
       - PORT_DB=${PORT_DB}
+      - POSTGRES_VERSION=${POSTGRES_VERSION}
     volumes:
       - pg_data:/var/lib/postgresql/data/
       - ./pg_data:/var/lib/postgresql/data/
   app:
-    image: goldenmanbel:docker-basics
-    container_name: docker-basics
+    image: goldenmanbel/docker-basics:app
+    container_name: server
     build:
       context: .
       args: 
         - NODE_ENV=${NODE_ENV}
         - PORT=${PORT}
+        - NODE_VERSION=${NODE_VERSION}
     networks:
       - my_net 
     env_file: .env
@@ -45,9 +50,9 @@ services:
         condition: on-failure
         delay: 5s
         max_attempts: 5
-        window: 120s  
-    links:
-      - db
+        window: 120s 
+    depends_on:
+      - postgres
 volumes:
   pg_data:
   logs:
