@@ -9,3 +9,4 @@ database
 logs
 .eslintrc.json
 .eslintignore
+.env

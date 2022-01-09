@@ -12,19 +12,30 @@ services:
         window: 120s
     networks:
       - my_net
+    env_file: .env
     ports:
       - ${PORT_DB}:${PORT_DB}
+    environment:
+      - PORT_DB=${PORT_DB}
     volumes:
       - pg_data:/var/lib/postgresql/data/
       - ./pg_data:/var/lib/postgresql/data/
   app:
     image: goldenmanbel:docker-basics
     container_name: docker-basics
-    build: .
+    build:
+      context: .
+      args: 
+        - NODE_ENV=${NODE_ENV}
+        - PORT=${PORT}
     networks:
-      - my_net    
+      - my_net 
+    env_file: .env
     ports:
       - ${PORT}:${PORT}
+    environment:
+      - PORT=${PORT}
+      - NODE_ENV=${NODE_ENV}
     volumes:
       - logs:/usr/src/app/logs
       - ./logs:/usr/src/app/logs
