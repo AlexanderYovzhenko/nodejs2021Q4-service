@@ -23,6 +23,13 @@ git checkout postgreSQL-typeorm
 npm install
 ```
 
+## Create a migration
+
+```
+npm run migration:generate
+```
+
+
 ## Running application in docker
 
 ```
