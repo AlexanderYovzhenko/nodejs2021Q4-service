@@ -3,7 +3,6 @@ import { app as server } from './app';
 import { logger } from './logging/logger';
 import { createConnection } from 'typeorm';
 import config from './ormconfig';
-// import 'reflect-metadata';
 
 createConnection(config);
 
