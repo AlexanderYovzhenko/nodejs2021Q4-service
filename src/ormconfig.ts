@@ -15,14 +15,14 @@ const config: ConnectionOptions = {
   username: POSTGRES_USER || 'postgres',
   password: POSTGRES_PASSWORD || 'postgres',
   database: POSTGRES_DB || 'postgres',
-  dropSchema: true,
-  logging: false,
-  synchronize: true,
-  entities: [path.join(__dirname, '/**/*.model.ts')],
+  dropSchema: false,
+  logging: true,
+  synchronize: false,
+  entities: [path.join(__dirname, 'resources/**/*.model.ts')],
   migrationsRun: true,
-  migrations: [path.join(__dirname, '/migrations/**/*.ts')],
+  migrations: ['src/migrations/*{.ts,.js}'],
   cli: {
-    migrationsDir: 'db/migrations',
+    migrationsDir: 'src/migrations',
   },
 };
 
