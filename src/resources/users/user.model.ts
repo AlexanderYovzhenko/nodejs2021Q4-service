@@ -1,28 +1,23 @@
-import { v4 as uuid } from 'uuid';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { IUser } from '../../common/type';
+import OrmTask from '../tasks/task.model';
 
-/**
- * Add in object user new field id equal uuid.
- * If not hand over id argument then field id equal uuid.
- * Otherwise field id qual argument id.
- * @param user -first argument object user
- * @param id -second argument id user
- * @returns void
- */
-class User {
-  id: string;
-  name: string;
-  login: string;
-  password: string;
+@Entity()
+class OrmUser implements IUser {
+  @PrimaryGeneratedColumn('uuid')
+  id!: string;
 
-  constructor(
-    user: { name: string; login: string; password: string },
-    id: string = uuid()
-  ) {
-    this.id = id;
-    this.name = user.name;
-    this.login = user.login;
-    this.password = user.password;
-  }
+  @Column()
+  name!: string;
+
+  @Column()
+  login!: string;
+
+  @Column()
+  password!: string;
+
+  @OneToMany(() => OrmTask, (task) => task.userId)
+  tasks!: OrmTask[];
 }
 
-export default User;
+export default OrmUser;
