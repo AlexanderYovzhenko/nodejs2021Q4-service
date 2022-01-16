@@ -9,8 +9,8 @@
    "description": "REST service starter for RS School",
    "main": "build/server.js",
    "scripts": {
-      "start": "ts-node-dev src/server.ts",
-      "start:docker": "nodemon --legacy-watch --exitcrash src/server.ts",
+      "start": "nodemon --legacy-watch --exitcrash src/server.ts",
+      "start:ts": "ts-node-dev src/server.ts",
       "start:js": "tsc --project tsconfig.json && nodemon --experimental-specifier-resolution=node build/server.js",
       "build": "tsc --project tsconfig.json",
       "start:build": "nodemon --experimental-specifier-resolution=node build/server.js",

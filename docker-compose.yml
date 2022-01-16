@@ -26,7 +26,6 @@ services:
       - POSTGRES_VERSION=${POSTGRES_VERSION}
     volumes:
       - pg_data:/var/lib/postgresql/data/
-      # - ./pg_data:/var/lib/postgresql/data/
   app:
     image: goldenmanbel/docker-basics:app
     container_name: app
@@ -47,7 +46,7 @@ services:
       - NODE_VERSION=${NODE_VERSION}
     volumes:
       - logs:/usr/src/app/logs
-      # - ./logs:/usr/src/app/logs
+      - ./logs:/usr/src/app/logs/*
       - ./:/usr/src/app 
     deploy:
       restart_policy:
