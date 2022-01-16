@@ -5,6 +5,7 @@ COPY package*.json ./
 ARG NODE_ENV
 ENV NODE_ENV ${NODE_ENV}
 RUN npm install --${NODE_ENV}
+RUN npm install -g nodemon
 COPY . .
 ARG PORT
 ENV PORT ${PORT}
