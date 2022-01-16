@@ -10,7 +10,12 @@ const PORT = process.env.PORT || 4000,
   MONGO_CONNECTION_STRING = process.env.MONGO_CONNECTION_STRING,
   JWT_SECRET_KEY = process.env.JWT_SECRET_KEY,
   AUTH_MODE = process.env.AUTH_MODE === 'true',
-  LEVEL_LOG = process.env.LEVEL_LOG || '4';
+  LEVEL_LOG = process.env.LEVEL_LOG || '4',
+  PORT_DB = process.env.PORT_DB,
+  POSTGRES_DB = process.env.POSTGRES_DB,
+  DB_HOST = process.env.DB_HOST,
+  POSTGRES_USER = process.env.POSTGRES_USER,
+  POSTGRES_PASSWORD = process.env.POSTGRES_PASSWORD;
 
 export {
   PORT,
@@ -19,4 +24,9 @@ export {
   JWT_SECRET_KEY,
   AUTH_MODE,
   LEVEL_LOG,
+  PORT_DB,
+  POSTGRES_DB,
+  DB_HOST,
+  POSTGRES_USER,
+  POSTGRES_PASSWORD,
 };
