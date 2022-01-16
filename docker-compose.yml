@@ -46,7 +46,7 @@ services:
       - NODE_VERSION=${NODE_VERSION}
     volumes:
       - logs:/usr/src/app/logs
-      - ./logs:/usr/src/app/logs/*
+      # - ./logs:/usr/src/app/logs/*
       - ./:/usr/src/app 
     deploy:
       restart_policy:

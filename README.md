@@ -29,6 +29,21 @@ npm install
 docker-compose up --build
 ```
 
+## Enter command in terminal
+
+```
+npm run test
+
+```
+or
+
+```
+docker exec -i -t {ID of docker container with application} sh
+```
+and
+```
+npm run test
+```
 ## To check to cross-check items, you can use the commands:
 
 ```docker images```
