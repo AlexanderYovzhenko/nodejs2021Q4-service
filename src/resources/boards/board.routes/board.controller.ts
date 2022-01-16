@@ -2,13 +2,12 @@ import { v4 as uuid } from 'uuid';
 import { FastifyRequest, FastifyReply } from 'fastify';
 import boardService from '../board.service';
 import statusCode from '../../../common/status.code';
-import Board from '../board.model';
-import { IBoard } from '../../../common/type';
+import OrmBoard from '../board.model';
 import { logger, getLogObject } from '../../../logging/logger';
 import { NotFoundError } from '../../../errors/custom.errors';
 
 type FastifyRequestBoard = FastifyRequest<{
-  Body: IBoard;
+  Body: OrmBoard;
   Params: {
     boardId: string;
   };
@@ -70,7 +69,9 @@ const addBoardRouter = async (
   columnsArray.forEach((column: { columnId: string }) => {
     column.columnId = uuid();
   });
-  const board: IBoard = new Board(request.body);
+  const board: OrmBoard = new OrmBoard();
+  board.title = request.body.title;
+  board.columns = request.body.columns;
   await boardService.addBoardService(board);
   reply.code(statusCode.CREATED).send(board);
   logger.info(getLogObject(request, reply));
@@ -92,7 +93,10 @@ const updateBoardRouter = async (
   const { boardId } = request.params;
 
   if (await boardService.getBoardIdService(boardId)) {
-    const updBoard: IBoard = new Board(request.body, boardId);
+    const updBoard: OrmBoard = new OrmBoard();
+    updBoard.id = boardId;
+    updBoard.title = request.body.title;
+    updBoard.columns = request.body.columns;
     await boardService.updateBoardService(boardId, updBoard);
     reply.code(statusCode.OK).send(updBoard);
     logger.info(getLogObject(request, reply));

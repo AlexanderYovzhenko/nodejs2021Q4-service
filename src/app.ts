@@ -6,6 +6,7 @@ import userRouter from './resources/users/user.routes/user.router';
 import boardRouter from './resources/boards/board.routes/board.router';
 import taskRouter from './resources/tasks/task.routes/task.router';
 import errorsHandler from './errors/errors.handler';
+// import 'reflect-metadata';
 
 export const app: FastifyInstance = Fastify({
   logger: false,

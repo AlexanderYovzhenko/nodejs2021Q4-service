@@ -1,28 +1,35 @@
-import { IBoard } from '../../common/type';
-
-let dbBoards: IBoard[] = [];
+import { getRepository } from 'typeorm';
+import OrmBoard from './board.model';
 
 /**
  * Return array boards(dbBoards)
- * @returns array dbBoards
+ * @returns array boards
  */
-const getBoardsAll = async (): Promise<IBoard[]> => dbBoards;
+const getBoardsAll = async (): Promise<OrmBoard[]> => {
+  const boards = await getRepository(OrmBoard).find();
+
+  return boards;
+};
 
 /**
  * Return object board with ID board equal boardID
  * @param boardID -first argument ID board
  * @returns object board with ID board or null
  */
-const getBoardId = async (boardId: string): Promise<IBoard | undefined> =>
-  dbBoards.find((board) => board.id === boardId);
+const getBoardId = async (boardId: string): Promise<OrmBoard | undefined> => {
+  const boardID = await getRepository(OrmBoard).findOne(boardId);
+
+  return boardID;
+};
+// dbBoards.find((board) => board.id === boardId);
 
 /**
  * Add new object board in array boards(dbBoards)
  * @param board -first argument new board
  * @returns void
  */
-const addBoard = async (board: IBoard): Promise<void> => {
-  dbBoards.push(board);
+const addBoard = async (board: OrmBoard): Promise<void> => {
+  await getRepository(OrmBoard).insert(board);
 };
 
 /**
@@ -33,9 +40,9 @@ const addBoard = async (board: IBoard): Promise<void> => {
  */
 const updateBoard = async (
   boardId: string,
-  updBoard: IBoard
+  updBoard: OrmBoard
 ): Promise<void> => {
-  dbBoards = dbBoards.map((board) => (board.id === boardId ? updBoard : board));
+  await getRepository(OrmBoard).update(boardId, updBoard);
 };
 
 /**
@@ -44,7 +51,7 @@ const updateBoard = async (
  * @returns void
  */
 const deleteBoard = async (boardId: string): Promise<void> => {
-  dbBoards = dbBoards.filter((board): boolean => board.id !== boardId);
+  await getRepository(OrmBoard).delete(boardId);
 };
 
 export default {

@@ -1,7 +1,7 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 import userService from '../user.service';
 import statusCode from '../../../common/status.code';
-import User from '../user.model';
+import OrmUser from '../user.model';
 import { IUser } from '../../../common/type';
 import { logger, getLogObject } from '../../../logging/logger';
 import { NotFoundError } from '../../../errors/custom.errors';
@@ -61,7 +61,10 @@ const addUserRouter = async (
   request: FastifyRequestUser,
   reply: FastifyReply
 ) => {
-  const user: IUser = new User(request.body);
+  const user: OrmUser = new OrmUser();
+  user.name = request.body.name;
+  user.login = request.body.login;
+  user.password = request.body.password;
   await userService.addUserService(user);
   reply.code(statusCode.CREATED).send(user);
   logger.info(getLogObject(request, reply));
@@ -83,7 +86,11 @@ const updateUserRouter = async (
   const { userId } = request.params;
 
   if (await userService.getUserIdService(userId)) {
-    const updUser: IUser = new User(request.body, userId);
+    const updUser: IUser = new OrmUser();
+    updUser.id = userId;
+    updUser.name = request.body.name;
+    updUser.login = request.body.login;
+    updUser.password = request.body.password;
     await userService.updateUserService(userId, updUser);
     reply.code(statusCode.OK).send(updUser);
     logger.info(getLogObject(request, reply));
