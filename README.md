@@ -23,20 +23,11 @@ git checkout postgreSQL-typeorm
 npm install
 ```
 
-## Create a migration
-
-```
-npm run migration:generate
-```
-
-
 ## Running application in docker
 
 ```
 docker-compose up --build
 ```
-
-## Enter command in terminal
 
 ```
 npm run test
@@ -51,6 +42,34 @@ and
 ```
 npm run test
 ```
+
+## Running application local and bd in docker
+
+In .env file set DB_HOST=localhost
+
+```
+docker build -t postgres database. 
+```
+```
+docker run -p 5432:5432 -e POSTGRES_HOST_AUTH_METHOD=trust postgres
+```
+
+```
+npm run migration:generate
+```
+```
+npm run start:ts 
+```
+```
+npm run test 
+```
+
+## Create a migration
+
+```
+npm run migration:generate
+```
+
 ## To check to cross-check items, you can use the commands:
 
 ```docker images```
