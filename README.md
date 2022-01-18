@@ -50,7 +50,7 @@ In .env file set DB_HOST=localhost
 docker build -t postgres database. 
 ```
 ```
-docker run -p 5432:5432 -e POSTGRES_HOST_AUTH_METHOD=trust postgres
+docker run -dp 5432:5432 -e POSTGRES_HOST_AUTH_METHOD=trust postgres
 ```
 ```
 npm run migration:generate
@@ -63,6 +63,8 @@ npm run test
 ```
 
 ## Create a migration
+
+In .env file set DB_HOST=localhost
 
 ```
 npm run migration:generate
