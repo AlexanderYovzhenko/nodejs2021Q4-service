@@ -36,7 +36,7 @@ npm run test
 or
 
 ```
-docker exec -i -t {ID of docker container with application} sh
+docker exec -i -t app sh
 ```
 ```
 npm run test
