@@ -1,7 +1,7 @@
 import winston from 'winston';
 import { FastifyRequest, FastifyReply, FastifyError } from 'fastify';
 import { LEVEL_LOG } from '../common/config';
-import { ILevelLog } from '../common/type';
+import { ILevelLog } from '../common/types';
 
 const levelLog: ILevelLog = {
   0: 'error',

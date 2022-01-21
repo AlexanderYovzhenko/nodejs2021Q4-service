@@ -2,7 +2,7 @@ import { FastifyRequest, FastifyReply } from 'fastify';
 import userService from '../user.service';
 import statusCode from '../../../common/status.code';
 import OrmUser from '../user.model';
-import { IUser } from '../../../common/type';
+import { IUser } from '../../../common/types';
 import { logger, getLogObject } from '../../../logging/logger';
 import { NotFoundError } from '../../../errors/custom.errors';
 

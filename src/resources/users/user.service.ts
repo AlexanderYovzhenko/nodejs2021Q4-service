@@ -1,6 +1,6 @@
 import usersRepo from './user.memory.repository';
 import taskServiceUser from '../tasks/task.service';
-import { IUser } from '../../common/type';
+import { IUser } from '../../common/types';
 import OrmUser from './user.model';
 
 /**

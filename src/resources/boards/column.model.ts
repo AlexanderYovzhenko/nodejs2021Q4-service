@@ -5,7 +5,7 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { IColumn } from '../../common/type';
+import { IColumn } from '../../common/types';
 import OrmTask from '../tasks/task.model';
 import OrmBoard from './board.model';
 

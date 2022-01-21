@@ -1,6 +1,6 @@
 import { getRepository } from 'typeorm';
 import OrmUser from './user.model';
-import { IUser } from '../../common/type';
+import { IUser } from '../../common/types';
 
 /**
  * Returns array users(dbUsers)

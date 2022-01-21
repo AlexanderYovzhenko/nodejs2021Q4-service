@@ -2,7 +2,7 @@ import { FastifyRequest, FastifyReply } from 'fastify';
 import taskService from '../task.service';
 import statusCode from '../../../common/status.code';
 import OrmTask from '../task.model';
-import { ITask } from '../../../common/type';
+import { ITask } from '../../../common/types';
 import { logger, getLogObject } from '../../../logging/logger';
 import { NotFoundError } from '../../../errors/custom.errors';
 

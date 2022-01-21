@@ -27,8 +27,13 @@ interface ITask {
   columnId: string;
 }
 
+interface ILogin {
+  login: string;
+  password: string;
+}
+
 interface ILevelLog {
   [key: string]: string;
 }
 
-export { IUser, ITask, IBoard, IColumn, ILevelLog };
+export { IUser, ITask, IBoard, IColumn, ILevelLog, ILogin };

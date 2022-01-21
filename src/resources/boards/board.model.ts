@@ -1,5 +1,5 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { IBoard } from '../../common/type';
+import { IBoard } from '../../common/types';
 import OrmTask from '../tasks/task.model';
 import OrmColumn from './column.model';
 

@@ -1,5 +1,5 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { IUser } from '../../common/type';
+import { IUser } from '../../common/types';
 import OrmTask from '../tasks/task.model';
 
 @Entity()

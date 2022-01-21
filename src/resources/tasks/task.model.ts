@@ -1,5 +1,5 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { ITask } from '../../common/type';
+import { ITask } from '../../common/types';
 import OrmUser from '../users/user.model';
 
 @Entity()
