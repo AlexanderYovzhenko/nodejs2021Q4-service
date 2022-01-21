@@ -6,5 +6,5 @@
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "cSpell.words": ["fastify", "serializers"]
+  "cSpell.words": ["fastify", "serializers", "typeorm"]
 }
