@@ -5,6 +5,7 @@ import OrmUser from '../user.model';
 import { IUser } from '../../../common/types';
 import { logger, getLogObject } from '../../../logging/logger';
 import { NotFoundError } from '../../../errors/custom.errors';
+import { setHashPassword } from '../../../bcrypt/bcrypt';
 
 type FastifyRequestUser = FastifyRequest<{
   Body: IUser;
@@ -64,7 +65,7 @@ const addUserRouter = async (
   const user: OrmUser = new OrmUser();
   user.name = request.body.name;
   user.login = request.body.login;
-  user.password = request.body.password;
+  user.password = await setHashPassword(request.body.password);
   await userService.addUserService(user);
   reply.code(statusCode.CREATED).send(user);
   logger.info(getLogObject(request, reply));
@@ -90,7 +91,7 @@ const updateUserRouter = async (
     updUser.id = userId;
     updUser.name = request.body.name;
     updUser.login = request.body.login;
-    updUser.password = request.body.password;
+    updUser.password = await setHashPassword(request.body.password);
     await userService.updateUserService(userId, updUser);
     reply.code(statusCode.OK).send(updUser);
     logger.info(getLogObject(request, reply));

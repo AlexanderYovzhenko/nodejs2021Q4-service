@@ -4,6 +4,7 @@ import { ILogin } from '../../common/types';
 import { addUserServiceAdmin } from './login.service';
 import { signToken } from './login.service';
 import { logger, getLogObject } from '../../logging/logger';
+import { setHashPassword } from '../../bcrypt/bcrypt';
 
 type FastifyRequestLogin = FastifyRequest<{
   Body: ILogin;
@@ -19,7 +20,7 @@ const addLoginRouter = async (
 ) => {
   await addUserServiceAdmin({
     login: 'admin',
-    password: 'admin',
+    password: await setHashPassword('admin'),
     name: 'admin',
   });
   const { login, password } = request.body;
