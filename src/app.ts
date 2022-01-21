@@ -1,6 +1,5 @@
 import Fastify, { FastifyInstance, FastifyRegisterOptions } from 'fastify';
 import fastifySwagger, { SwaggerOptions } from 'fastify-swagger';
-// import fastifyJwt from 'fastify-jwt';
 import path from 'path';
 
 import loginRouter from './resources/login/login.router';

@@ -33,7 +33,7 @@ const checkToken = (
         try {
           jwt.verify(token, JWT_SECRET_KEY);
         } catch (error) {
-          reply.status(statusCode.UNAUTHORIZED).send('token');
+          reply.status(statusCode.UNAUTHORIZED).send('Invalid token');
           logger.error(getLogObject(request, reply));
         }
       }
