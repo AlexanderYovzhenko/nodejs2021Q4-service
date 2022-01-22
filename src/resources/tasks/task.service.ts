@@ -1,5 +1,5 @@
 import OrmTask from './task.model';
-import tasksRepo from './task.memory.repository';
+import tasksRepo from './task.repository';
 
 /**
  * Intermediate function

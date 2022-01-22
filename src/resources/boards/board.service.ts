@@ -1,4 +1,4 @@
-import boardsRepo from './board.memory.repository';
+import boardsRepo from './board.repository';
 import taskServiceBoard from '../tasks/task.service';
 import OrmBoard from './board.model';
 

@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 import { checkHashPassword } from '../../bcrypt/bcrypt';
 import { JWT_SECRET_KEY } from '../../common/config';
 import { IUser } from '../../common/types';
-import { addUserAdmin, getUserLogin } from './login.memory.repository';
+import { addUserAdmin, getUserLogin } from './login.repository';
 
 const signToken = async (login: string, password: string) => {
   const user = await getUserLogin(login);
