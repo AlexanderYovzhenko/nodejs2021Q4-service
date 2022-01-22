@@ -9,4 +9,22 @@ class NotFoundError extends Error {
   }
 }
 
-export { NotFoundError };
+class WrongLoginPasswordError extends Error {
+  status: number;
+  constructor(msg: string) {
+    super(msg);
+    this.name = 'Wrong login/password combination';
+    this.status = statusCode.FORBIDDEN;
+  }
+}
+
+class AuthorizationError extends Error {
+  status: number;
+  constructor(msg: string) {
+    super(msg);
+    this.name = 'Authorization Error';
+    this.status = statusCode.UNAUTHORIZED;
+  }
+}
+
+export { NotFoundError, WrongLoginPasswordError, AuthorizationError };

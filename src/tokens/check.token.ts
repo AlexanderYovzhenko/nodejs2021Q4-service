@@ -1,11 +1,11 @@
 import { FastifyRequest, FastifyReply, FastifyError } from 'fastify';
 import jwt from 'jsonwebtoken';
 import { JWT_SECRET_KEY } from '../common/config';
-import statusCode from '../common/status.code';
+import { AuthorizationError } from '../errors/custom.errors';
 
 const checkToken = (
   request: FastifyRequest,
-  reply: FastifyReply,
+  _: FastifyReply,
   done: (err?: FastifyError) => void
 ) => {
   const path = request.routerPath;
@@ -15,7 +15,7 @@ const checkToken = (
     return done();
 
   if (autHeader === undefined) {
-    reply.status(statusCode.UNAUTHORIZED).send('Authorization Error');
+    throw new AuthorizationError('Authorization Error!');
   } else {
     const [type, token] = autHeader.split(' ');
 
@@ -23,10 +23,10 @@ const checkToken = (
       try {
         jwt.verify(token, JWT_SECRET_KEY);
       } catch (error) {
-        reply.status(statusCode.UNAUTHORIZED).send('Authorization Error');
+        throw new AuthorizationError('Authorization Error!');
       }
     } else {
-      reply.status(statusCode.UNAUTHORIZED).send('Authorization Error');
+      throw new AuthorizationError('Authorization Error!');
     }
   }
 

@@ -4,6 +4,7 @@ import { ILogin } from '../../common/types';
 import { addUserServiceAdmin } from './login.service';
 import { signToken } from './login.service';
 import { setHashPassword } from '../../bcrypt/bcrypt';
+import { WrongLoginPasswordError } from '../../errors/custom.errors';
 
 type FastifyRequestLogin = FastifyRequest<{
   Body: ILogin;
@@ -26,9 +27,7 @@ const addLoginRouter = async (
   const token = await signToken(login, password);
 
   if (!token) {
-    reply
-      .status(statusCode.FORBIDDEN)
-      .send('Wrong login/password combination!');
+    throw new WrongLoginPasswordError('Wrong login/password combination!');
   } else {
     reply.status(statusCode.OK).send({ token });
   }
