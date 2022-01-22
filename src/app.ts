@@ -8,6 +8,7 @@ import boardRouter from './resources/boards/board.routes/board.router';
 import taskRouter from './resources/tasks/task.routes/task.router';
 import errorsHandler from './errors/errors.handler';
 import { checkToken } from './tokens/check.token';
+import { responseLogger } from './logging/logger';
 
 export const app: FastifyInstance = Fastify({
   logger: false,
@@ -26,6 +27,7 @@ const optsSwagger: FastifyRegisterOptions<SwaggerOptions> | undefined = {
 };
 
 app.addHook('preHandler', checkToken);
+app.addHook('onResponse', responseLogger);
 
 app.register(fastifySwagger, optsSwagger);
 

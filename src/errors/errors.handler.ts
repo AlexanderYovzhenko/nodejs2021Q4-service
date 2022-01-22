@@ -1,10 +1,9 @@
 import { app } from '../app';
-import { logger, getLogObject } from '../logging/logger';
+import { logger } from '../logging/logger';
 
 const errorsHandler = () => {
-  app.setErrorHandler((error, request, reply) => {
-    reply.send(error);
-    logger.error(getLogObject(request, reply, error));
+  app.setErrorHandler((err, _, reply) => {
+    reply.send(err);
   });
 
   process.on('unhandledRejection', (err) => {

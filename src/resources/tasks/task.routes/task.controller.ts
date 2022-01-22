@@ -3,7 +3,6 @@ import taskService from '../task.service';
 import statusCode from '../../../common/status.code';
 import OrmTask from '../task.model';
 import { ITask } from '../../../common/types';
-import { logger, getLogObject } from '../../../logging/logger';
 import { NotFoundError } from '../../../errors/custom.errors';
 
 type FastifyRequestTask = FastifyRequest<{
@@ -24,7 +23,6 @@ type FastifyRequestTask = FastifyRequest<{
 const getTasksAllRouter = async (_: FastifyRequest, reply: FastifyReply) => {
   const tasks = await taskService.getTasksAllService();
   reply.code(statusCode.OK).send(tasks);
-  logger.info(getLogObject(_, reply));
 };
 
 /**
@@ -47,7 +45,6 @@ const getTaskIdRouter = async (
   if (await taskService.getTaskIdService(taskId)) {
     const task = await taskService.getTaskIdService(taskId);
     reply.code(statusCode.OK).send(task);
-    logger.info(getLogObject(request, reply));
   } else {
     throw new NotFoundError('Not found task');
   }
@@ -79,7 +76,6 @@ const addTaskRouter = async (
   task.columnId = request.body.columnId;
   await taskService.addTaskService(task);
   reply.code(statusCode.CREATED).send(task);
-  logger.info(getLogObject(request, reply));
 };
 
 /**
@@ -108,7 +104,6 @@ const updateTaskRouter = async (
     updTask.columnId = request.body.columnId;
     await taskService.updateTaskService(taskId, updTask);
     reply.code(statusCode.OK).send(updTask);
-    logger.info(getLogObject(request, reply));
   } else {
     throw new NotFoundError('Not found task');
   }
@@ -134,7 +129,6 @@ const deleteTaskRouter = async (
   if (await taskService.getTaskIdService(taskId)) {
     await taskService.deleteTaskService(taskId);
     reply.code(statusCode.NO_CONTENT);
-    logger.info(getLogObject(request, reply));
   } else {
     throw new NotFoundError('Not found task');
   }

@@ -1,5 +1,5 @@
 import winston from 'winston';
-import { FastifyRequest, FastifyReply, FastifyError } from 'fastify';
+import { FastifyRequest, FastifyReply } from 'fastify';
 import { LEVEL_LOG } from '../common/config';
 import { ILevelLog } from '../common/types';
 
@@ -10,6 +10,15 @@ const levelLog: ILevelLog = {
   3: 'debug',
   4: 'silly',
 };
+
+winston.addColors({
+  info: 'bold blue',
+  warn: 'italic yellow',
+  error: 'bold red',
+  debug: 'green',
+});
+
+const colorizer = winston.format.colorize();
 
 const logger = winston.createLogger({
   level: levelLog[LEVEL_LOG],
@@ -25,17 +34,21 @@ const logger = winston.createLogger({
     }),
     new winston.transports.File({ filename: 'logs/all.log' }),
     new winston.transports.Console({
-      format: winston.format.cli({}),
+      format: winston.format.printf((msg) =>
+        colorizer.colorize(
+          msg.level,
+          `${msg.timestamp} - ${msg.level}: ${
+            msg.message || JSON.stringify(msg)
+          }`
+        )
+      ),
     }),
   ],
 });
 
-const getLogObject = (
-  request: FastifyRequest,
-  reply: FastifyReply,
-  error?: FastifyError
-) => {
+const getLogObject = (request: FastifyRequest, reply: FastifyReply) => {
   const logEntries = {
+    message: reply.raw.statusMessage || '',
     method: request.method,
     url: request.url,
     parameters: request.params,
@@ -44,16 +57,17 @@ const getLogObject = (
     statusCode: reply.statusCode,
   };
 
-  if (error) {
-    return JSON.stringify({
-      message: error.message || '',
-      ...logEntries,
-    });
-  }
-
   return JSON.stringify({
     ...logEntries,
   });
 };
 
-export { logger, getLogObject };
+const responseLogger = (request: FastifyRequest, reply: FastifyReply) => {
+  if (+reply.statusCode >= 400) {
+    logger.error(getLogObject(request, reply));
+  } else {
+    logger.info(getLogObject(request, reply));
+  }
+};
+
+export { logger, responseLogger };

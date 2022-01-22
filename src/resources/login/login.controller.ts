@@ -3,7 +3,6 @@ import statusCode from '../../common/status.code';
 import { ILogin } from '../../common/types';
 import { addUserServiceAdmin } from './login.service';
 import { signToken } from './login.service';
-import { logger, getLogObject } from '../../logging/logger';
 import { setHashPassword } from '../../bcrypt/bcrypt';
 
 type FastifyRequestLogin = FastifyRequest<{
@@ -30,11 +29,8 @@ const addLoginRouter = async (
     reply
       .status(statusCode.FORBIDDEN)
       .send('Wrong login/password combination!');
-    logger.error(getLogObject(request, reply));
   } else {
     reply.status(statusCode.OK).send({ token });
-
-    logger.info(getLogObject(request, reply));
   }
 };
 
