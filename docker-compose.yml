@@ -1,4 +1,4 @@
-version: '3'
+version: '3.0'
 services:
   postgres:
     image: 'postgres:${POSTGRES_VERSION}'
@@ -34,7 +34,6 @@ services:
     build:
       context: .
       args: 
-        - NODE_ENV=${NODE_ENV}
         - PORT=${PORT}
         - NODE_VERSION=${NODE_VERSION}
     networks:
@@ -48,8 +47,8 @@ services:
       - NODE_VERSION=${NODE_VERSION}
     volumes:
       - logs:/usr/src/app/logs
-      # - ./logs:/usr/src/app/logs/*
-      - ./:/usr/src/app 
+      # - ./logs/:/usr/src/app/logs
+      - ./src/:/usr/src/app/src 
     deploy:
       restart_policy:
         condition: on-failure
