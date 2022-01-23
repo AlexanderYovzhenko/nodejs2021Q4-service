@@ -1,5 +1,4 @@
 import boardsRepo from './board.repository';
-import taskServiceBoard from '../tasks/task.service';
 import OrmBoard from './board.model';
 
 /**
@@ -44,13 +43,11 @@ const updateBoardService = async (boardId: string, updBoard: OrmBoard) => {
 /**
  * Intermediate function
  * Called function deleteBoard with argument boardId(delete object board with ID board equal boardID).
- * Called function deleteTaskFromBoardService with argument boardId(delete object task with field boardId equal argument boardID)
  * @param boardID -first argument ID board
  * @returns void
  */
 const deleteBoardService = async (boardId: string) => {
   await boardsRepo.deleteBoard(boardId);
-  await taskServiceBoard.deleteTaskFromBoardService(boardId);
 };
 
 export default {

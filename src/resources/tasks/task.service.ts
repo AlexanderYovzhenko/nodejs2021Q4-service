@@ -49,32 +49,10 @@ const deleteTaskService = async (taskId: string) => {
   await tasksRepo.deleteTask(taskId);
 };
 
-/**
- * Intermediate function
- * Called function deleteTaskFromBoard with argument boardId(delete object task with ID board equal boardID)
- * @param boardID -first argument ID board
- * @returns void
- */
-const deleteTaskFromBoardService = async (boardId: string) => {
-  await tasksRepo.deleteTaskFromBoard(boardId);
-};
-
-/**
- * Intermediate function
- * Called function updateUserId with argument userId(update field userID in object task with ID user equal userID on null)
- * @param userID -first argument ID user
- * @returns void
- */
-// const updateUserIdService = async (userId: string) => {
-//   await tasksRepo.updateUserId(userId);
-// };
-
 export default {
   getTasksAllService,
   getTaskIdService,
   addTaskService,
   deleteTaskService,
   updateTaskService,
-  deleteTaskFromBoardService,
-  // updateUserIdService,
 };

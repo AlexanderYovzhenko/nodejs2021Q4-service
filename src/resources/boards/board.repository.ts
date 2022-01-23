@@ -1,4 +1,5 @@
 import { getRepository } from 'typeorm';
+import OrmTask from '../tasks/task.model';
 import OrmBoard from './board.model';
 
 /**
@@ -47,11 +48,13 @@ const updateBoard = async (
 
 /**
  * Delete object board with ID board equal boardID in array boards(dbBoards)
+ * Called function deleteTaskFromBoardService with argument boardId(delete object task with field boardId equal argument boardID)
  * @param boardID -first argument ID board
  * @returns void
  */
 const deleteBoard = async (boardId: string): Promise<void> => {
   await getRepository(OrmBoard).delete(boardId);
+  await getRepository(OrmTask).delete({ boardId: boardId });
 };
 
 export default {
