@@ -14,7 +14,7 @@ git clone https://github.com/GoldenManBel/nodejs2021Q4-service.git
 ## Switch branch
 
 ```
-git checkout postgreSQL-typeorm
+git checkout authentication-JWT
 ```
 
 ## Installing NPM modules
@@ -30,7 +30,7 @@ docker-compose up --build
 ```
 
 ```
-npm run test
+npm run test:auth
 
 ```
 or
@@ -39,7 +39,11 @@ or
 docker exec -i -t app sh
 ```
 ```
-npm run test
+npm run test:auth
+```
+Check build:
+```
+npm run build
 ```
 
 ## Running application local and bd in docker
@@ -59,7 +63,11 @@ npm run migration:generate
 npm run start:ts 
 ```
 ```
-npm run test 
+npm run test:auth
+```
+Check build:
+```
+npm run build
 ```
 
 ## Create a migration
