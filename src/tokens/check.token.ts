@@ -21,7 +21,7 @@ const checkToken = (
 
     if (type === 'Bearer' && token) {
       try {
-        jwt.verify(token, JWT_SECRET_KEY);
+        jwt.verify(token, JWT_SECRET_KEY!);
       } catch (error) {
         throw new AuthorizationError('Authorization Error!');
       }

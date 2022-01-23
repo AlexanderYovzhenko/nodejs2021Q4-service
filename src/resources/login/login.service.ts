@@ -15,7 +15,7 @@ const signToken = async (login: string, password: string) => {
     return null;
   } else {
     const { id, login } = user;
-    const token = jwt.sign({ id, login }, JWT_SECRET_KEY, { expiresIn: '10m' });
+    const token = jwt.sign({ id, login }, JWT_SECRET_KEY!, {});
 
     return token;
   }
