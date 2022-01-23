@@ -65,9 +65,9 @@ const deleteTaskFromBoardService = async (boardId: string) => {
  * @param userID -first argument ID user
  * @returns void
  */
-const updateUserIdService = async (userId: string) => {
-  await tasksRepo.updateUserId(userId);
-};
+// const updateUserIdService = async (userId: string) => {
+//   await tasksRepo.updateUserId(userId);
+// };
 
 export default {
   getTasksAllService,
@@ -76,5 +76,5 @@ export default {
   deleteTaskService,
   updateTaskService,
   deleteTaskFromBoardService,
-  updateUserIdService,
+  // updateUserIdService,
 };

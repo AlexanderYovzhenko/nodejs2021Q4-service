@@ -1,9 +1,7 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { IUser } from '../../common/types';
-import OrmTask from '../tasks/task.model';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-class OrmUser implements IUser {
+class OrmUser {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
@@ -15,9 +13,6 @@ class OrmUser implements IUser {
 
   @Column()
   password!: string;
-
-  @OneToMany(() => OrmTask, (task) => task.userId)
-  tasks!: OrmTask[];
 }
 
 export default OrmUser;

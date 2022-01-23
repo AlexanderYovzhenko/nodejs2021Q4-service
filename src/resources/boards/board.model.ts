@@ -1,10 +1,8 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { IBoard } from '../../common/types';
-import OrmTask from '../tasks/task.model';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import OrmColumn from './column.model';
 
 @Entity()
-class OrmBoard implements IBoard {
+class OrmBoard {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
@@ -13,9 +11,6 @@ class OrmBoard implements IBoard {
 
   @Column('json', { nullable: true })
   columns!: [OrmColumn];
-
-  @OneToMany(() => OrmTask, (task) => task.boardId)
-  tasks!: OrmTask[];
 }
 
 export default OrmBoard;

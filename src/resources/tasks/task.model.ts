@@ -1,9 +1,8 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { ITask } from '../../common/types';
 import OrmUser from '../users/user.model';
 
 @Entity()
-class OrmTask implements ITask {
+class OrmTask {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
@@ -22,7 +21,7 @@ class OrmTask implements ITask {
   @Column({ type: 'uuid', nullable: true, name: 'boardId' })
   boardId!: string;
 
-  @ManyToOne(() => OrmUser, (user) => user.tasks, {
+  @ManyToOne(() => OrmUser, (user) => user.id, {
     eager: true,
     nullable: true,
     onDelete: 'SET NULL',

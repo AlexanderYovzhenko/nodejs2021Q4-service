@@ -60,14 +60,14 @@ const deleteTaskFromBoard = async (boardId: string): Promise<void> => {
   await getRepository(OrmTask).delete({ boardId: boardId });
 };
 
-/**
- * Update field userId in objects task with ID user equal userID on null in array tasks(dbTasks)
- * @param userID -first argument ID user
- * @returns void
- */
-const updateUserId = async (userId: string | undefined): Promise<void> => {
-  await getRepository(OrmTask).update({ userId }, { userId: undefined });
-};
+// /**
+//  * Update field userId in objects task with ID user equal userID on null in array tasks(dbTasks)
+//  * @param userID -first argument ID user
+//  * @returns void
+//  */
+// const updateUserId = async (userId: string | undefined): Promise<void> => {
+//   await getRepository(OrmTask).update({ userId }, { userId: undefined });
+// };
 
 export default {
   getTasksAll,
@@ -76,5 +76,5 @@ export default {
   deleteTask,
   updateTask,
   deleteTaskFromBoard,
-  updateUserId,
+  // updateUserId,
 };

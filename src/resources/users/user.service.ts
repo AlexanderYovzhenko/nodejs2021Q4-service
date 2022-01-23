@@ -1,5 +1,5 @@
 import usersRepo from './user.repository';
-import taskServiceUser from '../tasks/task.service';
+// import taskServiceUser from '../tasks/task.service';
 import { IUser } from '../../common/types';
 import OrmUser from './user.model';
 
@@ -50,7 +50,7 @@ const updateUserService = async (userId: string, updUser: IUser) => {
  */
 const deleteUserService = async (userId: string) => {
   await usersRepo.deleteUser(userId);
-  await taskServiceUser.updateUserIdService(userId);
+  // await taskServiceUser.updateUserIdService(userId);
 };
 
 export default {

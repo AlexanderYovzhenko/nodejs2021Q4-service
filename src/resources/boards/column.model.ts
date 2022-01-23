@@ -1,16 +1,9 @@
-import {
-  Column,
-  Entity,
-  OneToMany,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
-import { IColumn } from '../../common/types';
-import OrmTask from '../tasks/task.model';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+
 import OrmBoard from './board.model';
 
 @Entity()
-class OrmColumn implements IColumn {
+class OrmColumn {
   @PrimaryGeneratedColumn('uuid')
   columnId!: string;
 
@@ -24,9 +17,6 @@ class OrmColumn implements IColumn {
     cascade: ['remove', 'update'],
   })
   board!: OrmBoard;
-
-  @OneToMany(() => OrmTask, (task) => task.columnId)
-  tasks!: OrmTask[];
 }
 
 export default OrmColumn;
