@@ -2,14 +2,24 @@ import { getRepository } from 'typeorm';
 import { IUser } from '../../common/types';
 import OrmUser from '../users/user.model';
 
+/**
+ * Find user admin in database
+ * @param userLogin -first argument userLogin
+ * @returns userAdmin
+ */
 const getUserLogin = async (userLogin: string): Promise<IUser | undefined> => {
-  const loginUser = await getRepository(OrmUser).findOne({
+  const userAdmin = await getRepository(OrmUser).findOne({
     where: { login: userLogin },
   });
 
-  return loginUser;
+  return userAdmin;
 };
 
+/**
+ * Add user admin in database if user admin not found
+ * @param newUserAdmin -first argument newUserAdmin
+ * @returns void
+ */
 const addUserAdmin = async (newUserAdmin: Omit<IUser, 'id'>) => {
   const userAdmin = await getRepository(OrmUser).findOne({
     where: { login: newUserAdmin.login },

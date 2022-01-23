@@ -14,6 +14,12 @@ type FastifyRequestLogin = FastifyRequest<{
   };
 }>;
 
+/**
+ * Adds an admin user and gives a token
+ * @param request -first argument request
+ * @param _ -second argument response
+ * @returns void
+ */
 const addLoginRouter = async (
   request: FastifyRequestLogin,
   reply: FastifyReply

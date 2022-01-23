@@ -3,6 +3,13 @@ import jwt from 'jsonwebtoken';
 import { JWT_SECRET_KEY } from '../common/config';
 import { AuthorizationError } from '../errors/custom.errors';
 
+/**
+ * Intermediate function
+ * Checks for a valid token
+ * @param request -first argument request
+ * @param _ -second argument response
+ * @returns void
+ */
 const checkToken = (
   request: FastifyRequest,
   _: FastifyReply,
