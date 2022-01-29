@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
@@ -14,6 +14,8 @@ import { User } from './users/entities/user.entity';
 import { Board } from './boards/entities/board.entity';
 import { Task } from './tasks/entities/task.entity';
 import { AuthModule } from './auth/auth.module';
+import { LoggerMiddleware } from './utils/logger.middleware';
+// import { loggerWinston } from './utils/logger.winston.settings';
 
 @Module({
   imports: [
@@ -39,6 +41,11 @@ import { AuthModule } from './auth/auth.module';
     AuthModule,
   ],
   controllers: [AppController, UsersController, BoardsController],
-  providers: [AppService, UsersService, BoardsService],
+  providers: [AppService, UsersService, BoardsService, LoggerMiddleware],
+  exports: [LoggerMiddleware],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LoggerMiddleware).forRoutes('*');
+  }
+}
