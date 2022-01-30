@@ -7,22 +7,29 @@ import {
   Delete,
   HttpCode,
   Put,
-  Res,
-  HttpStatus,
   UseGuards,
-  ValidationPipe,
+  // ValidationPipe,
+  NotFoundException,
+  HttpStatus,
+  UseFilters,
+  ParseUUIDPipe,
+  // UsePipes,
 } from '@nestjs/common';
-import { Response } from 'express';
+
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { AuthGuard } from 'src/auth/jwt-auth.guard';
+import { AllExceptionsFilter } from 'src/exception-filters/all-exceptions.filter';
+// import { JoiValidationPipe } from 'src/pipes/validation.pipe';
 
 @UseGuards(AuthGuard)
+@UseFilters(AllExceptionsFilter)
 @Controller('users')
 export class UsersController {
-  constructor(private usersService: UsersService) {}
+  constructor(private readonly usersService: UsersService) {}
 
+  // @UsePipes(new JoiValidationPipe(createCatSchema))
   @Post()
   async create(@Body() createUserDto: CreateUserDto) {
     return await this.usersService.create(createUserDto);
@@ -34,42 +41,34 @@ export class UsersController {
   }
 
   @Get(':id')
-  async findOne(
-    @Param('id') id: string,
-    @Res({ passthrough: true }) res: Response,
-  ) {
+  async findOne(@Param('id', ParseUUIDPipe) id: string) {
     if (await this.usersService.findOne(id)) {
       return await this.usersService.findOne(id);
     } else {
-      res.status(HttpStatus.NOT_FOUND).send('User not found!');
+      throw new NotFoundException('User not found!');
     }
   }
 
   @Put(':id')
   async update(
-    @Param('id') id: string,
-    @Res({ passthrough: true }) res: Response,
+    @Param('id', ParseUUIDPipe) id: string,
+
     @Body() updateUserDto: UpdateUserDto,
   ) {
     if (await this.usersService.findOne(id)) {
       return await this.usersService.update(id, updateUserDto);
     } else {
-      res.status(HttpStatus.NOT_FOUND).send('User not found!');
+      throw new NotFoundException('User not found!');
     }
   }
 
-  @HttpCode(204)
+  @HttpCode(HttpStatus.NO_CONTENT)
   @Delete(':id')
-  async remove(
-    @Param('id') id: string,
-    @Res({ passthrough: true }) res: Response,
-  ) {
+  async remove(@Param('id', ParseUUIDPipe) id: string) {
     if (await this.usersService.findOne(id)) {
-      console.log(await this.usersService.remove(id));
-
       await this.usersService.remove(id);
     } else {
-      res.status(HttpStatus.NOT_FOUND).send('User not found!');
+      throw new NotFoundException('User not found!');
     }
   }
 }

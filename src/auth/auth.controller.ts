@@ -2,12 +2,14 @@ import {
   Controller,
   Post,
   Body,
-  HttpException,
-  HttpStatus,
+  ForbiddenException,
+  UseFilters,
 } from '@nestjs/common';
+import { AllExceptionsFilter } from 'src/exception-filters/all-exceptions.filter';
 import { AuthService } from './auth.service';
 import { CreateAuthDto } from './dto/create-auth.dto';
 
+@UseFilters(AllExceptionsFilter)
 @Controller('login')
 export class AuthController {
   constructor(private authService: AuthService) {}
@@ -17,10 +19,7 @@ export class AuthController {
     const token = await this.authService.generateToken(createAuthDto);
 
     if (!token) {
-      throw new HttpException(
-        'Wrong login/password combination!',
-        HttpStatus.FORBIDDEN,
-      );
+      throw new ForbiddenException('Wrong login/password combination!');
     } else {
       return { token };
     }

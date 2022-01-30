@@ -15,6 +15,9 @@ import { Board } from './boards/entities/board.entity';
 import { Task } from './tasks/entities/task.entity';
 import { AuthModule } from './auth/auth.module';
 import { LoggerMiddleware } from './utils/logger.middleware';
+import { AuthController } from './auth/auth.controller';
+import { AuthService } from './auth/auth.service';
+// import { Columns } from './boards/entities/column.entity';
 // import { loggerWinston } from './utils/logger.winston.settings';
 
 @Module({
@@ -22,6 +25,7 @@ import { LoggerMiddleware } from './utils/logger.middleware';
     BoardsModule,
     UsersModule,
     TasksModule,
+    AuthModule,
     ConfigModule.forRoot({
       envFilePath: `.${process.env.NODE_ENV}.env`,
     }),
@@ -33,16 +37,26 @@ import { LoggerMiddleware } from './utils/logger.middleware';
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB,
-      models: [User],
+      models: [User, Task, Board],
       autoLoadModels: true,
       // synchronize: false,
       logging: false,
     }),
-    AuthModule,
   ],
-  controllers: [AppController, UsersController, BoardsController],
-  providers: [AppService, UsersService, BoardsService, LoggerMiddleware],
-  exports: [LoggerMiddleware],
+  controllers: [
+    AppController,
+    // UsersController,
+    // BoardsController,
+    // AuthController,
+  ],
+  providers: [
+    AppService,
+    // UsersService,
+    // BoardsService,
+    // AuthService,
+    // LoggerMiddleware,
+  ],
+  // exports: [LoggerMiddleware],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
