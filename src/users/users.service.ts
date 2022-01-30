@@ -5,12 +5,13 @@ import { Task } from 'src/tasks/entities/task.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
+// import { Sequelize } from 'sequelize-typescript';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectModel(User) private usersRepository: typeof User,
-    @InjectModel(Task) private tasksRepository: typeof Task,
+    @InjectModel(Task) private tasksRepository: typeof Task, // private sequelize: Sequelize,
   ) {}
 
   async createAdmin(createUserDto: CreateUserDto) {
@@ -41,7 +42,11 @@ export class UsersService {
 
   async findOne(id: string) {
     const userOne = await this.usersRepository.findOne({ where: { id } });
-    return this.usersRepository.toResponse(userOne);
+    if (userOne) {
+      return this.usersRepository.toResponse(userOne);
+    } else {
+      return null;
+    }
   }
 
   async getUserByLogin(login: string) {
@@ -65,9 +70,9 @@ export class UsersService {
       restartIdentity: true,
       where: { id },
     });
-    await this.tasksRepository.update(
-      { userId: null },
-      { where: { userId: id } },
-    );
+    // await this.tasksRepository.update(
+    // { userId: null },
+    // { where: { userId: id } },
+    // );
   }
 }

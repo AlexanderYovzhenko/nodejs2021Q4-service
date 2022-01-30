@@ -6,7 +6,9 @@ import {
   Table,
   HasMany,
   BelongsTo,
+  ForeignKey,
 } from 'sequelize-typescript';
+import { User } from 'src/users/entities/user.entity';
 // import { User } from 'src/users/entities/user.entity';
 import { ITask } from '../interfaces/task-interface';
 
@@ -29,12 +31,8 @@ export class Task extends Model<Task, ITask> {
   @Column({ type: DataType.STRING })
   description: string;
 
+  // @ForeignKey(() => User)
   @Column({ type: DataType.STRING, allowNull: true })
-  // @HasMany(() => User, {
-  //     foreignKey: {
-  //       name: 'userId'
-  //     }
-  // })
   userId: string;
 
   @Column({ type: DataType.STRING, allowNull: true })
@@ -42,4 +40,7 @@ export class Task extends Model<Task, ITask> {
 
   @Column({ type: DataType.STRING, allowNull: true })
   columnId: string;
+
+  // @BelongsTo(() => User)
+  // user: User;
 }

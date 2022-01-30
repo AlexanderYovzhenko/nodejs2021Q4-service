@@ -1,6 +1,13 @@
 import sequelize from 'sequelize';
-import { Column, DataType, Model, Table } from 'sequelize-typescript';
+import {
+  BelongsTo,
+  Column,
+  DataType,
+  Model,
+  Table,
+} from 'sequelize-typescript';
 import { IColumn } from '../interfaces/column-interface';
+// import { Board } from './board.entity';
 
 @Table({ tableName: 'columns', updatedAt: false })
 export class Columns extends Model<Columns, IColumn> {
@@ -12,9 +19,12 @@ export class Columns extends Model<Columns, IColumn> {
   })
   columnId: string;
 
-  @Column({ type: DataType.STRING, allowNull: true })
+  @Column({ type: DataType.STRING })
   title: string;
 
-  @Column({ type: DataType.NUMBER, allowNull: true })
+  @Column({ type: DataType.NUMBER })
   order: number;
+
+  // @BelongsTo(() => Board)
+  // boardId: Board;
 }

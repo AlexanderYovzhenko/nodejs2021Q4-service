@@ -3,8 +3,6 @@ import {
   CanActivate,
   ExecutionContext,
   UnauthorizedException,
-  HttpStatus,
-  HttpException,
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { JwtService } from '@nestjs/jwt';
@@ -30,7 +28,7 @@ export class AuthGuard implements CanActivate {
         return true;
       }
     } catch (error) {
-      throw new HttpException('Authorization Error!', HttpStatus.UNAUTHORIZED);
+      throw new UnauthorizedException('Authorization Error!');
     }
   }
 }

@@ -1,4 +1,4 @@
-version: '3.0'
+version: '3.7'
 services:
   postgres:
     image: 'postgres:${POSTGRES_VERSION}'
@@ -12,19 +12,19 @@ services:
         condition: on-failure
         delay: 5s
         max_attempts: 5
-        window: 120s
+        window: 120s 
     networks:
       - my_net
-    env_file: .env
+    env_file: .production.env
     ports:
-      - ${PORT_DB}:${PORT_DB}
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}
     environment:
       - POSTGRES_HOST_AUTH_METHOD=trust
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=${POSTGRES_DB}
-      - PORT_DB=${PORT_DB}
-      - POSTRGES_HOST=${DB_HOST}
+      - POSTGRES_PORT=${POSTGRES_PORT}
+      - POSTRGES_HOST=${POSTGRES_HOST}
       - POSTGRES_VERSION=${POSTGRES_VERSION}
     volumes:
       - pg_data:/var/lib/postgresql/data/
@@ -38,16 +38,16 @@ services:
         - NODE_VERSION=${NODE_VERSION}
     networks:
       - my_net 
-    env_file: .env
+    env_file: .production.env
     ports:
       - ${PORT}:${PORT}
     environment:
       - PORT=${PORT}
-      - NODE_ENV=${NODE_ENV}
       - NODE_VERSION=${NODE_VERSION}
     volumes:
       - logs:/usr/src/app/logs
-      # - ./logs/:/usr/src/app/logs
+      - ./logs/all.log:/usr/src/app/logs/all.log
+      - ./logs/errors.log:/usr/src/app/logs/errors.log
       - ./src/:/usr/src/app/src 
     deploy:
       restart_policy:

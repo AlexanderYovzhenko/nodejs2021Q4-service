@@ -1,6 +1,7 @@
 import sequelize from 'sequelize';
 import { Column, DataType, HasMany, Model, Table } from 'sequelize-typescript';
 // import { Task } from 'src/tasks/entities/task.entity';
+// import { Task } from 'src/tasks/entities/task.entity';
 import { IUser } from '../interface/user-interface';
 
 @Table({ tableName: 'users', updatedAt: false })
@@ -11,21 +12,19 @@ export class User extends Model<User, IUser> {
     unique: true,
     primaryKey: true,
   })
-  // @HasMany(() => Task, {
-  //     foreignKey: {
-  //       name: 'userId'
-  //     }
-  // })
   id: string;
 
-  @Column({ type: DataType.STRING, allowNull: true })
+  @Column({ type: DataType.STRING })
   name: string;
 
-  @Column({ type: DataType.STRING, allowNull: true })
+  @Column({ type: DataType.STRING })
   login: string;
 
-  @Column({ type: DataType.STRING, allowNull: true })
+  @Column({ type: DataType.STRING })
   password: string;
+
+  // @HasMany(() => Task)
+  // task: Task[];
 
   static toResponse(user) {
     const { id, name, login } = user;
