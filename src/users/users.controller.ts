@@ -69,7 +69,6 @@ export class UsersController {
   @Put(':id')
   async update(
     @Param('id', ParseUUIDPipe) id: string,
-
     @Body() updateUserDto: UpdateUserDto,
   ) {
     if (await this.usersService.findOne(id)) {

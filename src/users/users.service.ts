@@ -28,6 +28,7 @@ export class UsersService {
   async create(createUserDto: CreateUserDto) {
     const salt = process.env.SALT_HASH_PASSWORD;
     const hashPassword = await bcrypt.hash(createUserDto.password, +salt);
+
     const user = await this.usersRepository.create({
       ...createUserDto,
       password: hashPassword,
@@ -57,6 +58,7 @@ export class UsersService {
   async update(id: string, updateUserDto: UpdateUserDto) {
     const salt = process.env.SALT_HASH_PASSWORD;
     const hashPassword = await bcrypt.hash(updateUserDto.password, +salt);
+
     await this.usersRepository.update(
       { ...updateUserDto, password: hashPassword },
       { where: { id } },
