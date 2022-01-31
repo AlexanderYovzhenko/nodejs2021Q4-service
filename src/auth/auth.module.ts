@@ -7,13 +7,7 @@ import { APP_PIPE } from '@nestjs/core';
 
 @Module({
   controllers: [AuthController],
-  providers: [
-    AuthService,
-    {
-      provide: APP_PIPE,
-      useClass: ValidationPipe,
-    },
-  ],
+  providers: [AuthService],
   imports: [
     forwardRef(() => UsersModule),
     JwtModule.register({

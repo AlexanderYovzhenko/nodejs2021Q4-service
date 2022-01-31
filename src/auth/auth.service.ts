@@ -18,6 +18,9 @@ export class AuthService {
       password: 'admin',
     });
 
+    if (!(createAuthDto?.login && createAuthDto?.password)) {
+      return null;
+    }
     const { login, password } = createAuthDto;
 
     const userAdmin = await this.usersService.getUserByLogin(login);

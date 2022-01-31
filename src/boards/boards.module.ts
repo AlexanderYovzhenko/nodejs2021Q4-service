@@ -10,13 +10,7 @@ import { APP_PIPE } from '@nestjs/core';
 
 @Module({
   controllers: [BoardsController],
-  providers: [
-    BoardsService,
-    {
-      provide: APP_PIPE,
-      useClass: ValidationPipe,
-    },
-  ],
+  providers: [BoardsService],
   imports: [
     SequelizeModule.forFeature([Board, Task]),
     forwardRef(() => AuthModule),

@@ -20,7 +20,8 @@ export class AllExceptionsFilter implements ExceptionFilter {
       exception instanceof HttpException
         ? exception.getStatus()
         : HttpStatus.INTERNAL_SERVER_ERROR;
-    const message = exception['message'];
+    const message =
+      exception?.['response']?.['message'] ?? exception['message'];
     const error = exception?.['response']?.['error'] ?? exception['name'];
 
     const responseBody = {

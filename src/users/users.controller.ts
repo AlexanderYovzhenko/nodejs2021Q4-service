@@ -8,38 +8,53 @@ import {
   HttpCode,
   Put,
   UseGuards,
-  // ValidationPipe,
   NotFoundException,
   HttpStatus,
   UseFilters,
   ParseUUIDPipe,
-  // UsePipes,
 } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiResponse, ApiHeader } from '@nestjs/swagger';
 
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { AuthGuard } from 'src/auth/jwt-auth.guard';
 import { AllExceptionsFilter } from 'src/exception-filters/all-exceptions.filter';
-// import { JoiValidationPipe } from 'src/pipes/validation.pipe';
 
+@ApiTags('Users')
+@ApiHeader({
+  name: 'header',
+  description: 'Authorization Bearer token',
+  schema: {
+    type: 'string',
+    default: 'Bearer token',
+  },
+})
 @UseGuards(AuthGuard)
 @UseFilters(AllExceptionsFilter)
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  // @UsePipes(new JoiValidationPipe(createCatSchema))
+  @ApiOperation({ summary: 'user creation' })
+  @ApiResponse({
+    status: 201,
+    type: CreateUserDto,
+  })
   @Post()
   async create(@Body() createUserDto: CreateUserDto) {
     return await this.usersService.create(createUserDto);
   }
 
+  @ApiOperation({ summary: 'get all users' })
+  @ApiResponse({ status: 200, type: [CreateUserDto] })
   @Get()
   async findAll() {
     return await this.usersService.findAll();
   }
 
+  @ApiOperation({ summary: 'get user by id' })
+  @ApiResponse({ status: 200, type: CreateUserDto })
   @Get(':id')
   async findOne(@Param('id', ParseUUIDPipe) id: string) {
     if (await this.usersService.findOne(id)) {
@@ -49,6 +64,8 @@ export class UsersController {
     }
   }
 
+  @ApiOperation({ summary: 'update user by id' })
+  @ApiResponse({ status: 200, type: UpdateUserDto })
   @Put(':id')
   async update(
     @Param('id', ParseUUIDPipe) id: string,
@@ -62,6 +79,8 @@ export class UsersController {
     }
   }
 
+  @ApiOperation({ summary: 'delete user by id' })
+  @ApiResponse({ status: 204 })
   @HttpCode(HttpStatus.NO_CONTENT)
   @Delete(':id')
   async remove(@Param('id', ParseUUIDPipe) id: string) {

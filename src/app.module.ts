@@ -3,22 +3,18 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UsersController } from './users/users.controller';
-import { UsersService } from './users/users.service';
 import { BoardsModule } from './boards/boards.module';
 import { UsersModule } from './users/users.module';
-import { BoardsController } from './boards/boards.controller';
 import { TasksModule } from './tasks/tasks.module';
-import { BoardsService } from './boards/boards.service';
 import { User } from './users/entities/user.entity';
 import { Board } from './boards/entities/board.entity';
 import { Task } from './tasks/entities/task.entity';
 import { AuthModule } from './auth/auth.module';
 import { LoggerMiddleware } from './utils/logger.middleware';
-import { AuthController } from './auth/auth.controller';
-import { AuthService } from './auth/auth.service';
+// import { AllExceptionsFilter } from './exception-filters/all-exceptions.filter';
+// import { APP_FILTER, HttpAdapterHost } from '@nestjs/core';
+// import { FilterModule } from './exception-filters/filter.module';
 // import { Columns } from './boards/entities/column.entity';
-// import { loggerWinston } from './utils/logger.winston.settings';
 
 @Module({
   imports: [
@@ -26,6 +22,7 @@ import { AuthService } from './auth/auth.service';
     UsersModule,
     TasksModule,
     AuthModule,
+    // FilterModule,
     ConfigModule.forRoot({
       envFilePath: `.${process.env.NODE_ENV}.env`,
     }),
@@ -43,20 +40,14 @@ import { AuthService } from './auth/auth.service';
       logging: false,
     }),
   ],
-  controllers: [
-    AppController,
-    // UsersController,
-    // BoardsController,
-    // AuthController,
-  ],
+  controllers: [AppController],
   providers: [
     AppService,
-    // UsersService,
-    // BoardsService,
-    // AuthService,
-    // LoggerMiddleware,
+    // {
+    //   provide: APP_FILTER,
+    //   useClass: AllExceptionsFilter,
+    // },
   ],
-  // exports: [LoggerMiddleware],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
