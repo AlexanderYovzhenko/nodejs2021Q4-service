@@ -10,11 +10,7 @@ import { User } from './users/entities/user.entity';
 import { Board } from './boards/entities/board.entity';
 import { Task } from './tasks/entities/task.entity';
 import { AuthModule } from './auth/auth.module';
-import { LoggerMiddleware } from './utils/logger.middleware';
-// import { AllExceptionsFilter } from './exception-filters/all-exceptions.filter';
-// import { APP_FILTER, HttpAdapterHost } from '@nestjs/core';
-// import { FilterModule } from './exception-filters/filter.module';
-// import { Columns } from './boards/entities/column.entity';
+import { FileModule } from './file/file.module';
 
 @Module({
   imports: [
@@ -22,7 +18,7 @@ import { LoggerMiddleware } from './utils/logger.middleware';
     UsersModule,
     TasksModule,
     AuthModule,
-    // FilterModule,
+    FileModule,
     ConfigModule.forRoot({
       envFilePath: `.${process.env.NODE_ENV}.env`,
     }),
@@ -39,18 +35,13 @@ import { LoggerMiddleware } from './utils/logger.middleware';
       // synchronize: false,
       logging: false,
     }),
+    FileModule,
   ],
   controllers: [AppController],
-  providers: [
-    AppService,
-    // {
-    //   provide: APP_FILTER,
-    //   useClass: AllExceptionsFilter,
-    // },
-  ],
+  providers: [AppService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(LoggerMiddleware).forRoutes('*');
+    // consumer.apply(LoggerMiddleware).forRoutes('*');
   }
 }

@@ -6,11 +6,12 @@ import {
   FastifyAdapter,
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
+import fmp from 'fastify-multipart';
 import { loggerWinston } from './utils/logger-winston.config';
 import { config } from './doc/doc-config';
-console.log(process.env.USE_FASTIFY);
+import { LoggingInterceptor } from './utils/logger.middleware';
 
-if (process.env.USE_FASTIFY) {
+if (process.env.USE_FASTIFY === 'fastify') {
   async function bootstrap() {
     const app = await NestFactory.create<NestFastifyApplication>(
       AppModule,
@@ -19,6 +20,10 @@ if (process.env.USE_FASTIFY) {
         logger: loggerWinston,
       },
     );
+    app.useGlobalInterceptors(new LoggingInterceptor());
+    app.register(fmp);
+    app.enableCors();
+
     app.useGlobalPipes(
       new ValidationPipe({
         whitelist: true,
@@ -38,6 +43,9 @@ if (process.env.USE_FASTIFY) {
     const app = await NestFactory.create(AppModule, {
       logger: loggerWinston,
     });
+    app.useGlobalInterceptors(new LoggingInterceptor());
+    app.enableCors();
+
     app.useGlobalPipes(
       new ValidationPipe({
         whitelist: true,

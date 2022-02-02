@@ -1,28 +1,44 @@
-import { Injectable, Logger, NestMiddleware } from '@nestjs/common';
-import { Request, Response, NextFunction } from 'express';
+import {
+  Injectable,
+  NestInterceptor,
+  ExecutionContext,
+  CallHandler,
+} from '@nestjs/common';
+import { Observable, throwError, catchError } from 'rxjs';
+import { loggerWinston } from './logger-winston.config';
 
 @Injectable()
-export class LoggerMiddleware implements NestMiddleware {
-  private logger = new Logger('HTTP');
+export class LoggingInterceptor implements NestInterceptor {
+  intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+    const contextReq = context['args'][0];
+    const contextRes = context['args'][1];
 
-  use(request: Request, response: Response, next: NextFunction): void {
-    response.on('finish', () => {
-      const { method, originalUrl, params, query, body } = request;
-      const { statusCode } = response;
-      const service = 'REST-service';
+    const { method, url, params, query, body } = contextReq;
+    const statusCode = contextRes.statusCode;
+    const service = 'REST-service';
 
-      const messageLog = `${method} Url:${originalUrl} statusCode:${statusCode} params:${JSON.stringify(
-        params,
-      )} queryParams:${JSON.stringify(query)} body:${JSON.stringify(
-        body,
-      )} service:${service}`;
-      if (response.statusCode >= 400) {
-        this.logger.error(messageLog);
-      } else {
-        this.logger.log(messageLog);
-      }
-    });
+    const messageLog = `${method} Url:${url} statusCode:${statusCode} params:${JSON.stringify(
+      params,
+    )} queryParams:${JSON.stringify(query)} body:${JSON.stringify(
+      body,
+    )} service:${service}`;
 
-    next();
+    loggerWinston.log(messageLog);
+
+    return next.handle().pipe(
+      catchError((err) => {
+        {
+          const messageLogErr = `${method} Url:${url} statusCode:${
+            err.status
+          } params:${JSON.stringify(params)} queryParams:${JSON.stringify(
+            query,
+          )} body:${JSON.stringify(body)} service:${service}`;
+
+          loggerWinston.error(messageLogErr);
+
+          return throwError(() => err);
+        }
+      }),
+    );
   }
 }

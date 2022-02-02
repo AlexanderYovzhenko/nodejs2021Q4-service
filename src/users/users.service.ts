@@ -72,9 +72,9 @@ export class UsersService {
       restartIdentity: true,
       where: { id },
     });
-    // await this.tasksRepository.update(
-    // { userId: null },
-    // { where: { userId: id } },
-    // );
+    await this.tasksRepository.update(
+      { userId: null },
+      { where: { userId: id } },
+    );
   }
 }
