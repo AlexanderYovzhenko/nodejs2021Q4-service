@@ -8,19 +8,41 @@ import {
   Res,
   UseGuards,
   NotFoundException,
+  UseFilters,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'fastify-multer';
 import { FileService } from './file.service';
 import { editFileName } from './config-name.file';
 import { AuthGuard } from 'src/auth/jwt-auth.guard';
+import {
+  ApiBody,
+  ApiConsumes,
+  ApiHeader,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
+import { AllExceptionsFilter } from 'src/exception-filters/all-exceptions.filter';
 
+@ApiTags('File')
+@UseFilters(AllExceptionsFilter)
 @Controller('file')
 export class FileExpressController {
   constructor(private fileService: FileService) {}
 
   @Post()
   @UseGuards(AuthGuard)
+  @ApiHeader({
+    name: 'header',
+    description: 'Authorization Bearer token',
+    schema: {
+      type: 'string',
+      default: 'Bearer token',
+    },
+  })
+  @ApiOperation({ summary: 'file upload' })
+  @ApiResponse({ status: 201 })
   @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({
@@ -29,14 +51,28 @@ export class FileExpressController {
       }),
     }),
   )
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        file: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
+  })
   async uploadedFile(@UploadedFile() file) {
     return await this.fileService.uploadFileExpress(file);
   }
 
+  @ApiOperation({ summary: 'get file by name' })
+  @ApiResponse({ status: 200 })
   @Get(':fileName')
-  async getUploadedFile(@Param('fileName') file, @Res() res) {
+  async getUploadedFile(@Param('fileName') fileName: string, @Res() res) {
     try {
-      return res.download('./static/' + file);
+      return res.download('./static/' + fileName);
     } catch (error) {
       throw new NotFoundException('File not found');
     }

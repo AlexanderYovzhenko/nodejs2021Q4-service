@@ -9,7 +9,7 @@ export class FileService {
   async uploadFileFastify(req, res) {
     const mp = await req.multipart(this.handler, onEnd);
     mp.on('field', function (key, value) {
-      console.log('form-data', key, value);
+      console.info('form-data', key, value);
     });
 
     async function onEnd(err: unknown) {
@@ -22,7 +22,7 @@ export class FileService {
         );
         return;
       }
-      res.code(HttpStatus.OK).send('Data uploaded successfully');
+      res.code(HttpStatus.CREATED).send('Data uploaded successfully');
     }
   }
 
