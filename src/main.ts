@@ -34,7 +34,7 @@ if (process.env.USE_FASTIFY === 'fastify') {
     const document = SwaggerModule.createDocument(app, config);
     SwaggerModule.setup('doc', app, document);
 
-    await app.listen(process.env.PORT || 4000, '0.0.0.0');
+    await app.listen(+process.env.PORT || 4000, '0.0.0.0');
   }
 
   bootstrap();

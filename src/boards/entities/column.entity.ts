@@ -1,30 +1,26 @@
-import sequelize from 'sequelize';
-import {
-  BelongsTo,
-  Column,
-  DataType,
-  Model,
-  Table,
-} from 'sequelize-typescript';
-import { IColumn } from '../interfaces/column-interface';
-// import { Board } from './board.entity';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Board } from './board.entity';
 
-@Table({ tableName: 'columns', updatedAt: false })
-export class Columns extends Model<Columns, IColumn> {
+@Entity('columns')
+export class Columns {
+  @PrimaryGeneratedColumn('uuid')
+  columnId!: string;
+
   @Column({
-    type: DataType.UUID,
-    defaultValue: sequelize.UUIDV4,
-    unique: true,
-    primaryKey: true,
+    type: 'varchar',
+    default: 'title',
   })
-  columnId: string;
+  title!: string;
 
-  @Column({ type: DataType.STRING })
-  title: string;
+  @Column({
+    type: 'int',
+    default: '0',
+  })
+  order!: number;
 
-  @Column({ type: DataType.NUMBER })
-  order: number;
-
-  // @BelongsTo(() => Board)
-  // boardId: Board;
+  @ManyToOne(() => Board, (board: Board) => board.columns, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
+  board!: Board;
 }

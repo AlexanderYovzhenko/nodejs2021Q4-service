@@ -36,21 +36,21 @@ export class BoardsController {
   constructor(private readonly boardsService: BoardsService) {}
 
   @ApiOperation({ summary: 'board creation' })
-  @ApiResponse({ status: 201, type: CreateBoardDto })
+  @ApiResponse({ status: HttpStatus.CREATED, type: CreateBoardDto })
   @Post()
   async create(@Body() createBoardDto: CreateBoardDto) {
     return await this.boardsService.create(createBoardDto);
   }
 
   @ApiOperation({ summary: 'get all boards' })
-  @ApiResponse({ status: 200, type: [CreateBoardDto] })
+  @ApiResponse({ status: HttpStatus.OK, type: [CreateBoardDto] })
   @Get()
   async findAll() {
     return await this.boardsService.findAll();
   }
 
   @ApiOperation({ summary: 'get board by id' })
-  @ApiResponse({ status: 200, type: CreateBoardDto })
+  @ApiResponse({ status: HttpStatus.OK, type: CreateBoardDto })
   @Get(':id')
   async findOne(@Param('id', ParseUUIDPipe) id: string) {
     if (await this.boardsService.findOne(id)) {
@@ -61,7 +61,7 @@ export class BoardsController {
   }
 
   @ApiOperation({ summary: 'update board by id' })
-  @ApiResponse({ status: 200, type: UpdateBoardDto })
+  @ApiResponse({ status: HttpStatus.OK, type: UpdateBoardDto })
   @Put(':id')
   async update(
     @Param('id', ParseUUIDPipe) id: string,
@@ -75,7 +75,7 @@ export class BoardsController {
   }
 
   @ApiOperation({ summary: 'delete board by id' })
-  @ApiResponse({ status: 204 })
+  @ApiResponse({ status: HttpStatus.NO_CONTENT })
   @HttpCode(HttpStatus.NO_CONTENT)
   @Delete(':id')
   async remove(@Param('id', ParseUUIDPipe) id: string) {

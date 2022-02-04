@@ -1,38 +1,39 @@
 import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/sequelize';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { Task } from './entities/task.entity';
 
 @Injectable()
 export class TasksService {
-  constructor(@InjectModel(Task) private taskRepository: typeof Task) {}
+  constructor(
+    @InjectRepository(Task)
+    private tasksRepository: Repository<Task>,
+  ) {}
 
   async create(createTaskDto: CreateTaskDto) {
-    const task = await this.taskRepository.create(createTaskDto);
+    const task = await this.tasksRepository.save(createTaskDto);
     return task;
   }
 
   async findAll() {
-    const tasks = await this.taskRepository.findAll();
+    const tasks = await this.tasksRepository.find();
     return tasks;
   }
 
   async findOne(id: string) {
-    const taskOne = await this.taskRepository.findOne({ where: { id } });
+    const taskOne = await this.tasksRepository.findOne({ where: { id } });
     return taskOne;
   }
 
   async update(id: string, updateTaskDto: UpdateTaskDto) {
-    await this.taskRepository.update({ ...updateTaskDto }, { where: { id } });
-    const taskUpdate = await this.taskRepository.findOne({ where: { id } });
+    await this.tasksRepository.update(id, { ...updateTaskDto });
+    const taskUpdate = await this.tasksRepository.findOne({ where: { id } });
     return taskUpdate;
   }
 
   async remove(id: string) {
-    await this.taskRepository.destroy({
-      restartIdentity: true,
-      where: { id },
-    });
+    await this.tasksRepository.delete(id);
   }
 }

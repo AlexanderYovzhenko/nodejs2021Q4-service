@@ -1,46 +1,68 @@
-import sequelize from 'sequelize';
 import {
   Column,
-  DataType,
-  Model,
-  Table,
-  HasMany,
-  BelongsTo,
-  ForeignKey,
-} from 'sequelize-typescript';
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { Board } from 'src/boards/entities/board.entity';
 import { User } from 'src/users/entities/user.entity';
-// import { User } from 'src/users/entities/user.entity';
-import { ITask } from '../interfaces/task-interface';
 
-@Table({ tableName: 'tasks', updatedAt: false })
-export class Task extends Model<Task, ITask> {
-  @Column({
-    type: DataType.UUID,
-    defaultValue: sequelize.UUIDV4,
-    unique: true,
-    primaryKey: true,
-  })
+@Entity('tasks')
+export class Task {
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: DataType.STRING })
+  @Column({
+    type: 'varchar',
+    default: 'title',
+  })
   title: string;
 
-  @Column({ type: DataType.INTEGER })
+  @Column({
+    type: 'int',
+    default: '0',
+  })
   order: number;
 
-  @Column({ type: DataType.STRING })
+  @Column({
+    type: 'varchar',
+    default: 'description',
+  })
   description: string;
 
-  // @ForeignKey(() => User)
-  @Column({ type: DataType.STRING, allowNull: true })
-  userId: string;
+  @ManyToOne(() => Board, (board) => board.id, {
+    nullable: true,
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({
+    name: 'boardId',
+  })
+  @Column({
+    type: 'varchar',
+    nullable: true,
+    default: null,
+  })
+  boardId: string | null;
 
-  @Column({ type: DataType.STRING, allowNull: true })
-  boardId: string;
+  @ManyToOne(() => User, (user) => user.id, {
+    nullable: true,
+    onDelete: 'SET NULL',
+  })
+  @JoinColumn({
+    name: 'userId',
+  })
+  @Column({
+    type: 'varchar',
+    nullable: true,
+    default: null,
+  })
+  userId: string | null;
 
-  @Column({ type: DataType.STRING, allowNull: true })
-  columnId: string;
-
-  // @BelongsTo(() => User)
-  // user: User;
+  @Column({
+    type: 'varchar',
+    nullable: true,
+    default: null,
+  })
+  columnId: string | null;
 }

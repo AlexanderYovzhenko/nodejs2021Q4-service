@@ -1,19 +1,13 @@
-import { forwardRef, Module, ValidationPipe } from '@nestjs/common';
-import { SequelizeModule } from '@nestjs/sequelize';
+import { forwardRef, Module } from '@nestjs/common';
 import { BoardsService } from './boards.service';
 import { BoardsController } from './boards.controller';
 import { Board } from './entities/board.entity';
-import { Task } from 'src/tasks/entities/task.entity';
 import { AuthModule } from 'src/auth/auth.module';
-import { APP_PIPE } from '@nestjs/core';
-// import { Columns } from './entities/column.entity';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
   controllers: [BoardsController],
   providers: [BoardsService],
-  imports: [
-    SequelizeModule.forFeature([Board, Task]),
-    forwardRef(() => AuthModule),
-  ],
+  imports: [TypeOrmModule.forFeature([Board]), forwardRef(() => AuthModule)],
 })
 export class BoardsModule {}

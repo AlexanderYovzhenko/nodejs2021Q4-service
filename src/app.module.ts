@@ -1,5 +1,4 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
-import { SequelizeModule } from '@nestjs/sequelize';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -9,8 +8,11 @@ import { TasksModule } from './tasks/tasks.module';
 import { User } from './users/entities/user.entity';
 import { Board } from './boards/entities/board.entity';
 import { Task } from './tasks/entities/task.entity';
+import { Columns } from './boards/entities/column.entity';
 import { AuthModule } from './auth/auth.module';
 import { FileModule } from './file/file.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+// import config from './ormconfig';
 
 @Module({
   imports: [
@@ -22,18 +24,23 @@ import { FileModule } from './file/file.module';
     ConfigModule.forRoot({
       envFilePath: `.${process.env.NODE_ENV}.env`,
     }),
-    SequelizeModule.forFeature([User, Board, Task]),
-    SequelizeModule.forRoot({
-      dialect: 'postgres',
+    TypeOrmModule.forFeature([User, Board, Task, Columns]),
+    TypeOrmModule.forRoot({
+      type: 'postgres',
       host: process.env.POSTGRES_HOST,
-      port: Number(process.env.POSTGRES_PORT),
+      port: Number(process.env.POSTGRES_PORT) || 5432,
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB,
-      models: [User, Task, Board],
-      autoLoadModels: true,
-      // synchronize: false,
+      dropSchema: true,
       logging: false,
+      synchronize: false,
+      migrationsRun: true,
+      entities: ['dist/**/entities/*.entity{.ts,.js}'],
+      migrations: ['dist/migrations/*.js'],
+      cli: {
+        migrationsDir: 'dist/migrations',
+      },
     }),
     FileModule,
   ],
@@ -41,7 +48,8 @@ import { FileModule } from './file/file.module';
   providers: [AppService],
 })
 export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
+  // constructor(connection: Connection) {}
+  configure(conect: MiddlewareConsumer) {
     // consumer.apply(LoggerMiddleware).forRoutes('*');
   }
 }

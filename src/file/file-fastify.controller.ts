@@ -1,6 +1,7 @@
 import {
   Controller,
   Get,
+  HttpStatus,
   NotFoundException,
   Param,
   Post,
@@ -38,7 +39,7 @@ export class FileFastifyController {
   })
   @UseGuards(AuthGuard)
   @ApiOperation({ summary: 'file upload' })
-  @ApiResponse({ status: 201 })
+  @ApiResponse({ status: HttpStatus.CREATED })
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     schema: {
@@ -56,7 +57,7 @@ export class FileFastifyController {
   }
 
   @ApiOperation({ summary: 'get file by name' })
-  @ApiResponse({ status: 200 })
+  @ApiResponse({ status: HttpStatus.OK })
   @Get(':fileName')
   async getUploadedFile(@Param('fileName') fileName: string, @Res() res) {
     try {

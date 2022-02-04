@@ -9,6 +9,7 @@ import {
   UseGuards,
   NotFoundException,
   UseFilters,
+  HttpStatus,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'fastify-multer';
@@ -42,7 +43,7 @@ export class FileExpressController {
     },
   })
   @ApiOperation({ summary: 'file upload' })
-  @ApiResponse({ status: 201 })
+  @ApiResponse({ status: HttpStatus.CREATED })
   @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({
@@ -68,7 +69,7 @@ export class FileExpressController {
   }
 
   @ApiOperation({ summary: 'get file by name' })
-  @ApiResponse({ status: 200 })
+  @ApiResponse({ status: HttpStatus.OK })
   @Get(':fileName')
   async getUploadedFile(@Param('fileName') fileName: string, @Res() res) {
     try {

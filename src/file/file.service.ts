@@ -22,7 +22,7 @@ export class FileService {
         );
         return;
       }
-      res.code(HttpStatus.CREATED).send('Data uploaded successfully');
+      // res.code(HttpStatus.CREATED).send('Data uploaded successfully');
     }
   }
 
@@ -36,6 +36,11 @@ export class FileService {
     const pipeline = util.promisify(stream.pipeline);
     const writeStream = fs.createWriteStream(`static/${filename}`);
     try {
+      // const response = {
+      //   originalname: file.originalname,
+      //   filename: file.filename,
+      // };
+      // res.code(HttpStatus.CREATED).send('Data uploaded successfully');
       await pipeline(file, writeStream);
     } catch (err) {
       console.error('Pipeline failed', err);

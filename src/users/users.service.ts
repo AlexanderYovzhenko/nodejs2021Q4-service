@@ -1,27 +1,33 @@
-import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/sequelize';
+import { ConflictException, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcryptjs';
-import { Task } from 'src/tasks/entities/task.entity';
+import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
-// import { Sequelize } from 'sequelize-typescript';
 
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectModel(User) private usersRepository: typeof User,
-    @InjectModel(Task) private tasksRepository: typeof Task, // private sequelize: Sequelize,
+    @InjectRepository(User)
+    private usersRepository: Repository<User>,
   ) {}
+
+  async toResponse(user) {
+    const { id, name, login } = user;
+    return { id, name, login };
+  }
 
   async createAdmin(createUserDto: CreateUserDto) {
     const salt = process.env.SALT_HASH_PASSWORD;
     const hashPassword = await bcrypt.hash(createUserDto.password, +salt);
     if (!(await this.getUserByLogin(createUserDto.login))) {
-      await this.usersRepository.create({
+      await this.usersRepository.save({
         ...createUserDto,
         password: hashPassword,
       });
+    } else {
+      return null;
     }
   }
 
@@ -29,22 +35,26 @@ export class UsersService {
     const salt = process.env.SALT_HASH_PASSWORD;
     const hashPassword = await bcrypt.hash(createUserDto.password, +salt);
 
-    const user = await this.usersRepository.create({
-      ...createUserDto,
-      password: hashPassword,
-    });
-    return this.usersRepository.toResponse(user);
+    if (!(await this.getUserByLogin(createUserDto.login))) {
+      const user = await this.usersRepository.save({
+        ...createUserDto,
+        password: hashPassword,
+      });
+      return this.toResponse(user);
+    } else {
+      throw new ConflictException('Login already exists!');
+    }
   }
 
   async findAll() {
-    const users = await this.usersRepository.findAll();
-    return users.map((user) => this.usersRepository.toResponse(user));
+    const users = await this.usersRepository.find();
+    return users.map((user) => this.toResponse(user));
   }
 
   async findOne(id: string) {
     const userOne = await this.usersRepository.findOne({ where: { id } });
     if (userOne) {
-      return this.usersRepository.toResponse(userOne);
+      return this.toResponse(userOne);
     } else {
       return null;
     }
@@ -59,22 +69,15 @@ export class UsersService {
     const salt = process.env.SALT_HASH_PASSWORD;
     const hashPassword = await bcrypt.hash(updateUserDto.password, +salt);
 
-    await this.usersRepository.update(
-      { ...updateUserDto, password: hashPassword },
-      { where: { id } },
-    );
+    await this.usersRepository.update(id, {
+      ...updateUserDto,
+      password: hashPassword,
+    });
     const userUpdate = await this.usersRepository.findOne({ where: { id } });
-    return this.usersRepository.toResponse(userUpdate);
+    return this.toResponse(userUpdate);
   }
 
   async remove(id: string) {
-    await this.usersRepository.destroy({
-      restartIdentity: true,
-      where: { id },
-    });
-    await this.tasksRepository.update(
-      { userId: null },
-      { where: { userId: id } },
-    );
+    await this.usersRepository.delete(id);
   }
 }

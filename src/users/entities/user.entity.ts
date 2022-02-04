@@ -1,38 +1,21 @@
-import sequelize from 'sequelize';
-import { Column, DataType, HasMany, Model, Table } from 'sequelize-typescript';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
-// import { Task } from 'src/tasks/entities/task.entity';
-// import { Task } from 'src/tasks/entities/task.entity';
-import { IUser } from '../interface/user-interface';
 
-@Table({ tableName: 'users', updatedAt: false })
-export class User extends Model<User, IUser> {
-  // @ApiProperty({
-  //   example: '887c6afa-c641-4226-b137-c0eea5125903',
-  //   description: 'uuid',
-  // })
-  @Column({
-    type: DataType.UUID,
-    defaultValue: sequelize.UUIDV4,
-    unique: true,
-    primaryKey: true,
+@Entity('users')
+export class User {
+  @ApiProperty({
+    example: '887c6afa-c641-4226-b137-c0eea5125903',
+    description: 'uuid',
   })
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: DataType.STRING })
+  @Column({ type: 'varchar', default: 'name' })
   name: string;
 
-  @Column({ type: DataType.STRING })
+  @Column({ type: 'varchar', default: 'login' })
   login: string;
 
-  @Column({ type: DataType.STRING })
+  @Column({ type: 'varchar', default: 'password' })
   password: string;
-
-  // @HasMany(() => Task)
-  // task: Task[];
-
-  static toResponse(user) {
-    const { id, name, login } = user;
-    return { id, name, login };
-  }
 }

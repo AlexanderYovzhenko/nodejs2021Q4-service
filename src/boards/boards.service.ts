@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/sequelize';
-import { Task } from 'src/tasks/entities/task.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { UpdateBoardDto } from './dto/update-board.dto';
 import { Board } from './entities/board.entity';
@@ -8,17 +8,17 @@ import { Board } from './entities/board.entity';
 @Injectable()
 export class BoardsService {
   constructor(
-    @InjectModel(Board) private boardsRepository: typeof Board,
-    @InjectModel(Task) private tasksRepository: typeof Task,
+    @InjectRepository(Board)
+    private boardsRepository: Repository<Board>,
   ) {}
 
   async create(createBoardDto: CreateBoardDto) {
-    const board = await this.boardsRepository.create(createBoardDto);
+    const board = await this.boardsRepository.save(createBoardDto);
     return board;
   }
 
   async findAll() {
-    const boards = await this.boardsRepository.findAll();
+    const boards = await this.boardsRepository.find();
     return boards;
   }
 
@@ -28,19 +28,12 @@ export class BoardsService {
   }
 
   async update(id: string, updateBoardDto: UpdateBoardDto) {
-    await this.boardsRepository.update(
-      { ...updateBoardDto },
-      { where: { id } },
-    );
+    await this.boardsRepository.update(id, { ...updateBoardDto });
     const boardUpdate = await this.boardsRepository.findOne({ where: { id } });
     return boardUpdate;
   }
 
   async remove(id: string) {
-    await this.boardsRepository.destroy({
-      restartIdentity: true,
-      where: { id },
-    });
-    await this.tasksRepository.destroy({ where: { boardId: id } });
+    await this.boardsRepository.delete(id);
   }
 }

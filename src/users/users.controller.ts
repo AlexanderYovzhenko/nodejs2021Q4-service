@@ -38,7 +38,7 @@ export class UsersController {
 
   @ApiOperation({ summary: 'user creation' })
   @ApiResponse({
-    status: 201,
+    status: HttpStatus.CREATED,
     type: CreateUserDto,
   })
   @Post()
@@ -47,14 +47,14 @@ export class UsersController {
   }
 
   @ApiOperation({ summary: 'get all users' })
-  @ApiResponse({ status: 200, type: [CreateUserDto] })
+  @ApiResponse({ status: HttpStatus.OK, type: [CreateUserDto] })
   @Get()
   async findAll() {
     return await this.usersService.findAll();
   }
 
   @ApiOperation({ summary: 'get user by id' })
-  @ApiResponse({ status: 200, type: CreateUserDto })
+  @ApiResponse({ status: HttpStatus.OK, type: CreateUserDto })
   @Get(':id')
   async findOne(@Param('id', ParseUUIDPipe) id: string) {
     if (await this.usersService.findOne(id)) {
@@ -65,7 +65,7 @@ export class UsersController {
   }
 
   @ApiOperation({ summary: 'update user by id' })
-  @ApiResponse({ status: 200, type: UpdateUserDto })
+  @ApiResponse({ status: HttpStatus.OK, type: UpdateUserDto })
   @Put(':id')
   async update(
     @Param('id', ParseUUIDPipe) id: string,
@@ -79,7 +79,7 @@ export class UsersController {
   }
 
   @ApiOperation({ summary: 'delete user by id' })
-  @ApiResponse({ status: 204 })
+  @ApiResponse({ status: HttpStatus.NO_CONTENT })
   @HttpCode(HttpStatus.NO_CONTENT)
   @Delete(':id')
   async remove(@Param('id', ParseUUIDPipe) id: string) {

@@ -1,31 +1,17 @@
-import sequelize from 'sequelize';
-import {
-  Column,
-  DataType,
-  ForeignKey,
-  HasMany,
-  Model,
-  Table,
-} from 'sequelize-typescript';
-import { IBoard } from '../interfaces/board-interface';
-import { IColumn } from '../interfaces/column-interface';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { Columns } from './column.entity';
 
-@Table({ tableName: 'boards', updatedAt: false })
-export class Board extends Model<Board, IBoard> {
+@Entity('boards')
+export class Board {
+  @PrimaryGeneratedColumn('uuid')
+  id!: string;
+
   @Column({
-    type: DataType.UUID,
-    defaultValue: sequelize.UUIDV4,
-    unique: true,
-    primaryKey: true,
+    type: 'varchar',
+    default: 'title',
   })
-  id: string;
+  title!: string;
 
-  @Column({ type: DataType.STRING })
-  title: string;
-
-  // @HasMany(() => Columns)
-  // @ForeignKey(() => Columns)
-  @Column({ type: DataType.ARRAY(DataType.JSON) })
-  columns: IColumn[];
+  @Column('json', { nullable: true })
+  columns!: [Columns];
 }

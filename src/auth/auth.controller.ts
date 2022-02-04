@@ -4,6 +4,7 @@ import {
   Body,
   ForbiddenException,
   UseFilters,
+  HttpStatus,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { AllExceptionsFilter } from 'src/exception-filters/all-exceptions.filter';
@@ -17,7 +18,7 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @ApiOperation({ summary: 'get token' })
-  @ApiResponse({ status: 201 })
+  @ApiResponse({ status: HttpStatus.CREATED })
   @Post()
   async signToken(@Body() createAuthDto: CreateAuthDto) {
     const token = await this.authService.generateToken(createAuthDto);

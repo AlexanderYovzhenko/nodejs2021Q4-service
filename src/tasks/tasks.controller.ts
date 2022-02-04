@@ -36,7 +36,7 @@ export class TasksController {
   constructor(private tasksService: TasksService) {}
 
   @ApiOperation({ summary: 'task creation' })
-  @ApiResponse({ status: 201, type: CreateTaskDto })
+  @ApiResponse({ status: HttpStatus.CREATED, type: CreateTaskDto })
   @Post()
   async create(
     @Body() createTaskDto: CreateTaskDto,
@@ -47,14 +47,14 @@ export class TasksController {
   }
 
   @ApiOperation({ summary: 'get all tasks' })
-  @ApiResponse({ status: 200, type: [CreateTaskDto] })
+  @ApiResponse({ status: HttpStatus.OK, type: [CreateTaskDto] })
   @Get()
   async findAll(@Param('boardId', ParseUUIDPipe) boardId: string) {
     return await this.tasksService.findAll();
   }
 
   @ApiOperation({ summary: 'get task by id' })
-  @ApiResponse({ status: 200, type: CreateTaskDto })
+  @ApiResponse({ status: HttpStatus.OK, type: CreateTaskDto })
   @Get(':taskId')
   async findOne(
     @Param('taskId', ParseUUIDPipe) taskId: string,
@@ -68,7 +68,7 @@ export class TasksController {
   }
 
   @ApiOperation({ summary: 'update task by id' })
-  @ApiResponse({ status: 200, type: UpdateTaskDto })
+  @ApiResponse({ status: HttpStatus.OK, type: UpdateTaskDto })
   @Put(':taskId')
   async update(
     @Param('taskId', ParseUUIDPipe) taskId: string,
@@ -83,7 +83,7 @@ export class TasksController {
   }
 
   @ApiOperation({ summary: 'delete task by id' })
-  @ApiResponse({ status: 204 })
+  @ApiResponse({ status: HttpStatus.NO_CONTENT })
   @HttpCode(HttpStatus.NO_CONTENT)
   @Delete(':taskId')
   async remove(

@@ -9,7 +9,7 @@ import { loggerWinston } from './logger-winston.config';
 
 @Injectable()
 export class LoggingInterceptor implements NestInterceptor {
-  intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+  intercept(context: ExecutionContext, next: CallHandler) {
     const contextReq = context['args'][0];
     const contextRes = context['args'][1];
 
