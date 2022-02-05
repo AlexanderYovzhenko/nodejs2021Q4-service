@@ -12,12 +12,6 @@ export class AuthService {
   ) {}
 
   async generateToken(createAuthDto: CreateAuthDto) {
-    await this.usersService.createAdmin({
-      name: 'admin',
-      login: 'admin',
-      password: 'admin',
-    });
-
     if (!(createAuthDto?.login && createAuthDto?.password)) {
       return null;
     }

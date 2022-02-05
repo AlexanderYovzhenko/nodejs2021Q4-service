@@ -5,11 +5,13 @@ import {
   NotFoundException,
   Param,
   Post,
-  Req,
   Res,
+  UploadedFile,
   UseFilters,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
+import { FileFastifyInterceptor } from 'fastify-file-interceptor';
 import {
   ApiBody,
   ApiConsumes,
@@ -21,6 +23,8 @@ import {
 import { AuthGuard } from 'src/auth/jwt-auth.guard';
 import { AllExceptionsFilter } from 'src/exception-filters/all-exceptions.filter';
 import { FileService } from './file.service';
+import { editFileName } from './config-name.file';
+import { diskStorage } from 'multer';
 
 @ApiTags('File')
 @UseFilters(AllExceptionsFilter)
@@ -29,6 +33,7 @@ export class FileFastifyController {
   constructor(private fileService: FileService) {}
 
   @Post()
+  @UseGuards(AuthGuard)
   @ApiHeader({
     name: 'header',
     description: 'Authorization Bearer token',
@@ -37,9 +42,16 @@ export class FileFastifyController {
       default: 'Bearer token',
     },
   })
-  @UseGuards(AuthGuard)
   @ApiOperation({ summary: 'file upload' })
   @ApiResponse({ status: HttpStatus.CREATED })
+  @UseInterceptors(
+    FileFastifyInterceptor('file', {
+      storage: diskStorage({
+        destination: './static',
+        filename: editFileName,
+      }),
+    }),
+  )
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     schema: {
@@ -52,8 +64,8 @@ export class FileFastifyController {
       },
     },
   })
-  async uploadFile(@Req() req, @Res() res) {
-    return await this.fileService.uploadFileFastify(req, res);
+  async uploadedFile(@UploadedFile() file) {
+    return await this.fileService.uploadFile(file);
   }
 
   @ApiOperation({ summary: 'get file by name' })

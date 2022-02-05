@@ -32,6 +32,10 @@ export class AllExceptionsFilter implements ExceptionFilter {
       error: error,
     };
 
+    if (message.includes('duplicate key')) {
+      responseBody.statusCode = HttpStatus.CONFLICT;
+    }
+
     httpAdapter.reply(ctx.getResponse(), responseBody, httpStatus);
   }
 }

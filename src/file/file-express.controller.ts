@@ -12,7 +12,7 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { diskStorage } from 'fastify-multer';
+import { diskStorage } from 'multer';
 import { FileService } from './file.service';
 import { editFileName } from './config-name.file';
 import { AuthGuard } from 'src/auth/jwt-auth.guard';
@@ -65,7 +65,7 @@ export class FileExpressController {
     },
   })
   async uploadedFile(@UploadedFile() file) {
-    return await this.fileService.uploadFileExpress(file);
+    return await this.fileService.uploadFile(file);
   }
 
   @ApiOperation({ summary: 'get file by name' })

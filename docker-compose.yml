@@ -1,6 +1,8 @@
-version: '3.7'
+version: '3.0'
 services:
   postgres:
+    env_file: 
+      - .production.env
     image: 'postgres:${POSTGRES_VERSION}'
     container_name: postgres
     build: 
@@ -15,7 +17,6 @@ services:
         window: 120s 
     networks:
       - my_net
-    env_file: .production.env
     ports:
       - ${POSTGRES_PORT}:${POSTGRES_PORT}
     environment:
@@ -29,7 +30,9 @@ services:
     volumes:
       - pg_data:/var/lib/postgresql/data/
   app:
-    image: goldenmanbel/docker-basics:app
+    env_file: 
+      - .production.env
+    image: app
     container_name: app
     build:
       context: .
@@ -37,8 +40,7 @@ services:
         - PORT=${PORT}
         - NODE_VERSION=${NODE_VERSION}
     networks:
-      - my_net 
-    env_file: .production.env
+      - my_net
     ports:
       - ${PORT}:${PORT}
     environment:

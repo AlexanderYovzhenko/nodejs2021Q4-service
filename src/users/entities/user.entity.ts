@@ -13,7 +13,7 @@ export class User {
   @Column({ type: 'varchar', default: 'name' })
   name: string;
 
-  @Column({ type: 'varchar', default: 'login' })
+  @Column({ type: 'varchar', default: 'login', unique: true })
   login: string;
 
   @Column({ type: 'varchar', default: 'password' })

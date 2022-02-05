@@ -9,7 +9,7 @@
     "prebuild": "rimraf dist",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "start": "nest build && npm run migrations:run && cross-env NODE_ENV=production nest start",
+    "start:docker": "nest build && npm run migrations:run && cross-env NODE_ENV=production nest start",
     "start:dev": "nest build && npm run migrations:run && cross-env NODE_ENV=development nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
@@ -22,7 +22,8 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "migrations:run": "npm run typeorm -- migration:run",
     "migration:generate": "npm run typeorm migration:generate -- -n migration",
-    "typeorm": "npx node --require ts-node/register ./node_modules/typeorm/cli.js -- -n migration"
+    "typeorm": "npx node --require ts-node/register ./node_modules/typeorm/cli.js -- -n migration",
+    "artillery": "artillery run --output artillery-users-test.json artillery/artillery-script.yaml && artillery report artillery-users-test.json"
   },
   "dependencies": {
     "-": "^0.0.1",
@@ -41,6 +42,7 @@
     "class-validator": "^0.13.2",
     "cross-env": "^7.0.3",
     "dotenv": "10.0.0",
+    "fastify-file-interceptor": "^1.0.6",
     "fastify-multer": "^2.0.2",
     "fastify-multipart": "^5.3.0",
     "fastify-swagger": "^4.13.1",
@@ -51,8 +53,6 @@
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.5.2",
-    "sequelize": "^6.14.1",
-    "sequelize-typescript": "^2.1.2",
     "swagger-ui-express": "^4.3.0",
     "typeorm": "^0.2.41",
     "winston": "^3.5.0"
@@ -71,6 +71,7 @@
     "@types/supertest": "^2.0.11",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",
+    "artillery": "^2.0.0-11",
     "chai": "4.3.4",
     "debug": "4.3.2",
     "dirty-chai": "2.0.1",

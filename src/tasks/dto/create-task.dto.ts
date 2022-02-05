@@ -29,7 +29,7 @@ export class CreateTaskDto {
   })
   @IsOptional()
   @IsString()
-  userId: string;
+  userId: string | null;
 
   @ApiProperty({
     examples: ['887c6afa-c641-4226-b137-c0eea5125903', null],
@@ -37,7 +37,7 @@ export class CreateTaskDto {
   })
   @IsOptional()
   @IsString()
-  boardId: string;
+  boardId: string | null;
 
   @ApiProperty({
     examples: ['887c6afa-c641-4226-b137-c0eea5125903', null],
@@ -45,5 +45,5 @@ export class CreateTaskDto {
   })
   @IsOptional()
   @IsString()
-  columnId: string;
+  columnId: string | null;
 }

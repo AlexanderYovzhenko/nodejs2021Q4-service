@@ -18,19 +18,6 @@ export class UsersService {
     return { id, name, login };
   }
 
-  async createAdmin(createUserDto: CreateUserDto) {
-    const salt = process.env.SALT_HASH_PASSWORD;
-    const hashPassword = await bcrypt.hash(createUserDto.password, +salt);
-    if (!(await this.getUserByLogin(createUserDto.login))) {
-      await this.usersRepository.save({
-        ...createUserDto,
-        password: hashPassword,
-      });
-    } else {
-      return null;
-    }
-  }
-
   async create(createUserDto: CreateUserDto) {
     const salt = process.env.SALT_HASH_PASSWORD;
     const hashPassword = await bcrypt.hash(createUserDto.password, +salt);
