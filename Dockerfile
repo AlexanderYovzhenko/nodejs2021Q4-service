@@ -7,4 +7,4 @@ COPY . .
 ARG PORT
 ENV PORT ${PORT}
 EXPOSE ${PORT}
-CMD ["nest build && npm run migrations:run && cross-env NODE_ENV=docker nest start"]
+CMD ["nest build && npm run migrations:run && cross-env NODE_ENV=production nest start"]
