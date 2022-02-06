@@ -64,7 +64,7 @@ RS School REST service(NestJs)
         <li><font color="red">DELETE</font> <u>tasks/:id</u> - delete task by id</li>
       </ul>
     </li>
-    <li><h3><u>localhost:4000/boards/:boardId/columns</u> - requires authorization(header: authorization Bearer token)</h3> 
+    <!-- <li><h3><u>localhost:4000/boards/:boardId/columns</u> - requires authorization(header: authorization Bearer token)</h3> 
       <ul>
         <li><font color="4040ff">POST</font> <u>columns</u> - add column</li> 
         <li><font color="green">GET</font> <u>columns</u> - get all columns</li>
@@ -72,11 +72,11 @@ RS School REST service(NestJs)
         <li><font color="yellow">PUT</font> <u>columns/:id</u> - update column by id</li>
         <li><font color="red">DELETE</font> <u>columns/:id</u> - delete column by id</li>
       </ul>
-    </li>
+    </li> -->
     <li><h3><u>localhost:4000/file</u></h3> 
       <ul>
         <li><font color="4040ff">POST</font> <u>file</u> - add file(requires authorization(header: authorization Bearer token))</li> 
-        <li><font color="green">GET</font> <u>file/:id</u> - get file by name</li>
+        <li><font color="green">GET</font> <u>file/:fileName</u> - get file by name</li>
       </ul>
     </li>
 </ul>
