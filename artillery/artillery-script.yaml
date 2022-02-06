@@ -5,6 +5,22 @@ config:
   phases:
     - duration: 20
       arrivalRate: 10
+    # - duration: 10
+    #   arrivalRate: 5
+    #   rampTo: 10
+    #   name: "Warming up"
+    # - duration: 20
+    #   arrivalRate: 10
+    #   rampTo: 50
+    #   name: "Mid load"
+    # - duration: 60
+    #   arrivalRate: 100
+    #   rampTo: 500
+    #   name: "Mid 2 load"
+    # - duration: 120
+    #   arrivalRate: 1000
+    #   rampTo: 5000
+    #   name: "Max load"
 before:
     flow:
       - log: "Get auth token"
