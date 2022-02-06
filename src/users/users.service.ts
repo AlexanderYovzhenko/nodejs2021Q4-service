@@ -13,7 +13,7 @@ export class UsersService {
     private usersRepository: Repository<User>,
   ) {}
 
-  async toResponse(user) {
+  private toResponse(user) {
     const { id, name, login } = user;
     return { id, name, login };
   }
