@@ -33,51 +33,51 @@ RS School REST service(NestJs)
 
   <ul>
     <li><h3><u>localhost:4000/login</u> - authorization</h3> 
-      <ol>
+      <ul>
         <li><font color="4040ff">POST</font> <u>login</u> - get token</li> 
-      </ol>
+      </ul>
     </li>
     <li><h3><u>localhost:4000/users</u> - requires authorization(header: authorization Bearer token)</h3> 
-      <ol>
+      <ul>
         <li><font color="4040ff">POST</font> <u>users</u> - add user</li> 
         <li><font color="green">GET</font> <u>users</u> - get all users</li>
         <li><font color="green">GET</font> <u>users/:id</u> - get user by id</li>
         <li><font color="yellow">PUT</font> <u>users/:id</u> - update user by id</li>
         <li><font color="red">DELETE</font> <u>users/:id</u> - delete user by id</li>
-      </ol>
+      </ul>
     </li>
     <li><h3><u>localhost:4000/boards</u> - requires authorization(header: authorization Bearer token)</h3> 
-      <ol>
+      <ul>
         <li><font color="4040ff">POST</font> <u>boards</u> - add board</li> 
         <li><font color="green">GET</font> <u>boards</u> - get all boards</li>
         <li><font color="green">GET</font> <u>boards/:id</u> - get board by id</li>
         <li><font color="yellow">PUT</font> <u>boards/:id</u> - update board by id</li>
         <li><font color="red">DELETE</font> <u>boards/:id</u> - delete board by id</li>
-      </ol>
+      </ul>
     </li>
     <li><h3><u>localhost:4000/boards/:boardId/tasks</u> - requires authorization(header: authorization Bearer token)</h3> 
-      <ol>
+      <ul>
         <li><font color="4040ff">POST</font> <u>tasks</u> - add task</li> 
         <li><font color="green">GET</font> <u>tasks</u> - get all tasks</li>
         <li><font color="green">GET</font> <u>tasks/:id</u> - get task by id</li>
         <li><font color="yellow">PUT</font> <u>tasks/:id</u> - update task by id</li>
         <li><font color="red">DELETE</font> <u>tasks/:id</u> - delete task by id</li>
-      </ol>
+      </ul>
     </li>
     <li><h3><u>localhost:4000/boards/:boardId/columns</u> - requires authorization(header: authorization Bearer token)</h3> 
-      <ol>
+      <ul>
         <li><font color="4040ff">POST</font> <u>columns</u> - add column</li> 
         <li><font color="green">GET</font> <u>columns</u> - get all columns</li>
         <li><font color="green">GET</font> <u>columns/:id</u> - get column by id</li>
         <li><font color="yellow">PUT</font> <u>columns/:id</u> - update column by id</li>
         <li><font color="red">DELETE</font> <u>columns/:id</u> - delete column by id</li>
-      </ol>
+      </ul>
     </li>
     <li><h3><u>localhost:4000/file</u></h3> 
-      <ol>
+      <ul>
         <li><font color="4040ff">POST</font> <u>file</u> - add file(requires authorization(header: authorization Bearer token))</li> 
         <li><font color="green">GET</font> <u>file/:id</u> - get file by name</li>
-      </ol>
+      </ul>
     </li>
 </ul>
 </p>
@@ -161,8 +161,8 @@ For more information, visit: https://code.visualstudio.com/docs/editor/debugging
 </p>
 
 ## Express
-  ![express report test](https://github.com/GoldenManBel/nodejs2021Q4-service/tree/nestJS/artillery/express.jpg)
+  ![express report test](https://github.com/GoldenManBel/nodejs2021Q4-service/blob/nestJS/artillery/express.jpg)
 
 ## Fastify
-![fastify report test](https://github.com/GoldenManBel/nodejs2021Q4-service/tree/nestJS/artillery/fastify.jpg)
+![fastify report test](https://github.com/GoldenManBel/nodejs2021Q4-service/blob/nestJS/artillery/fastify.jpg)
 
