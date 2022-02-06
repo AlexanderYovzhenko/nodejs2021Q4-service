@@ -3,6 +3,7 @@
 /node_modules
 /test*
 .github*
+static
 
 # Logs
 logs

@@ -4,7 +4,7 @@ import {
   ExecutionContext,
   CallHandler,
 } from '@nestjs/common';
-import { Observable, throwError, catchError } from 'rxjs';
+import { throwError, catchError } from 'rxjs';
 import { loggerWinston } from './logger-winston.config';
 
 @Injectable()

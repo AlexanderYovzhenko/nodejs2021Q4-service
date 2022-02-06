@@ -1,5 +1,6 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { BoardsModule } from './boards/boards.module';
@@ -11,8 +12,6 @@ import { Task } from './tasks/entities/task.entity';
 import { Columns } from './boards/entities/column.entity';
 import { AuthModule } from './auth/auth.module';
 import { FileModule } from './file/file.module';
-import { TypeOrmModule } from '@nestjs/typeorm';
-// import config from './ormconfig';
 
 @Module({
   imports: [
@@ -33,7 +32,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB,
       dropSchema: true,
-      logging: false,
+      logging: true,
       synchronize: false,
       migrationsRun: true,
       entities: ['dist/**/entities/*.entity{.ts,.js}'],
@@ -48,7 +47,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
   providers: [AppService],
 })
 export class AppModule implements NestModule {
-  // constructor(connection: Connection) {}
   configure(conect: MiddlewareConsumer) {
     // consumer.apply(LoggerMiddleware).forRoutes('*');
   }

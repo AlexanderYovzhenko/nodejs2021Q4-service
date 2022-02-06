@@ -1,12 +1,12 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
 import { SwaggerModule } from '@nestjs/swagger';
 import {
   FastifyAdapter,
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
 import fmp from 'fastify-multipart';
+import { AppModule } from './app.module';
 import { loggerWinston } from './utils/logger-winston.config';
 import { config } from './doc/doc-config';
 import { LoggingInterceptor } from './utils/logger.middleware';
