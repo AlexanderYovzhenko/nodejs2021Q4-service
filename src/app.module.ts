@@ -1,4 +1,4 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
@@ -21,6 +21,7 @@ import { FileModule } from './file/file.module';
     AuthModule,
     FileModule,
     ConfigModule.forRoot({
+      isGlobal: true,
       envFilePath: `.${process.env.NODE_ENV}.env`,
     }),
     TypeOrmModule.forFeature([User, Board, Task, Columns]),
@@ -46,8 +47,4 @@ import { FileModule } from './file/file.module';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule implements NestModule {
-  configure(conect: MiddlewareConsumer) {
-    // consumer.apply(LoggerMiddleware).forRoutes('*');
-  }
-}
+export class AppModule {}
