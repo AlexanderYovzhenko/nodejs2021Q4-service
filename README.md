@@ -160,9 +160,10 @@ For more information, visit: https://code.visualstudio.com/docs/editor/debugging
   <h2 align="center">Performance tests</h2>
 </p>
 
-## Express
-  ![express report test](https://github.com/GoldenManBel/nodejs2021Q4-service/blob/nestJS/artillery/express.jpg)
+### There are also files in the artillery folder with additional information
 
-## Fastify
-![fastify report test](https://github.com/GoldenManBel/nodejs2021Q4-service/blob/nestJS/artillery/fastify.jpg)
+## Express 
+  ![express report test](https://github.com/GoldenManBel/nodejs2021Q4-service/blob/nestJS/artillery/express.jpg?raw=true)
 
+## Fastify 
+  ![fastify report test](https://github.com/GoldenManBel/nodejs2021Q4-service/blob/nestJS/artillery/fastify.jpg?raw=true)
