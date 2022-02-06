@@ -24,50 +24,145 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+RS School REST service(NestJs)
 
-## Installation
+<p>
+  <h2 align="center">Documentation for endpoints</h2>
+  <h3>Doc <a href="http://localhost:4000/doc" target="blank">localhost:4000/doc</a> - detailed documentation</h3>
+  <h3>Home <a href="http://localhost:4000/" target="blank">localhost:4000</a> - home page, check if the server is running</h3>
+
+  <ul>
+    <li><h3><u>localhost:4000/login</u> - authorization</h3> 
+      <ol>
+        <li><font color="4040ff">POST</font> <u>login</u> - get token</li> 
+      </ol>
+    </li>
+    <li><h3><u>localhost:4000/users</u> - requires authorization(header: authorization Bearer token)</h3> 
+      <ol>
+        <li><font color="4040ff">POST</font> <u>users</u> - add user</li> 
+        <li><font color="green">GET</font> <u>users</u> - get all users</li>
+        <li><font color="green">GET</font> <u>users/:id</u> - get user by id</li>
+        <li><font color="yellow">PUT</font> <u>users/:id</u> - update user by id</li>
+        <li><font color="red">DELETE</font> <u>users/:id</u> - delete user by id</li>
+      </ol>
+    </li>
+    <li><h3><u>localhost:4000/boards</u> - requires authorization(header: authorization Bearer token)</h3> 
+      <ol>
+        <li><font color="4040ff">POST</font> <u>boards</u> - add board</li> 
+        <li><font color="green">GET</font> <u>boards</u> - get all boards</li>
+        <li><font color="green">GET</font> <u>boards/:id</u> - get board by id</li>
+        <li><font color="yellow">PUT</font> <u>boards/:id</u> - update board by id</li>
+        <li><font color="red">DELETE</font> <u>boards/:id</u> - delete board by id</li>
+      </ol>
+    </li>
+    <li><h3><u>localhost:4000/boards/:boardId/tasks</u> - requires authorization(header: authorization Bearer token)</h3> 
+      <ol>
+        <li><font color="4040ff">POST</font> <u>tasks</u> - add task</li> 
+        <li><font color="green">GET</font> <u>tasks</u> - get all tasks</li>
+        <li><font color="green">GET</font> <u>tasks/:id</u> - get task by id</li>
+        <li><font color="yellow">PUT</font> <u>tasks/:id</u> - update task by id</li>
+        <li><font color="red">DELETE</font> <u>tasks/:id</u> - delete task by id</li>
+      </ol>
+    </li>
+    <li><h3><u>localhost:4000/boards/:boardId/columns</u> - requires authorization(header: authorization Bearer token)</h3> 
+      <ol>
+        <li><font color="4040ff">POST</font> <u>columns</u> - add column</li> 
+        <li><font color="green">GET</font> <u>columns</u> - get all columns</li>
+        <li><font color="green">GET</font> <u>columns/:id</u> - get column by id</li>
+        <li><font color="yellow">PUT</font> <u>columns/:id</u> - update column by id</li>
+        <li><font color="red">DELETE</font> <u>columns/:id</u> - delete column by id</li>
+      </ol>
+    </li>
+    <li><h3><u>localhost:4000/file</u></h3> 
+      <ol>
+        <li><font color="4040ff">POST</font> <u>file</u> - add file(requires authorization(header: authorization Bearer token))</li> 
+        <li><font color="green">GET</font> <u>file/:id</u> - get file by name</li>
+      </ol>
+    </li>
+</ul>
+</p>
+
+
+## Prerequisites
+
+- Git - [Download & Install Git](https://git-scm.com/downloads).
+- Node.js - [Download & Install Node.js](https://nodejs.org/en/download/) and the npm package manager.
+
+## Downloading
 
 ```bash
-$ npm install
+git clone https://github.com/GoldenManBel/nodejs2021Q4-service.git
 ```
 
-## Running the app
+## Switch branch
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+git checkout nestJS
 ```
 
-## Test
+## Installing NPM modules
 
 ```bash
-# unit tests
-$ npm run test
+npm install
+```
 
+## Running application in docker
+
+```bash
+docker-compose up --build
+```
+
+```bash
 # e2e tests
-$ npm run test:e2e
+npm run test:auth
 
-# test coverage
-$ npm run test:cov
+```
+or
+
+```bash
+docker exec -i -t app sh
+```
+```bash
+# e2e tests
+npm run test:auth
 ```
 
-## Support
+## Running application local and bd in docker
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+```bash
+docker build -t postgres database. 
+```
+```bash
+docker run -dp 5432:5432 --rm -e POSTGRES_HOST_AUTH_METHOD=trust postgres
+```
+```bash
+# watch mode
+npm run start:dev 
+```
+```bash
+# e2e tests
+npm run test:auth
+```
 
-## Stay in touch
+## Auto-fix and format
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+```bash
+npm run lint
+```
 
-## License
+### Debugging in VSCode
 
-Nest is [MIT licensed](LICENSE).
+Press <kbd>F5</kbd> to debug.
+
+For more information, visit: https://code.visualstudio.com/docs/editor/debugging
+
+<p align="center">
+  <h2 align="center">Performance tests</h2>
+</p>
+
+## Express
+  ![express report test](https://github.com/GoldenManBel/nodejs2021Q4-service/tree/nestJS/artillery/express.jpg?raw=true)
+
+## Fastify
+![fastify report test](https://github.com/GoldenManBel/nodejs2021Q4-service/tree/nestJS/artillery/fastify.jpg?raw=true)
+
