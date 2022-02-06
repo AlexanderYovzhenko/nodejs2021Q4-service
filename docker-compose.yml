@@ -2,7 +2,7 @@ version: '3.0'
 services:
   postgres:
     env_file: 
-      - .env
+      - .production.env
     image: 'postgres:${POSTGRES_VERSION}'
     container_name: postgres
     build: 
@@ -31,7 +31,7 @@ services:
       - pg_data:/var/lib/postgresql/data/
   app:
     env_file: 
-      - .env
+      - .production.env
     image: app
     container_name: app
     build:
