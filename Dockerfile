@@ -4,7 +4,7 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 RUN npm ci
 COPY . .
-ARG PORT
-ENV PORT ${PORT}
-EXPOSE ${PORT}
-CMD ["nest build && npm run migrations:run && cross-env NODE_ENV=production nest start"]
+# ARG PORT
+# ENV PORT ${PORT}
+# EXPOSE ${PORT}
+# CMD ["npm", "run", "start"]

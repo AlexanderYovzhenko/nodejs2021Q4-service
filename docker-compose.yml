@@ -39,6 +39,8 @@ services:
       args: 
         - PORT=${PORT}
         - NODE_VERSION=${NODE_VERSION}
+    tty: true
+    command: npm run "start"
     networks:
       - my_net
     ports:
