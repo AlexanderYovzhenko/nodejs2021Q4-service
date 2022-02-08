@@ -1,4 +1,5 @@
 import { WinstonModule } from 'nest-winston';
+import { LEVEL_LOG } from 'src/common/config';
 import { format, transports } from 'winston';
 
 const levels = {
@@ -13,7 +14,7 @@ const levels = {
 
 export const loggerWinston = WinstonModule.createLogger({
   exitOnError: false,
-  level: levels[process.env.LEVEL_LOG],
+  level: levels[LEVEL_LOG],
   format: format.combine(
     format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
     format.simple(),

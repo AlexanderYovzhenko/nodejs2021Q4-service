@@ -12,8 +12,8 @@ export class CreateBoardDto {
 
   @ApiProperty({
     example: `[
-      { "title": "Backlog", "order": 1 }, 
-      { "title": "Sprint", "order": 2 }
+      { "title": "Title_one", "order": 1 }, 
+      { "title": "Title_two", "order": 2 }
     ]`,
     description: 'array columns',
   })

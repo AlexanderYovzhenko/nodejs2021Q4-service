@@ -1,5 +1,5 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
-import * as bcrypt from 'bcryptjs';
+import { setHashPassword } from 'src/bcrypt/bcrypt.hash';
 
 export class migration1644001603850 implements MigrationInterface {
   name = 'migration1644001603850';
@@ -12,7 +12,7 @@ export class migration1644001603850 implements MigrationInterface {
       `CREATE TABLE "columns" ("columnId" uuid NOT NULL DEFAULT uuid_generate_v4(), "title" character varying NOT NULL DEFAULT 'title', "order" integer NOT NULL DEFAULT '0', "boardId" uuid, CONSTRAINT "PK_26c4fef94993175103cb1e24eac" PRIMARY KEY ("columnId"))`,
     );
     await queryRunner.query(
-      `CREATE TABLE "users" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "name" character varying NOT NULL DEFAULT 'name', "login" character varying NOT NULL DEFAULT 'login' UNIQUE, "password" character varying NOT NULL DEFAULT 'password', CONSTRAINT "PK_a3ffb1c0c8416b9fc6f907b7433" PRIMARY KEY ("id"))`,
+      `CREATE TABLE "users" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "name" character varying NOT NULL DEFAULT 'name', "login" character varying NOT NULL DEFAULT 'login', "password" character varying NOT NULL DEFAULT 'password', CONSTRAINT "UQ_2d443082eccd5198f95f2a36e2c" UNIQUE ("login"), CONSTRAINT "PK_a3ffb1c0c8416b9fc6f907b7433" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
       `CREATE TABLE "tasks" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "title" character varying NOT NULL DEFAULT 'title', "order" integer NOT NULL DEFAULT '0', "description" character varying NOT NULL DEFAULT 'description', "columnId" character varying, "boardId" uuid, "userId" uuid, CONSTRAINT "PK_8d12ff38fcc62aaba2cab748772" PRIMARY KEY ("id"))`,
@@ -27,14 +27,16 @@ export class migration1644001603850 implements MigrationInterface {
       `ALTER TABLE "tasks" ADD CONSTRAINT "FK_166bd96559cb38595d392f75a35" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE SET NULL ON UPDATE NO ACTION`,
     );
 
-    const salt = process.env.SALT_HASH_PASSWORD;
     const password = 'admin';
-    const hashPassword = await bcrypt.hash(password, +salt);
     await queryRunner.manager
       .createQueryBuilder()
       .insert()
       .into('users')
-      .values({ name: 'admin', login: 'admin', password: hashPassword })
+      .values({
+        name: 'admin',
+        login: 'admin',
+        password: await setHashPassword(password),
+      })
       .execute();
   }
 
