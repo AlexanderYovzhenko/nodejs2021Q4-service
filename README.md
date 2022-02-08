@@ -142,6 +142,12 @@ npm run start:dev
 npm run test:auth
 ```
 
+## Migrations generate
+
+```bash
+npm run migration:generate
+```
+
 ## Auto-fix and format
 
 ```bash

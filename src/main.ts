@@ -11,7 +11,7 @@ import { loggerWinston } from './utils/logger-winston.config';
 import { config } from './doc/doc-config';
 import { LoggingInterceptor } from './utils/logger.middleware';
 
-if (process.env.USE_FASTIFY === 'fastify') {
+if (process.env.USE_FASTIFY === 'true') {
   async function bootstrap() {
     const app = await NestFactory.create<NestFastifyApplication>(
       AppModule,

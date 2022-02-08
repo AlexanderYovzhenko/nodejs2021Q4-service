@@ -12,6 +12,7 @@ import { Task } from './tasks/entities/task.entity';
 import { Columns } from './boards/entities/column.entity';
 import { AuthModule } from './auth/auth.module';
 import { FileModule } from './file/file.module';
+import config from './ormconfig';
 
 @Module({
   imports: [
@@ -21,27 +22,11 @@ import { FileModule } from './file/file.module';
     AuthModule,
     FileModule,
     ConfigModule.forRoot({
-      isGlobal: true,
       envFilePath: `.${process.env.NODE_ENV}.env`,
+      isGlobal: true,
     }),
     TypeOrmModule.forFeature([User, Board, Task, Columns]),
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: process.env.POSTGRES_HOST,
-      port: Number(process.env.POSTGRES_PORT) || 5432,
-      username: process.env.POSTGRES_USER,
-      password: process.env.POSTGRES_PASSWORD,
-      database: process.env.POSTGRES_DB,
-      dropSchema: true,
-      logging: true,
-      synchronize: false,
-      migrationsRun: true,
-      entities: ['dist/**/entities/*.entity{.ts,.js}'],
-      migrations: ['dist/migrations/*.js'],
-      cli: {
-        migrationsDir: 'dist/migrations',
-      },
-    }),
+    TypeOrmModule.forRoot(config),
     FileModule,
   ],
   controllers: [AppController],

@@ -9,8 +9,8 @@
     "prebuild": "rimraf dist",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "start": "nest build && npm run migrations:run && cross-env NODE_ENV=production nest start --watch",
-    "start:dev": "nest build && npm run migrations:run && cross-env NODE_ENV=development nest start --watch",
+    "start": "nest build && cross-env NODE_ENV=docker npm run migrations:run && cross-env NODE_ENV=docker nest start --watch",
+    "start:dev": "nest build && cross-env NODE_ENV=development npm run migrations:run && cross-env NODE_ENV=development nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
@@ -22,7 +22,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "migrations:run": "npm run typeorm -- migration:run",
     "migration:generate": "npm run typeorm migration:generate -- -n migration",
-    "typeorm": "npx node --require ts-node/register ./node_modules/typeorm/cli.js -- -n migration",
+    "typeorm": "npx node --require ts-node/register ./node_modules/typeorm/cli.js --config src/ormconfig.ts",
     "artillery": "artillery run --output artillery-users-test.json artillery/artillery-script.yaml && artillery report artillery-users-test.json"
   },
   "dependencies": {
