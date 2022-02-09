@@ -10,9 +10,8 @@ import { AppModule } from './app.module';
 import { loggerWinston } from './utils/logger-winston.config';
 import { config } from './doc/doc-config';
 import { LoggingInterceptor } from './utils/logger.middleware';
-import { PORT, USE_FASTIFY } from './common/config';
 
-if (USE_FASTIFY === 'true') {
+if (process.env.USE_FASTIFY === 'true') {
   async function bootstrap() {
     const app = await NestFactory.create<NestFastifyApplication>(
       AppModule,
@@ -35,7 +34,7 @@ if (USE_FASTIFY === 'true') {
     const document = SwaggerModule.createDocument(app, config);
     SwaggerModule.setup('doc', app, document);
 
-    await app.listen(+PORT || 4000, '0.0.0.0');
+    await app.listen(process.env.PORT || 4000, '0.0.0.0');
   }
 
   bootstrap();
@@ -57,7 +56,7 @@ if (USE_FASTIFY === 'true') {
     const document = SwaggerModule.createDocument(app, config);
     SwaggerModule.setup('doc', app, document);
 
-    await app.listen(+PORT || 4000);
+    await app.listen(process.env.PORT || 4000);
   }
 
   bootstrap();
