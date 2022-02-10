@@ -1,5 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import { Columns } from './column.entity';
+import { ColumnBoard } from '../../columns/entities/column.entity';
 
 @Entity('boards')
 export class Board {
@@ -13,5 +13,5 @@ export class Board {
   title!: string;
 
   @Column('json', { nullable: true })
-  columns!: [Columns];
+  columns!: [ColumnBoard];
 }

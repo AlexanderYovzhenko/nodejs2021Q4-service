@@ -9,7 +9,7 @@ export class migration1644001603850 implements MigrationInterface {
       `CREATE TABLE "boards" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "title" character varying NOT NULL DEFAULT 'title', "columns" json, CONSTRAINT "PK_606923b0b068ef262dfdcd18f44" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
-      `CREATE TABLE "columns" ("columnId" uuid NOT NULL DEFAULT uuid_generate_v4(), "title" character varying NOT NULL DEFAULT 'title', "order" integer NOT NULL DEFAULT '0', "boardId" uuid, CONSTRAINT "PK_26c4fef94993175103cb1e24eac" PRIMARY KEY ("columnId"))`,
+      `CREATE TABLE "columns" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "title" character varying NOT NULL DEFAULT 'title', "order" integer NOT NULL DEFAULT '0', "boardId" uuid, CONSTRAINT "PK_26c4fef94993175103cb1e24eac" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
       `CREATE TABLE "users" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "name" character varying NOT NULL DEFAULT 'name', "login" character varying NOT NULL DEFAULT 'login', "password" character varying NOT NULL DEFAULT 'password', CONSTRAINT "UQ_2d443082eccd5198f95f2a36e2c" UNIQUE ("login"), CONSTRAINT "PK_a3ffb1c0c8416b9fc6f907b7433" PRIMARY KEY ("id"))`,

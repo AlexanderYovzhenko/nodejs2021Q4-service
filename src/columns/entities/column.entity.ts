@@ -1,10 +1,10 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { Board } from './board.entity';
+import { Board } from '../../boards/entities/board.entity';
 
 @Entity('columns')
-export class Columns {
+export class ColumnBoard {
   @PrimaryGeneratedColumn('uuid')
-  columnId!: string;
+  id!: string;
 
   @Column({
     type: 'varchar',

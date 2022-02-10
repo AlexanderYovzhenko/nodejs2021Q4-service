@@ -1,6 +1,6 @@
 import { IsArray, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { IColumn } from '../interfaces/column-interface';
+import { ColumnBoard } from 'src/columns/entities/column.entity';
 
 export class CreateBoardDto {
   @ApiProperty({
@@ -18,5 +18,5 @@ export class CreateBoardDto {
     description: 'array columns',
   })
   @IsArray()
-  columns: IColumn[];
+  columns: ColumnBoard[];
 }
