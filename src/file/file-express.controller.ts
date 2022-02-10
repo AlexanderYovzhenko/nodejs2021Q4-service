@@ -82,8 +82,8 @@ export class FileExpressController {
       }
     } else {
       try {
-        createReadStream(`static/${fileName}`).pipe(res);
-        // return res.download('./static/' + fileName);
+        // return createReadStream(`static/${fileName}`).pipe(res);
+        return res.download('./static/' + fileName);
       } catch (error) {
         throw new NotFoundException('File not found');
       }
