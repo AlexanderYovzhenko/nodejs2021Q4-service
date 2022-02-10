@@ -3,21 +3,17 @@ import * as fs from 'fs';
 
 @Injectable()
 export class FileService {
-  async uploadFile(file) {
+  async uploadFile({ originalname, filename }) {
     const response = {
-      originalname: file.originalname,
-      filename: file.filename,
+      originalname,
+      filename,
     };
     return response;
   }
 
   //Fastify
-  async getFileFastify(filename: string) {
-    const readStream = fs.createReadStream(`static/${filename}`);
-    try {
-      return readStream;
-    } catch (err) {
-      console.error('Pipeline failed', err);
-    }
+  async getFileFastify(fileName) {
+    const readStream = fs.createReadStream(`static/${fileName}`);
+    return readStream;
   }
 }
