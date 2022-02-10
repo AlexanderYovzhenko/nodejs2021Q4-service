@@ -71,7 +71,7 @@ RS School REST service(NestJs)
         <li><font color="red">DELETE</font> <u>columns/:id</u> - delete column by id</li>
       </ul>
     </li>
-    <li><h3><u>localhost:4000/file</u></h3> 
+    <li><h3><u>localhost:4000/file</u> - key: file, value: upload file</h3> 
       <ul>
         <li><font color="4040ff">POST</font> <u>file</u> - add file(requires authorization(header: authorization Bearer token))</li> 
         <li><font color="green">GET</font> <u>file/:fileName</u> - get file by name</li>
