@@ -44,14 +44,6 @@ export class FileFastifyController {
   })
   @ApiOperation({ summary: 'file upload' })
   @ApiResponse({ status: HttpStatus.CREATED })
-  @UseInterceptors(
-    FileFastifyInterceptor('file', {
-      storage: diskStorage({
-        destination: './static',
-        filename: editFileName,
-      }),
-    }),
-  )
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     schema: {
@@ -64,6 +56,14 @@ export class FileFastifyController {
       },
     },
   })
+  @UseInterceptors(
+    FileFastifyInterceptor('file', {
+      storage: diskStorage({
+        destination: './static',
+        filename: editFileName,
+      }),
+    }),
+  )
   async uploadedFile(@UploadedFile() file) {
     return await this.fileService.uploadFile(file);
   }

@@ -1,8 +1,8 @@
-import { config } from 'dotenv';
-import { join } from 'path';
+import * as path from 'path';
+import * as dotenv from 'dotenv';
 
-config({
-  path: join(__dirname, `.${process.env.NODE_ENV}.env`),
+dotenv.config({
+  path: path.join(__dirname, `.${process.env.NODE_ENV}.env`),
 });
 
 export const PORT = process.env.PORT || 4000,

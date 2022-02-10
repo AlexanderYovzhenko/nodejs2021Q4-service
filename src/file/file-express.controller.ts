@@ -25,6 +25,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { AllExceptionsFilter } from 'src/exception-filters/all-exceptions.filter';
+import { createReadStream } from 'fs';
 
 @ApiTags('File')
 @UseFilters(AllExceptionsFilter)
@@ -72,10 +73,20 @@ export class FileExpressController {
   @ApiResponse({ status: HttpStatus.OK })
   @Get(':fileName')
   async getUploadedFile(@Param('fileName') fileName: string, @Res() res) {
-    try {
-      return res.download('./static/' + fileName);
-    } catch (error) {
-      throw new NotFoundException('File not found');
+    if (process.env.USE_FASTIFY === 'true') {
+      try {
+        const readStream = await this.fileService.getFileFastify(fileName);
+        return res.send(readStream);
+      } catch (error) {
+        throw new NotFoundException('File not found');
+      }
+    } else {
+      try {
+        createReadStream(`static/${fileName}`).pipe(res);
+        // return res.download('./static/' + fileName);
+      } catch (error) {
+        throw new NotFoundException('File not found');
+      }
     }
   }
 }
