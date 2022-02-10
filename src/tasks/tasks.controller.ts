@@ -49,7 +49,7 @@ export class TasksController {
   @ApiOperation({ summary: 'get all tasks' })
   @ApiResponse({ status: HttpStatus.OK, type: [CreateTaskDto] })
   @Get()
-  async findAll(@Param('boardId', ParseUUIDPipe) _) {
+  async findAll(@Param('boardId', ParseUUIDPipe) _: string) {
     return await this.tasksService.findAll();
   }
 
@@ -57,7 +57,7 @@ export class TasksController {
   @ApiResponse({ status: HttpStatus.OK, type: CreateTaskDto })
   @Get(':taskId')
   async findOne(
-    @Param('boardId', ParseUUIDPipe) _,
+    @Param('boardId', ParseUUIDPipe) _: string,
     @Param('taskId', ParseUUIDPipe) taskId: string,
   ) {
     if (await this.tasksService.findOne(taskId)) {
@@ -71,8 +71,8 @@ export class TasksController {
   @ApiResponse({ status: HttpStatus.OK, type: UpdateTaskDto })
   @Put(':taskId')
   async update(
+    @Param('boardId', ParseUUIDPipe) _: string,
     @Param('taskId', ParseUUIDPipe) taskId: string,
-    @Param('boardId', ParseUUIDPipe) _,
     @Body() updateUserDto: UpdateTaskDto,
   ) {
     if (await this.tasksService.findOne(taskId)) {
@@ -87,7 +87,7 @@ export class TasksController {
   @HttpCode(HttpStatus.NO_CONTENT)
   @Delete(':taskId')
   async remove(
-    @Param('boardId', ParseUUIDPipe) _,
+    @Param('boardId', ParseUUIDPipe) _: string,
     @Param('taskId', ParseUUIDPipe) taskId: string,
   ) {
     if (await this.tasksService.findOne(taskId)) {

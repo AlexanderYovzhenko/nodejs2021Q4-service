@@ -39,7 +39,7 @@ export class ColumnsController {
   @ApiResponse({ status: HttpStatus.CREATED, type: CreateColumnDto })
   @Post()
   async create(
-    @Param('boardId', ParseUUIDPipe) _,
+    @Param('boardId', ParseUUIDPipe) _: string,
     @Body() createColumnDto: CreateColumnDto,
   ) {
     return await this.columnsService.create(createColumnDto);
@@ -48,7 +48,7 @@ export class ColumnsController {
   @ApiOperation({ summary: 'get all column' })
   @ApiResponse({ status: HttpStatus.OK, type: [CreateColumnDto] })
   @Get()
-  async findAll(@Param('boardId', ParseUUIDPipe) _) {
+  async findAll(@Param('boardId', ParseUUIDPipe) _: string) {
     return await this.columnsService.findAll();
   }
 
@@ -56,7 +56,7 @@ export class ColumnsController {
   @ApiResponse({ status: HttpStatus.OK, type: CreateColumnDto })
   @Get(':columnId')
   async findOne(
-    @Param('boardId', ParseUUIDPipe) _,
+    @Param('boardId', ParseUUIDPipe) _: string,
     @Param('columnId', ParseUUIDPipe) columnId: string,
   ) {
     if (await this.columnsService.findOne(columnId)) {
@@ -70,7 +70,7 @@ export class ColumnsController {
   @ApiResponse({ status: HttpStatus.OK, type: UpdateColumnDto })
   @Put(':columnId')
   async update(
-    @Param('boardId', ParseUUIDPipe) _,
+    @Param('boardId', ParseUUIDPipe) _: string,
     @Param('columnId', ParseUUIDPipe) columnId: string,
     @Body() updateColumnDto: UpdateColumnDto,
   ) {
@@ -86,7 +86,7 @@ export class ColumnsController {
   @HttpCode(HttpStatus.NO_CONTENT)
   @Delete(':columnId')
   async remove(
-    @Param('boardId', ParseUUIDPipe) _,
+    @Param('boardId', ParseUUIDPipe) _: string,
     @Param('columnId', ParseUUIDPipe) columnId: string,
   ) {
     if (await this.columnsService.findOne(columnId)) {
