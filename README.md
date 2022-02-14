@@ -1,5 +1,3 @@
-# RS School REST service(docker-basics)
-
 ## Prerequisites
 
 - Git - [Download & Install Git](https://git-scm.com/downloads).
