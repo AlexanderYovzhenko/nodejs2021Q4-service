@@ -1,12 +1,4 @@
-interface ITask {
-  id: string;
-  title: string;
-  order: number;
-  description: string;
-  userId: string | null;
-  boardId: string | null;
-  columnId: string | null;
-}
+import { ITask } from '../../common/type';
 
 let dbTasks: ITask[] = [];
 
@@ -21,8 +13,8 @@ const getTasksAll = async (): Promise<ITask[]> => dbTasks;
  * @param taskID -first argument ID task
  * @returns object task with ID task or null
  */
-const getTaskId = async (taskId: string): Promise<ITask | null> =>
-  dbTasks.find((task) => task.id === taskId) || null;
+const getTaskId = async (taskId: string): Promise<ITask | undefined> =>
+  dbTasks.find((task) => task.id === taskId);
 
 /**
  * Add object new task in array tasks(dbTasks)
@@ -72,7 +64,7 @@ const updateUserId = async (userId: string): Promise<void> => {
   });
 };
 
-module.exports = {
+export default {
   getTasksAll,
   getTaskId,
   addTask,

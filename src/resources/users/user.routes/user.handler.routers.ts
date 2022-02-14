@@ -1,10 +1,17 @@
-const {
-  FastifyRequest: FastifyRequestUser,
-  FastifyReply: FastifyReplyUser,
-} = require('fastify');
-const userService = require('../user.service');
-const statusCodeUser = require('../../../common/status.code');
-const User = require('../user.model');
+import { FastifyRequest, FastifyReply } from 'fastify';
+import userService from '../user.service';
+import statusCode from '../../../common/status.code';
+import User from '../user.model';
+import { IUser } from '../../../common/type';
+import { logger, logCollect } from '../../../common/logger';
+import { NotFoundError } from '../../../errors/custom.errors';
+
+type FastifyRequestUser = FastifyRequest<{
+  Body: IUser;
+  Params: {
+    userId: string;
+  };
+}>;
 
 /**
  * Get array users from function getUsersAllService.
@@ -13,12 +20,10 @@ const User = require('../user.model');
  * @param reply -second argument reply
  * @returns void
  */
-const getUsersAllRouter = async (
-  _: typeof FastifyRequestUser,
-  reply: typeof FastifyReplyUser
-) => {
-  const users: object = await userService.getUsersAllService();
-  reply.code(statusCodeUser.OK).send(users);
+const getUsersAllRouter = async (_: FastifyRequest, reply: FastifyReply) => {
+  const users = await userService.getUsersAllService();
+  reply.code(statusCode.OK).send(users);
+  logger.info(logCollect(_, reply));
 };
 
 /**
@@ -30,12 +35,18 @@ const getUsersAllRouter = async (
  * @returns void
  */
 const getUserIdRouter = async (
-  request: typeof FastifyRequestUser,
-  reply: typeof FastifyReplyUser
+  request: FastifyRequestUser,
+  reply: FastifyReply
 ) => {
   const { userId } = request.params;
-  const user: object = await userService.getUserIdService(userId);
-  reply.code(statusCodeUser.OK).send(user);
+
+  if (await userService.getUserIdService(userId)) {
+    const user = await userService.getUserIdService(userId);
+    reply.code(statusCode.OK).send(user);
+    logger.info(logCollect(request, reply));
+  } else {
+    throw new NotFoundError('Not found user');
+  }
 };
 
 /**
@@ -47,12 +58,13 @@ const getUserIdRouter = async (
  * @returns void
  */
 const addUserRouter = async (
-  request: typeof FastifyRequestUser,
-  reply: typeof FastifyReplyUser
+  request: FastifyRequestUser,
+  reply: FastifyReply
 ) => {
-  const user: object = new User(request.body);
+  const user: IUser = new User(request.body);
   await userService.addUserService(user);
-  reply.code(statusCodeUser.CREATED).send(user);
+  reply.code(statusCode.CREATED).send(user);
+  logger.info(logCollect(request, reply));
 };
 
 /**
@@ -65,13 +77,19 @@ const addUserRouter = async (
  * @returns void
  */
 const updateUserRouter = async (
-  request: typeof FastifyRequestUser,
-  reply: typeof FastifyReplyUser
+  request: FastifyRequestUser,
+  reply: FastifyReply
 ) => {
   const { userId } = request.params;
-  const updUser: object = new User(request.body, userId);
-  await userService.updateUserService(userId, updUser);
-  reply.code(statusCodeUser.OK).send(updUser);
+
+  if (await userService.getUserIdService(userId)) {
+    const updUser: IUser = new User(request.body, userId);
+    await userService.updateUserService(userId, updUser);
+    reply.code(statusCode.OK).send(updUser);
+    logger.info(logCollect(request, reply));
+  } else {
+    throw new NotFoundError('Not found user');
+  }
 };
 
 /**
@@ -83,15 +101,21 @@ const updateUserRouter = async (
  * @returns void
  */
 const deleteUserRouter = async (
-  request: typeof FastifyRequestUser,
-  reply: typeof FastifyReplyUser
+  request: FastifyRequestUser,
+  reply: FastifyReply
 ) => {
   const { userId } = request.params;
-  await userService.deleteUserService(userId);
-  reply.code(statusCodeUser.NO_CONTENT);
+
+  if (await userService.getUserIdService(userId)) {
+    await userService.deleteUserService(userId);
+    reply.code(statusCode.NO_CONTENT);
+    logger.info(logCollect(request, reply));
+  } else {
+    throw new NotFoundError('Not found user');
+  }
 };
 
-module.exports = {
+export default {
   getUsersAllRouter,
   getUserIdRouter,
   addUserRouter,

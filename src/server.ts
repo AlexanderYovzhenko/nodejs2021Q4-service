@@ -1,5 +1,6 @@
-const { PORT } = require('./common/config');
-const server = require('./app');
+import { PORT } from './common/config';
+import { app as server } from './app';
+import { logger } from './common/logger';
 
 /**
  * Run the server!
@@ -9,11 +10,12 @@ const server = require('./app');
  */
 const startServer = async () => {
   try {
-    await server.listen(PORT, () =>
-      console.info(`App is running on http://localhost:${PORT}`)
+    server.listen(PORT, () =>
+      logger.info(`App is running on http://localhost:${PORT}`)
     );
   } catch (err: unknown) {
     server.log.error(err);
+    logger.error(err);
     process.exit(1);
   }
 };

@@ -13,19 +13,18 @@ class Task {
   title: string;
   order: number;
   description: string;
-  userId: string;
-  boardId: string;
-  columnId: string;
+  userId: string | null;
+  boardId: string | null;
+  columnId: string | null;
 
   constructor(
     task: {
-      name: string;
       title: string;
       order: number;
       description: string;
-      userId: string;
-      boardId: string;
-      columnId: string;
+      userId: string | null;
+      boardId: string | null;
+      columnId: string | null;
     },
     id: string = uuid()
   ) {
@@ -39,4 +38,4 @@ class Task {
   }
 }
 
-module.exports = Task;
+export default Task;

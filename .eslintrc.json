@@ -35,6 +35,7 @@
     "@typescript-eslint/no-unused-vars": "error",
     "@typescript-eslint/no-non-null-assertion": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off", 
+    "node/no-unpublished-import": "off",
     "no-process-exit": "off",
     "complexity": [ "warn", 10 ],
     "prefer-const": "error",

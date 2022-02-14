@@ -1,5 +1,6 @@
-const boardsRepo = require('./board.memory.repository');
-const taskServiceBoard = require('../tasks/task.service');
+import boardsRepo from './board.memory.repository';
+import taskServiceBoard from '../tasks/task.service';
+import { IBoard } from '../../common/type';
 
 /**
  * Intermediate function
@@ -15,8 +16,9 @@ const getBoardsAllService = async (): Promise<object> =>
  * @param boardID -first argument ID board
  * @returns the result work function getBoardId, (object board)
  */
-const getBoardIdService = async (boardId: string): Promise<object> =>
-  await boardsRepo.getBoardId(boardId);
+const getBoardIdService = async (
+  boardId: string
+): Promise<object | undefined> => await boardsRepo.getBoardId(boardId);
 
 /**
  * Intermediate function
@@ -24,7 +26,7 @@ const getBoardIdService = async (boardId: string): Promise<object> =>
  * @param board -first argument new board
  * @returns void
  */
-const addBoardService = async (board: object) => {
+const addBoardService = async (board: IBoard) => {
   await boardsRepo.addBoard(board);
 };
 
@@ -35,7 +37,7 @@ const addBoardService = async (board: object) => {
  * @param updBoard -second argument object update board(updBoard)
  * @returns void
  */
-const updateBoardService = async (boardId: string, updBoard: object) => {
+const updateBoardService = async (boardId: string, updBoard: IBoard) => {
   await boardsRepo.updateBoard(boardId, updBoard);
 };
 
@@ -51,7 +53,7 @@ const deleteBoardService = async (boardId: string) => {
   await taskServiceBoard.deleteTaskFromBoardService(boardId);
 };
 
-module.exports = {
+export default {
   getBoardsAllService,
   getBoardIdService,
   addBoardService,

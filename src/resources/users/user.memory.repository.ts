@@ -1,9 +1,4 @@
-interface IUser {
-  id: string;
-  name: string;
-  login: string;
-  password: string;
-}
+import { IUser } from '../../common/type';
 
 let dbUsers: IUser[] = [];
 
@@ -18,8 +13,8 @@ const getUsersAll = async (): Promise<IUser[]> => dbUsers;
  * @param userID -first argument ID user
  * @returns Object user with ID user or null
  */
-const getUserId = async (userId: string): Promise<IUser | null> =>
-  dbUsers.find((user) => user.id === userId) || null;
+const getUserId = async (userId: string): Promise<IUser | undefined> =>
+  dbUsers.find((user) => user.id === userId);
 
 /**
  * Add object new user in array users(dbUsers)
@@ -49,7 +44,7 @@ const deleteUser = async (userId: string): Promise<void> => {
   dbUsers = dbUsers.filter((user: IUser): boolean => user.id !== userId);
 };
 
-module.exports = {
+export default {
   getUsersAll,
   getUserId,
   addUser,

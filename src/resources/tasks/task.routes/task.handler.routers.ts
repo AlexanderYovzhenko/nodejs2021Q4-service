@@ -1,10 +1,18 @@
-const {
-  FastifyRequest: FastifyRequestTask,
-  FastifyReply: FastifyReplyTask,
-} = require('fastify');
-const taskService = require('../task.service');
-const statusCodeTask = require('../../../common/status.code');
-const Task = require('../task.model');
+import { FastifyRequest, FastifyReply } from 'fastify';
+import taskService from '../task.service';
+import statusCode from '../../../common/status.code';
+import Task from '../task.model';
+import { ITask } from '../../../common/type';
+import { logger, logCollect } from '../../../common/logger';
+import { NotFoundError } from '../../../errors/custom.errors';
+
+type FastifyRequestTask = FastifyRequest<{
+  Body: ITask;
+  Params: {
+    taskId: string;
+    boardId: string;
+  };
+}>;
 
 /**
  * Get array tasks from function getTasksAllService.
@@ -13,12 +21,10 @@ const Task = require('../task.model');
  * @param reply -second argument reply
  * @returns void
  */
-const getTasksAllRouter = async (
-  _: typeof FastifyRequestTask,
-  reply: typeof FastifyReplyTask
-) => {
+const getTasksAllRouter = async (_: FastifyRequest, reply: FastifyReply) => {
   const tasks = await taskService.getTasksAllService();
-  reply.code(statusCodeTask.OK).send(tasks);
+  reply.code(statusCode.OK).send(tasks);
+  logger.info(logCollect(_, reply));
 };
 
 /**
@@ -33,16 +39,17 @@ const getTasksAllRouter = async (
  * @returns void
  */
 const getTaskIdRouter = async (
-  request: typeof FastifyRequestTask,
-  reply: typeof FastifyReplyTask
+  request: FastifyRequestTask,
+  reply: FastifyReply
 ) => {
   const { taskId } = request.params;
 
   if (await taskService.getTaskIdService(taskId)) {
     const task = await taskService.getTaskIdService(taskId);
-    reply.code(statusCodeTask.OK).send(task);
+    reply.code(statusCode.OK).send(task);
+    logger.info(logCollect(request, reply));
   } else {
-    reply.code(statusCodeTask.NOT_FOUND).send('Not found');
+    throw new NotFoundError('Not found task');
   }
 };
 
@@ -57,14 +64,15 @@ const getTaskIdRouter = async (
  * @returns void
  */
 const addTaskRouter = async (
-  request: typeof FastifyRequestTask,
-  reply: typeof FastifyReplyTask
+  request: FastifyRequestTask,
+  reply: FastifyReply
 ) => {
   const { boardId } = request.params;
   request.body.boardId = boardId;
-  const task: object = new Task(request.body);
+  const task: ITask = new Task(request.body);
   await taskService.addTaskService(task);
-  reply.code(statusCodeTask.CREATED).send(task);
+  reply.code(statusCode.CREATED).send(task);
+  logger.info(logCollect(request, reply));
 };
 
 /**
@@ -77,13 +85,19 @@ const addTaskRouter = async (
  * @returns void
  */
 const updateTaskRouter = async (
-  request: typeof FastifyRequestTask,
-  reply: typeof FastifyReplyTask
+  request: FastifyRequestTask,
+  reply: FastifyReply
 ) => {
   const { taskId } = request.params;
-  const updTask: object = new Task(request.body, taskId);
-  await taskService.updateTaskService(taskId, updTask);
-  reply.code(statusCodeTask.OK).send(updTask);
+
+  if (await taskService.getTaskIdService(taskId)) {
+    const updTask: ITask = new Task(request.body, taskId);
+    await taskService.updateTaskService(taskId, updTask);
+    reply.code(statusCode.OK).send(updTask);
+    logger.info(logCollect(request, reply));
+  } else {
+    throw new NotFoundError('Not found task');
+  }
 };
 
 /**
@@ -98,20 +112,21 @@ const updateTaskRouter = async (
  * @returns void
  */
 const deleteTaskRouter = async (
-  request: typeof FastifyRequestTask,
-  reply: typeof FastifyReplyTask
+  request: FastifyRequestTask,
+  reply: FastifyReply
 ) => {
   const { taskId } = request.params;
 
-  if (taskService.getTaskIdService(taskId)) {
+  if (await taskService.getTaskIdService(taskId)) {
     await taskService.deleteTaskService(taskId);
-    reply.code(statusCodeTask.NO_CONTENT);
+    reply.code(statusCode.NO_CONTENT);
+    logger.info(logCollect(request, reply));
   } else {
-    reply.code(statusCodeTask.NOT_FOUND).send('Not found');
+    throw new NotFoundError('Not found task');
   }
 };
 
-module.exports = {
+export default {
   getTasksAllRouter,
   getTaskIdRouter,
   addTaskRouter,

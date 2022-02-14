@@ -1,4 +1,4 @@
-const userHandlerRouters = require('./user.handler.routers');
+import userHandlerRouters from './user.handler.routers';
 
 const user = {
   type: 'object',
@@ -65,7 +65,7 @@ const updateUserOpts = {
   handler: userHandlerRouters.updateUserRouter,
 };
 
-module.exports = {
+export default {
   getUsersOpts,
   getUserOpts,
   addUserOpts,

@@ -1,12 +1,18 @@
 import { v4 as uuid } from 'uuid';
+import { FastifyRequest, FastifyReply } from 'fastify';
+import boardService from '../board.service';
+import statusCode from '../../../common/status.code';
+import Board from '../board.model';
+import { IBoard } from '../../../common/type';
+import { logger, logCollect } from '../../../common/logger';
+import { NotFoundError } from '../../../errors/custom.errors';
 
-const {
-  FastifyRequest: FastifyRequestBoard,
-  FastifyReply: FastifyReplyBoard,
-} = require('fastify');
-const boardService = require('../board.service');
-const statusCodeBoard = require('../../../common/status.code');
-const Board = require('../board.model');
+type FastifyRequestBoard = FastifyRequest<{
+  Body: IBoard;
+  Params: {
+    boardId: string;
+  };
+}>;
 
 /**
  * Get array boards from function getBoardsAllService.
@@ -15,12 +21,10 @@ const Board = require('../board.model');
  * @param reply -second argument reply
  * @returns void
  */
-const getBoardsAllRouter = async (
-  _: typeof FastifyRequestBoard,
-  reply: typeof FastifyReplyBoard
-) => {
+const getBoardsAllRouter = async (_: FastifyRequest, reply: FastifyReply) => {
   const board = await boardService.getBoardsAllService();
-  reply.code(statusCodeBoard.OK).send(board);
+  reply.code(statusCode.OK).send(board);
+  logger.info(logCollect(_, reply));
 };
 
 /**
@@ -35,16 +39,17 @@ const getBoardsAllRouter = async (
  * @returns void
  */
 const getBoardIdRouter = async (
-  request: typeof FastifyRequestBoard,
-  reply: typeof FastifyReplyBoard
+  request: FastifyRequestBoard,
+  reply: FastifyReply
 ) => {
   const { boardId } = request.params;
 
   if (await boardService.getBoardIdService(boardId)) {
     const board = await boardService.getBoardIdService(boardId);
-    reply.code(statusCodeBoard.OK).send(board);
+    reply.code(statusCode.OK).send(board);
+    logger.info(logCollect(request, reply));
   } else {
-    reply.code(statusCodeBoard.NOT_FOUND).send('Not found');
+    throw new NotFoundError('Not found board');
   }
 };
 
@@ -58,15 +63,17 @@ const getBoardIdRouter = async (
  * @returns void
  */
 const addBoardRouter = async (
-  request: typeof FastifyRequestBoard,
-  reply: typeof FastifyReplyBoard
+  request: FastifyRequestBoard,
+  reply: FastifyReply
 ) => {
-  request.body.columns.forEach((column: { columnId: string }) => {
+  const columnsArray = request.body.columns;
+  columnsArray.forEach((column: { columnId: string }) => {
     column.columnId = uuid();
   });
-  const board: object = new Board(request.body);
+  const board: IBoard = new Board(request.body);
   await boardService.addBoardService(board);
-  reply.code(statusCodeBoard.CREATED).send(board);
+  reply.code(statusCode.CREATED).send(board);
+  logger.info(logCollect(request, reply));
 };
 
 /**
@@ -79,13 +86,19 @@ const addBoardRouter = async (
  * @returns void
  */
 const updateBoardRouter = async (
-  request: typeof FastifyRequestBoard,
-  reply: typeof FastifyReplyBoard
+  request: FastifyRequestBoard,
+  reply: FastifyReply
 ) => {
   const { boardId } = request.params;
-  const updBoard = new Board(request.body, boardId);
-  await boardService.updateBoardService(boardId, updBoard);
-  reply.code(statusCodeBoard.OK).send(updBoard);
+
+  if (await boardService.getBoardIdService(boardId)) {
+    const updBoard: IBoard = new Board(request.body, boardId);
+    await boardService.updateBoardService(boardId, updBoard);
+    reply.code(statusCode.OK).send(updBoard);
+    logger.info(logCollect(request, reply));
+  } else {
+    throw new NotFoundError('Not found board');
+  }
 };
 
 /**
@@ -100,20 +113,21 @@ const updateBoardRouter = async (
  * @returns void
  */
 const deleteBoardRouter = async (
-  request: typeof FastifyRequestBoard,
-  reply: typeof FastifyReplyBoard
+  request: FastifyRequestBoard,
+  reply: FastifyReply
 ) => {
   const { boardId } = request.params;
 
   if (await boardService.getBoardIdService(boardId)) {
     await boardService.deleteBoardService(boardId);
-    reply.code(statusCodeBoard.NO_CONTENT).send();
+    reply.code(statusCode.NO_CONTENT).send();
+    logger.info(logCollect(request, reply));
   } else {
-    reply.code(statusCodeBoard.NOT_FOUND).send('Not found');
+    throw new NotFoundError('Not found board');
   }
 };
 
-module.exports = {
+export default {
   getBoardsAllRouter,
   getBoardIdRouter,
   addBoardRouter,

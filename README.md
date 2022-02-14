@@ -1,5 +1,3 @@
-# RS School REST service Typescript basics
-
 ## Prerequisites
 
 - Git - [Download & Install Git](https://git-scm.com/downloads).
@@ -14,7 +12,7 @@ git clone https://github.com/GoldenManBel/nodejs2021Q4-service.git
 ## Switch branch
 
 ```
-git checkout typescript-basics
+git checkout logging-errorHandling
 ```
 
 ## Installing NPM modules
@@ -32,6 +30,10 @@ npm start
 After starting the app on port (4000 as default) you can open
 in your browser OpenAPI documentation by typing http://localhost:4000/doc/.
 For more information about OpenAPI/Swagger please visit https://swagger.io/.
+
+## Description
+To check the logging level in the .env file there is a LEVEL_LOG variable with a value from 0 to 4, where 0(errors) is the highest priority and 4(all logs) is the least.  
+To check for uncaughtException and unhandledRejection events, insert into file app.ts: throw Error ('Oops!') and Promise.reject (Error ('Oops!')) after initializing Fastify and calling errorsHandler().  
 
 ## Testing
 
