@@ -15,7 +15,8 @@ const PORT = process.env.PORT || 4000,
   POSTGRES_DB = process.env.POSTGRES_DB,
   DB_HOST = process.env.DB_HOST,
   POSTGRES_USER = process.env.POSTGRES_USER,
-  POSTGRES_PASSWORD = process.env.POSTGRES_PASSWORD;
+  POSTGRES_PASSWORD = process.env.POSTGRES_PASSWORD,
+  SALT_HASH_PASSWORD = process.env.SALT_HASH_PASSWORD || '10';
 
 export {
   PORT,
@@ -29,4 +30,5 @@ export {
   DB_HOST,
   POSTGRES_USER,
   POSTGRES_PASSWORD,
+  SALT_HASH_PASSWORD,
 };

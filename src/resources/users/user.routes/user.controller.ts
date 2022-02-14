@@ -2,9 +2,9 @@ import { FastifyRequest, FastifyReply } from 'fastify';
 import userService from '../user.service';
 import statusCode from '../../../common/status.code';
 import OrmUser from '../user.model';
-import { IUser } from '../../../common/type';
-import { logger, getLogObject } from '../../../logging/logger';
+import { IUser } from '../../../common/types';
 import { NotFoundError } from '../../../errors/custom.errors';
+import { setHashPassword } from '../../../bcrypt/bcrypt';
 
 type FastifyRequestUser = FastifyRequest<{
   Body: IUser;
@@ -23,7 +23,6 @@ type FastifyRequestUser = FastifyRequest<{
 const getUsersAllRouter = async (_: FastifyRequest, reply: FastifyReply) => {
   const users = await userService.getUsersAllService();
   reply.code(statusCode.OK).send(users);
-  logger.info(getLogObject(_, reply));
 };
 
 /**
@@ -43,7 +42,6 @@ const getUserIdRouter = async (
   if (await userService.getUserIdService(userId)) {
     const user = await userService.getUserIdService(userId);
     reply.code(statusCode.OK).send(user);
-    logger.info(getLogObject(request, reply));
   } else {
     throw new NotFoundError('Not found user');
   }
@@ -64,10 +62,9 @@ const addUserRouter = async (
   const user: OrmUser = new OrmUser();
   user.name = request.body.name;
   user.login = request.body.login;
-  user.password = request.body.password;
+  user.password = await setHashPassword(request.body.password);
   await userService.addUserService(user);
   reply.code(statusCode.CREATED).send(user);
-  logger.info(getLogObject(request, reply));
 };
 
 /**
@@ -90,10 +87,9 @@ const updateUserRouter = async (
     updUser.id = userId;
     updUser.name = request.body.name;
     updUser.login = request.body.login;
-    updUser.password = request.body.password;
+    updUser.password = await setHashPassword(request.body.password);
     await userService.updateUserService(userId, updUser);
     reply.code(statusCode.OK).send(updUser);
-    logger.info(getLogObject(request, reply));
   } else {
     throw new NotFoundError('Not found user');
   }
@@ -116,7 +112,6 @@ const deleteUserRouter = async (
   if (await userService.getUserIdService(userId)) {
     await userService.deleteUserService(userId);
     reply.code(statusCode.NO_CONTENT);
-    logger.info(getLogObject(request, reply));
   } else {
     throw new NotFoundError('Not found user');
   }
