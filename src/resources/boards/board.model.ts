@@ -1,30 +1,21 @@
-import { v4 as uuid } from 'uuid';
-import { IColumn } from '../../common/type';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { IBoard } from '../../common/type';
+import OrmTask from '../tasks/task.model';
+import OrmColumn from './column.model';
 
-/**
- * Add in object board new field id equal uuid.
- * If not hand over id argument then field id equal uuid.
- * Otherwise field id qual argument id.
- * @param board -first argument object board
- * @param id -second argument id board
- * @returns void
- */
-class Board {
-  id: string;
-  title: string;
-  columns: [IColumn];
+@Entity()
+class OrmBoard implements IBoard {
+  @PrimaryGeneratedColumn('uuid')
+  id!: string;
 
-  constructor(
-    board: {
-      title: string;
-      columns: [IColumn];
-    },
-    id: string = uuid()
-  ) {
-    this.id = id;
-    this.title = board.title;
-    this.columns = board.columns;
-  }
+  @Column()
+  title!: string;
+
+  @Column('json', { nullable: true })
+  columns!: [OrmColumn];
+
+  @OneToMany(() => OrmTask, (task) => task.boardId)
+  tasks!: OrmTask[];
 }
 
-export default Board;
+export default OrmBoard;

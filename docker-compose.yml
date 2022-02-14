@@ -1,6 +1,6 @@
 version: '3'
 services:
-  db:
+  postgres:
     image: 'postgres:${POSTGRES_VERSION}'
     container_name: postgres
     build: 
@@ -19,14 +19,18 @@ services:
     ports:
       - ${PORT_DB}:${PORT_DB}
     environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
       - PORT_DB=${PORT_DB}
+      - POSTRGES_HOST=${DB_HOST}
       - POSTGRES_VERSION=${POSTGRES_VERSION}
     volumes:
       - pg_data:/var/lib/postgresql/data/
-      - ./pg_data:/var/lib/postgresql/data/
   app:
     image: goldenmanbel/docker-basics:app
-    container_name: server
+    container_name: app
     build:
       context: .
       args: 
@@ -41,9 +45,10 @@ services:
     environment:
       - PORT=${PORT}
       - NODE_ENV=${NODE_ENV}
+      - NODE_VERSION=${NODE_VERSION}
     volumes:
       - logs:/usr/src/app/logs
-      - ./logs:/usr/src/app/logs
+      # - ./logs:/usr/src/app/logs/*
       - ./:/usr/src/app 
     deploy:
       restart_policy:
@@ -59,6 +64,3 @@ volumes:
 networks:
   my_net:
     driver: bridge
-    ipam:
-      config:
-        - subnet: 192.168.220.0/24

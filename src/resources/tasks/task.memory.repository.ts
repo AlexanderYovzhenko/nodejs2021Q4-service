@@ -1,28 +1,35 @@
-import { ITask } from '../../common/type';
-
-let dbTasks: ITask[] = [];
+import { getRepository } from 'typeorm';
+import OrmTask from './task.model';
 
 /**
  * Return array tasks(dbTasks)
  * @returns dbTasks
  */
-const getTasksAll = async (): Promise<ITask[]> => dbTasks;
+const getTasksAll = async (): Promise<OrmTask[]> => {
+  const tasks = await getRepository(OrmTask).find();
+
+  return tasks;
+};
 
 /**
  * Return object task with ID task equal taskID
  * @param taskID -first argument ID task
  * @returns object task with ID task or null
  */
-const getTaskId = async (taskId: string): Promise<ITask | undefined> =>
-  dbTasks.find((task) => task.id === taskId);
+const getTaskId = async (taskId: string): Promise<OrmTask | undefined> => {
+  const idTask = await getRepository(OrmTask).findOne(taskId);
+
+  return idTask;
+};
+// dbTasks.find((task) => task.id === taskId);
 
 /**
  * Add object new task in array tasks(dbTasks)
  * @param task -first argument new task
  * @returns void
  */
-const addTask = async (task: ITask): Promise<void> => {
-  dbTasks.push(task);
+const addTask = async (task: OrmTask): Promise<void> => {
+  await getRepository(OrmTask).insert(task);
 };
 
 /**
@@ -31,8 +38,8 @@ const addTask = async (task: ITask): Promise<void> => {
  * @param updTask -second argument object update task(updTask)
  * @returns void
  */
-const updateTask = async (taskId: string, updTask: ITask): Promise<void> => {
-  dbTasks = dbTasks.map((task) => (task.id === taskId ? updTask : task));
+const updateTask = async (taskId: string, updTask: OrmTask): Promise<void> => {
+  await getRepository(OrmTask).update(taskId, updTask);
 };
 
 /**
@@ -41,7 +48,7 @@ const updateTask = async (taskId: string, updTask: ITask): Promise<void> => {
  * @returns void
  */
 const deleteTask = async (taskId: string): Promise<void> => {
-  dbTasks = dbTasks.filter((task) => task.id !== taskId);
+  await getRepository(OrmTask).delete(taskId);
 };
 
 /**
@@ -50,7 +57,7 @@ const deleteTask = async (taskId: string): Promise<void> => {
  * @returns void
  */
 const deleteTaskFromBoard = async (boardId: string): Promise<void> => {
-  dbTasks = dbTasks.filter((task) => task.boardId !== boardId);
+  await getRepository(OrmTask).delete({ boardId: boardId });
 };
 
 /**
@@ -58,10 +65,8 @@ const deleteTaskFromBoard = async (boardId: string): Promise<void> => {
  * @param userID -first argument ID user
  * @returns void
  */
-const updateUserId = async (userId: string): Promise<void> => {
-  dbTasks.forEach((task) => {
-    if (task.userId === userId) task.userId = null;
-  });
+const updateUserId = async (userId: string | undefined): Promise<void> => {
+  await getRepository(OrmTask).update({ userId }, { userId: undefined });
 };
 
 export default {

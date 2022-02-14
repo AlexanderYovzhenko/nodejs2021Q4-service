@@ -1,7 +1,7 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 import taskService from '../task.service';
 import statusCode from '../../../common/status.code';
-import Task from '../task.model';
+import OrmTask from '../task.model';
 import { ITask } from '../../../common/type';
 import { logger, getLogObject } from '../../../logging/logger';
 import { NotFoundError } from '../../../errors/custom.errors';
@@ -69,7 +69,14 @@ const addTaskRouter = async (
 ) => {
   const { boardId } = request.params;
   request.body.boardId = boardId;
-  const task: ITask = new Task(request.body);
+
+  const task: OrmTask = new OrmTask();
+  task.title = request.body.title;
+  task.order = request.body.order;
+  task.description = request.body.description;
+  task.userId = request.body.userId;
+  task.boardId = request.body.boardId;
+  task.columnId = request.body.columnId;
   await taskService.addTaskService(task);
   reply.code(statusCode.CREATED).send(task);
   logger.info(getLogObject(request, reply));
@@ -91,7 +98,14 @@ const updateTaskRouter = async (
   const { taskId } = request.params;
 
   if (await taskService.getTaskIdService(taskId)) {
-    const updTask: ITask = new Task(request.body, taskId);
+    const updTask: OrmTask = new OrmTask();
+    updTask.id = taskId;
+    updTask.title = request.body.title;
+    updTask.order = request.body.order;
+    updTask.description = request.body.description;
+    updTask.userId = request.body.userId;
+    updTask.boardId = request.body.boardId;
+    updTask.columnId = request.body.columnId;
     await taskService.updateTaskService(taskId, updTask);
     reply.code(statusCode.OK).send(updTask);
     logger.info(getLogObject(request, reply));

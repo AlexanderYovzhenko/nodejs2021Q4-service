@@ -1,6 +1,6 @@
 import boardsRepo from './board.memory.repository';
 import taskServiceBoard from '../tasks/task.service';
-import { IBoard } from '../../common/type';
+import OrmBoard from './board.model';
 
 /**
  * Intermediate function
@@ -26,7 +26,7 @@ const getBoardIdService = async (
  * @param board -first argument new board
  * @returns void
  */
-const addBoardService = async (board: IBoard) => {
+const addBoardService = async (board: OrmBoard) => {
   await boardsRepo.addBoard(board);
 };
 
@@ -37,7 +37,7 @@ const addBoardService = async (board: IBoard) => {
  * @param updBoard -second argument object update board(updBoard)
  * @returns void
  */
-const updateBoardService = async (boardId: string, updBoard: IBoard) => {
+const updateBoardService = async (boardId: string, updBoard: OrmBoard) => {
   await boardsRepo.updateBoard(boardId, updBoard);
 };
 

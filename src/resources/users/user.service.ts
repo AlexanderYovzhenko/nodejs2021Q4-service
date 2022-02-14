@@ -1,6 +1,7 @@
 import usersRepo from './user.memory.repository';
 import taskServiceUser from '../tasks/task.service';
 import { IUser } from '../../common/type';
+import OrmUser from './user.model';
 
 /**
  * Intermediate function
@@ -25,8 +26,8 @@ const getUserIdService = async (userId: string): Promise<object | undefined> =>
  * @param user -first argument new user
  * @returns void
  */
-const addUserService = async (user: IUser) => {
-  await usersRepo.addUser(user);
+const addUserService = async (newUser: OrmUser) => {
+  await usersRepo.addUser(newUser);
 };
 
 /**

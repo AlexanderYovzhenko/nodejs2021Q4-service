@@ -1,4 +1,4 @@
-import { ITask } from '../../common/type';
+import OrmTask from './task.model';
 import tasksRepo from './task.memory.repository';
 
 /**
@@ -24,7 +24,7 @@ const getTaskIdService = async (taskId: string): Promise<object | undefined> =>
  * @param task -first argument new task
  * @returns void
  */
-const addTaskService = async (task: ITask) => {
+const addTaskService = async (task: OrmTask) => {
   await tasksRepo.addTask(task);
 };
 
@@ -35,7 +35,7 @@ const addTaskService = async (task: ITask) => {
  * @param updTask -second argument object update task(updTask)
  * @returns void
  */
-const updateTaskService = async (taskId: string, updTask: ITask) => {
+const updateTaskService = async (taskId: string, updTask: OrmTask) => {
   await tasksRepo.updateTask(taskId, updTask);
 };
 

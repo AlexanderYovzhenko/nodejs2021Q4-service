@@ -33,6 +33,8 @@
     "@typescript-eslint/no-explicit-any": "error",
     "@typescript-eslint/no-var-requires": "off",
     "@typescript-eslint/no-unused-vars": "error",
+    "no-unused-vars": "off",
+    "import/no-cycle": "off",
     "@typescript-eslint/no-non-null-assertion": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off", 
     "node/no-unpublished-import": "off",

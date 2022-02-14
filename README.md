@@ -12,7 +12,13 @@ git clone https://github.com/GoldenManBel/nodejs2021Q4-service.git
 ## Switch branch
 
 ```
-git checkout docker-basics
+git checkout postgreSQL-typeorm
+```
+
+## Need delete in  "devDependencies"
+ 
+```
+ "typescript": "3.3.3333"
 ```
 
 ## Installing NPM modules
@@ -25,6 +31,47 @@ npm install
 
 ```
 docker-compose up --build
+```
+
+```
+npm run test
+
+```
+or
+
+```
+docker exec -i -t app sh
+```
+```
+npm run test
+```
+
+## Running application local and bd in docker
+
+In .env file set DB_HOST=localhost
+
+```
+docker build -t postgres database. 
+```
+```
+docker run -dp 5432:5432 -e POSTGRES_HOST_AUTH_METHOD=trust postgres
+```
+```
+npm run migration:generate
+```
+```
+npm run start:ts 
+```
+```
+npm run test 
+```
+
+## Create a migration
+
+In .env file set DB_HOST=localhost
+
+```
+npm run migration:generate
 ```
 
 ## To check to cross-check items, you can use the commands:

@@ -1,41 +1,34 @@
-import { v4 as uuid } from 'uuid';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { ITask } from '../../common/type';
+import OrmUser from '../users/user.model';
 
-/**
- * Add in object task new field id equal uuid.
- * If not hand over id argument then field id equal uuid.
- * Otherwise field id qual argument id.
- * @param task -first argument object task
- * @param id -second argument id task
- * @returns void
- */
-class Task {
-  id: string;
-  title: string;
-  order: number;
-  description: string;
-  userId: string | null;
-  boardId: string | null;
-  columnId: string | null;
+@Entity()
+class OrmTask implements ITask {
+  @PrimaryGeneratedColumn('uuid')
+  id!: string;
 
-  constructor(
-    task: {
-      title: string;
-      order: number;
-      description: string;
-      userId: string | null;
-      boardId: string | null;
-      columnId: string | null;
-    },
-    id: string = uuid()
-  ) {
-    this.id = id;
-    this.title = task.title;
-    this.order = task.order;
-    this.description = task.description;
-    this.userId = task.userId;
-    this.boardId = task.boardId;
-    this.columnId = task.columnId;
-  }
+  @Column()
+  title!: string;
+
+  @Column()
+  order!: number;
+
+  @Column()
+  description!: string;
+
+  @Column({ type: 'uuid', nullable: true, name: 'columnId' })
+  columnId!: string;
+
+  @Column({ type: 'uuid', nullable: true, name: 'boardId' })
+  boardId!: string;
+
+  @ManyToOne(() => OrmUser, (user) => user.tasks, {
+    eager: true,
+    nullable: true,
+    onDelete: 'SET NULL',
+    onUpdate: 'CASCADE',
+  })
+  userId!: string;
 }
 
-export default Task;
+export default OrmTask;
