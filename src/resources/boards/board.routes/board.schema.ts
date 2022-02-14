@@ -1,4 +1,4 @@
-const { getBoardsAll, getBoardId, addBoard, deleteBoard, updateBoard } = require('./board.service');
+const boardHandlerRouters = require('./board.handler.routers');
 
 const board = {
   type: 'object',
@@ -14,42 +14,42 @@ const board = {
         properties: {
           columnId: { type: 'string' },
           title: { type: 'string' },
-          order: { type: 'number' }
-        }
-      }
-    }
-  }
+          order: { type: 'number' },
+        },
+      },
+    },
+  },
 };
 
-const getBoardsOpts = { 
+const getBoardsOpts = {
   schema: {
     response: {
       200: {
         type: 'array',
-        items: board
-      }
-    }
+        items: board,
+      },
+    },
   },
-  handler: getBoardsAll
+  handler: boardHandlerRouters.getBoardsAllRouter,
 };
 
 const getBoardOpts = {
   schema: {
     response: {
-      200: board 
-    }
+      200: board,
+    },
   },
-  handler: getBoardId
+  handler: boardHandlerRouters.getBoardIdRouter,
 };
 
 const addBoardOpts = {
   schema: {
     body: board,
     response: {
-      201: board 
-    }
+      201: board,
+    },
   },
-  handler: addBoard
+  handler: boardHandlerRouters.addBoardRouter,
 };
 
 const deleteBoardOpts = {
@@ -59,11 +59,11 @@ const deleteBoardOpts = {
         type: 'object',
         properties: {
           message: { type: 'string' },
-        }
-      }
-    }
+        },
+      },
+    },
   },
-  handler: deleteBoard,
+  handler: boardHandlerRouters.deleteBoardRouter,
 };
 
 const updateBoardOpts = {
@@ -73,23 +73,13 @@ const updateBoardOpts = {
       200: board,
     },
   },
-  handler: updateBoard,
-}
-
-
-const boardRoutes = (app, options, done) => {
-
-  app.get('/boards', getBoardsOpts);
-
-  app.get('/boards/:boardId', getBoardOpts);
-
-  app.post('/boards', addBoardOpts);
-  
-  app.put('/boards/:boardId', updateBoardOpts);  
-
-  app.delete('/boards/:boardId', deleteBoardOpts);
-
-  done();
+  handler: boardHandlerRouters.updateBoardRouter,
 };
 
-module.exports = boardRoutes;
+module.exports = {
+  getBoardsOpts,
+  getBoardOpts,
+  addBoardOpts,
+  deleteBoardOpts,
+  updateBoardOpts,
+};
