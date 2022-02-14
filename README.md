@@ -80,7 +80,6 @@ RS School REST service(NestJs)
 </ul>
 </p>
 
-
 ## Prerequisites
 
 - Git - [Download & Install Git](https://git-scm.com/downloads).
@@ -96,6 +95,12 @@ git clone https://github.com/GoldenManBel/nodejs2021Q4-service.git
 
 ```bash
 git checkout nestJS
+```
+
+## Need delete in  "devDependencies"
+ 
+```
+ "typescript": "3.3.3333"
 ```
 
 ## Installing NPM modules
