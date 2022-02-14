@@ -1,4 +1,4 @@
-import taskHandlerRouters from './task.handler.routers';
+import taskHandlerRouters from './task.controller';
 
 const task = {
   type: 'object',

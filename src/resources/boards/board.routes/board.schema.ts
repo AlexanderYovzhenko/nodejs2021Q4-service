@@ -1,4 +1,4 @@
-import boardHandlerRouters from './board.handler.routers';
+import boardHandlerRouters from './board.controller';
 
 const board = {
   type: 'object',

@@ -1,14 +1,11 @@
 import Fastify, { FastifyInstance, FastifyRegisterOptions } from 'fastify';
 import fastifySwagger, { SwaggerOptions } from 'fastify-swagger';
-import path, { dirname } from 'path';
-import { fileURLToPath } from 'url';
+import path from 'path';
 
 import userRouter from './resources/users/user.routes/user.router';
 import boardRouter from './resources/boards/board.routes/board.router';
 import taskRouter from './resources/tasks/task.routes/task.router';
 import errorsHandler from './errors/errors.handler';
-
-const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export const app: FastifyInstance = Fastify({
   logger: false,
@@ -31,3 +28,7 @@ app.register(fastifySwagger, optsSwagger);
 app.register(userRouter);
 app.register(boardRouter);
 app.register(taskRouter);
+
+// throw new Error('Oops!');
+
+// Promise.reject(Error('Oops!'));

@@ -3,7 +3,7 @@ import userService from '../user.service';
 import statusCode from '../../../common/status.code';
 import User from '../user.model';
 import { IUser } from '../../../common/type';
-import { logger, logCollect } from '../../../common/logger';
+import { logger, getLogObject } from '../../../logging/logger';
 import { NotFoundError } from '../../../errors/custom.errors';
 
 type FastifyRequestUser = FastifyRequest<{
@@ -23,7 +23,7 @@ type FastifyRequestUser = FastifyRequest<{
 const getUsersAllRouter = async (_: FastifyRequest, reply: FastifyReply) => {
   const users = await userService.getUsersAllService();
   reply.code(statusCode.OK).send(users);
-  logger.info(logCollect(_, reply));
+  logger.info(getLogObject(_, reply));
 };
 
 /**
@@ -43,7 +43,7 @@ const getUserIdRouter = async (
   if (await userService.getUserIdService(userId)) {
     const user = await userService.getUserIdService(userId);
     reply.code(statusCode.OK).send(user);
-    logger.info(logCollect(request, reply));
+    logger.info(getLogObject(request, reply));
   } else {
     throw new NotFoundError('Not found user');
   }
@@ -64,7 +64,7 @@ const addUserRouter = async (
   const user: IUser = new User(request.body);
   await userService.addUserService(user);
   reply.code(statusCode.CREATED).send(user);
-  logger.info(logCollect(request, reply));
+  logger.info(getLogObject(request, reply));
 };
 
 /**
@@ -86,7 +86,7 @@ const updateUserRouter = async (
     const updUser: IUser = new User(request.body, userId);
     await userService.updateUserService(userId, updUser);
     reply.code(statusCode.OK).send(updUser);
-    logger.info(logCollect(request, reply));
+    logger.info(getLogObject(request, reply));
   } else {
     throw new NotFoundError('Not found user');
   }
@@ -109,7 +109,7 @@ const deleteUserRouter = async (
   if (await userService.getUserIdService(userId)) {
     await userService.deleteUserService(userId);
     reply.code(statusCode.NO_CONTENT);
-    logger.info(logCollect(request, reply));
+    logger.info(getLogObject(request, reply));
   } else {
     throw new NotFoundError('Not found user');
   }

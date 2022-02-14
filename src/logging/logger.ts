@@ -1,10 +1,7 @@
 import winston from 'winston';
 import { FastifyRequest, FastifyReply, FastifyError } from 'fastify';
-import { LEVEL_LOG } from './config';
-
-interface ILevelLog {
-  [key: string]: string;
-}
+import { LEVEL_LOG } from '../common/config';
+import { ILevelLog } from '../common/type';
 
 const levelLog: ILevelLog = {
   0: 'error',
@@ -23,22 +20,22 @@ const logger = winston.createLogger({
   defaultMeta: { service: 'REST-service' },
   transports: [
     new winston.transports.File({
-      filename: 'src/logs/errors.log',
+      filename: 'logs/errors.log',
       level: 'error',
     }),
-    new winston.transports.File({ filename: 'src/logs/all.log' }),
+    new winston.transports.File({ filename: 'logs/all.log' }),
     new winston.transports.Console({
-      format: winston.format.cli(),
+      format: winston.format.cli({}),
     }),
   ],
 });
 
-const logCollect = (
+const getLogObject = (
   request: FastifyRequest,
   reply: FastifyReply,
   error?: FastifyError
 ) => {
-  const objectLog = {
+  const logEntries = {
     method: request.method,
     url: request.url,
     parameters: request.params,
@@ -47,16 +44,16 @@ const logCollect = (
     statusCode: reply.statusCode,
   };
 
-  if (error && request && reply) {
+  if (error) {
     return JSON.stringify({
       message: error.message || '',
-      ...objectLog,
-    });
-  } else {
-    return JSON.stringify({
-      ...objectLog,
+      ...logEntries,
     });
   }
+
+  return JSON.stringify({
+    ...logEntries,
+  });
 };
 
-export { logger, logCollect };
+export { logger, getLogObject };

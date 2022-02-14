@@ -1,29 +1,23 @@
 import { app } from '../app';
-import { logger, logCollect } from '../common/logger';
-
-const processExit = () => {
-  process.exit(1);
-};
+import { logger, getLogObject } from '../logging/logger';
 
 const errorsHandler = () => {
   app.setErrorHandler((error, request, reply) => {
     reply.send(error);
-    logger.error(logCollect(request, reply, error));
+    logger.error(getLogObject(request, reply, error));
   });
 
-  process.on('unhandledRejection', (err, origin) => {
+  process.on('unhandledRejection', (err) => {
     logger.error(err);
-    logger.warn(origin);
     setTimeout(() => {
-      processExit();
+      process.exit(1);
     }, 100);
   });
 
-  process.on('uncaughtException', (err, origin) => {
+  process.on('uncaughtException', (err) => {
     logger.error(err);
-    logger.warn(origin);
     setTimeout(() => {
-      processExit();
+      process.exit(1);
     }, 100);
   });
 };

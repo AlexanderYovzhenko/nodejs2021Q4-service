@@ -27,4 +27,8 @@ interface ITask {
   columnId: string | null;
 }
 
-export { IUser, ITask, IBoard, IColumn };
+interface ILevelLog {
+  [key: string]: string;
+}
+
+export { IUser, ITask, IBoard, IColumn, ILevelLog };
