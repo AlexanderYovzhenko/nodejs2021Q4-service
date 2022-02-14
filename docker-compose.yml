@@ -1,6 +1,8 @@
 version: '3.0'
 services:
   postgres:
+    env_file: 
+      - .docker.env
     image: 'postgres:${POSTGRES_VERSION}'
     container_name: postgres
     build: 
@@ -12,42 +14,44 @@ services:
         condition: on-failure
         delay: 5s
         max_attempts: 5
-        window: 120s
+        window: 120s 
     networks:
       - my_net
-    env_file: .env
     ports:
-      - ${PORT_DB}:${PORT_DB}
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}
     environment:
       - POSTGRES_HOST_AUTH_METHOD=trust
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=${POSTGRES_DB}
-      - PORT_DB=${PORT_DB}
-      - POSTRGES_HOST=${DB_HOST}
+      - POSTGRES_PORT=${POSTGRES_PORT}
+      - POSTRGES_HOST=${POSTGRES_HOST}
       - POSTGRES_VERSION=${POSTGRES_VERSION}
     volumes:
       - pg_data:/var/lib/postgresql/data/
   app:
-    image: goldenmanbel/docker-basics:app
+    env_file: 
+      - .docker.env
+    image: app
     container_name: app
     build:
       context: .
       args: 
         - PORT=${PORT}
         - NODE_VERSION=${NODE_VERSION}
+    tty: true
+    command: npm run "start"
     networks:
-      - my_net 
-    env_file: .env
+      - my_net
     ports:
       - ${PORT}:${PORT}
     environment:
       - PORT=${PORT}
-      - NODE_ENV=${NODE_ENV}
       - NODE_VERSION=${NODE_VERSION}
     volumes:
       - logs:/usr/src/app/logs
-      # - ./logs/:/usr/src/app/logs
+      - ./logs/all.log:/usr/src/app/logs/all.log
+      - ./logs/errors.log:/usr/src/app/logs/errors.log
       - ./src/:/usr/src/app/src 
     deploy:
       restart_policy:

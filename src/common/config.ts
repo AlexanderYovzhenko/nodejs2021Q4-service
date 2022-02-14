@@ -1,34 +1,22 @@
-import path from 'path';
-import dotenv from 'dotenv';
+import * as path from 'path';
+import * as dotenv from 'dotenv';
 
 dotenv.config({
-  path: path.join(__dirname, '../../.env'),
+  path: path.join(__dirname, `.${process.env.NODE_ENV}.env`),
 });
 
-const PORT = process.env.PORT || 4000,
-  NODE_ENV = process.env.NODE_ENV,
-  MONGO_CONNECTION_STRING = process.env.MONGO_CONNECTION_STRING,
-  JWT_SECRET_KEY = process.env.JWT_SECRET_KEY,
-  AUTH_MODE = process.env.AUTH_MODE === 'true',
-  LEVEL_LOG = process.env.LEVEL_LOG || '4',
-  PORT_DB = process.env.PORT_DB,
+export const PORT = process.env.PORT || 4000,
+  POSTGRES_PORT = process.env.PORT_DB,
+  POSTGRES_HOST = process.env.DB_HOST,
   POSTGRES_DB = process.env.POSTGRES_DB,
-  DB_HOST = process.env.DB_HOST,
   POSTGRES_USER = process.env.POSTGRES_USER,
   POSTGRES_PASSWORD = process.env.POSTGRES_PASSWORD,
-  SALT_HASH_PASSWORD = process.env.SALT_HASH_PASSWORD || '10';
-
-export {
-  PORT,
-  NODE_ENV,
-  MONGO_CONNECTION_STRING,
-  JWT_SECRET_KEY,
-  AUTH_MODE,
-  LEVEL_LOG,
-  PORT_DB,
-  POSTGRES_DB,
-  DB_HOST,
-  POSTGRES_USER,
-  POSTGRES_PASSWORD,
-  SALT_HASH_PASSWORD,
-};
+  POSTGRES_VERSION = process.env.POSTGRES_VERSION,
+  NODE_VERSION = process.env.NODE_VERSION,
+  LEVEL_LOG = process.env.LEVEL_LOG || '4',
+  SALT_ROUNDS = process.env.SALT_ROUNDS || '10',
+  JWT_SECRET_KEY = process.env.JWT_SECRET_KEY,
+  NODE_ENV = process.env.NODE_ENV,
+  AUTH_MODE = process.env.AUTH_MODE,
+  TEST_MODE = process.env.TEST_MODE,
+  USE_FASTIFY = process.env.USE_FASTIFY;

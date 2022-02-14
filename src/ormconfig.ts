@@ -1,26 +1,19 @@
-import path from 'path';
 import { ConnectionOptions } from 'typeorm';
-import {
-  PORT_DB,
-  POSTGRES_DB,
-  DB_HOST,
-  POSTGRES_USER,
-  POSTGRES_PASSWORD,
-} from './common/config';
+import { POSTGRES_DB, POSTGRES_PASSWORD } from './common/config';
 
 const config: ConnectionOptions = {
   type: 'postgres',
-  host: DB_HOST || 'postgres',
-  port: PORT_DB ? +PORT_DB : 5432,
-  username: POSTGRES_USER || 'postgres',
-  password: POSTGRES_PASSWORD || 'postgres',
-  database: POSTGRES_DB || 'postgres',
-  dropSchema: false,
+  host: process.env.POSTGRES_HOST,
+  port: Number(process.env.POSTGRES_PORT) || 5432,
+  username: process.env.POSTGRES_USER,
+  password: POSTGRES_PASSWORD,
+  database: POSTGRES_DB,
+  dropSchema: true,
   logging: true,
   synchronize: false,
-  entities: [path.join(__dirname, 'resources/**/*.model.ts')],
   migrationsRun: true,
-  migrations: ['src/migrations/*{.ts,.js}'],
+  entities: ['dist/**/entities/*.entity{.ts,.js}'],
+  migrations: ['dist/migrations/*.js'],
   cli: {
     migrationsDir: 'src/migrations',
   },

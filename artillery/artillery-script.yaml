@@ -1,0 +1,73 @@
+config:
+  http:
+    extendedMetrics: true
+  target: http://localhost:4000
+  phases:
+    - duration: 20
+      arrivalRate: 10
+    # - duration: 10
+    #   arrivalRate: 5
+    #   rampTo: 10
+    #   name: "Warming up"
+    # - duration: 20
+    #   arrivalRate: 10
+    #   rampTo: 50
+    #   name: "Mid load"
+    # - duration: 60
+    #   arrivalRate: 100
+    #   rampTo: 500
+    #   name: "Mid 2 load"
+    # - duration: 120
+    #   arrivalRate: 1000
+    #   rampTo: 5000
+    #   name: "Max load"
+before:
+    flow:
+      - log: "Get auth token"
+      - post:
+          url: "/login"
+          name: "auth"
+          json:
+            login: "admin"
+            password: "admin"
+          capture:
+            - json: "$.token"
+              as: "token"
+scenarios:
+  - flow:
+    - log: "Add user"
+    - post:
+        url: "/users"
+        headers:
+          authorization: "Bearer {{ token }}"
+        json:
+          name: "name"
+          login: "{{ $uuid }}"
+          password: "password"
+        capture:
+        - json: "$.id"
+          as: "id" 
+    - log: "Get all users"
+    - get:
+        url: "/users"
+        headers:
+          authorization: "Bearer {{ token }}" 
+    - log: "Get user by id"
+    - get:
+        url: "/users/{{ id }}"
+        headers:
+          authorization: "Bearer {{ token }}"
+    - log: "Update user by id"
+    - put:
+        url: "/users/{{ id }}"
+        headers:
+          authorization: "Bearer {{ token }}"
+        json:
+          name: "name"
+          login: "{{ $uuid }}"
+          password: "password"
+    - log: "Delete user by id"
+    - delete:
+        url: "/users/{{ id }}"
+        headers:
+          authorization: "Bearer {{ token }}"

@@ -7,4 +7,4 @@ COPY . .
 ARG PORT
 ENV PORT ${PORT}
 EXPOSE ${PORT}
-CMD ["npm", "start"]
+
