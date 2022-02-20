@@ -4,6 +4,7 @@
 /test*
 .github*
 static
+/artillery*.html
 
 # Logs
 logs
