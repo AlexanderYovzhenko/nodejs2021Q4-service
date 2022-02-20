@@ -97,12 +97,6 @@ git clone https://github.com/GoldenManBel/nodejs2021Q4-service.git
 git checkout nestJS
 ```
 
-## Need delete in  "devDependencies"
- 
-```
- "typescript": "3.3.3333"
-```
-
 ## Installing NPM modules
 
 ```bash
